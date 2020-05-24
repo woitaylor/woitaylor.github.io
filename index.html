@@ -655,7 +655,9 @@
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                符号链接处理123456789101112131415161718192021222324252627/* * Do we need to follow links? We _really_ want to be able * to do 
+                                符号链接处理/*
+ * Do we need to follow links? We _really_ want to be able
+ * to do this check without having to look at inode-
                             
                         </div>
                         <div class="publish-info">
@@ -710,7 +712,10 @@
                     <div class="card-content article-content">
                         <div class="summary block-with-text">
                             
-                                “..”处理函数 handle_dots123456789101112static inline int handle_dots(struct nameidata * nd, int type)&#123;	if (type == LAST
+                                “..”处理函数 handle_dotsstatic inline int handle_dots(struct nameidata * nd, int type)
+{
+    if (type == LAST_DOTDOT) {
+    
                             
                         </div>
                         <div class="publish-info">
