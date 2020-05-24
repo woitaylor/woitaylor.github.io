@@ -1,0 +1,1536 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Linux path_lookup文档翻译, Hexo">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Linux path_lookup文档翻译 | Hexo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Hexo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Hexo</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/6.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Linux path_lookup文档翻译</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                                <span class="chip bg-color">文件系统</span>
+                            </a>
+                        
+                            <a href="/tags/open/">
+                                <span class="chip bg-color">open</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Linux%E5%86%85%E6%A0%B8/" class="post-category">
+                                Linux内核
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-08-28
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h3 id="Pathname-lookup-in-Linux"><a href="#Pathname-lookup-in-Linux" class="headerlink" title="Pathname lookup in Linux."></a>Pathname lookup in Linux.</h3><p>=========================</p>
+<p>This write-up is based on three articles published at lwn.net:</p>
+<ul>
+<li><a href="https://lwn.net/Articles/649115/" target="_blank" rel="noopener">https://lwn.net/Articles/649115/</a> Pathname lookup in Linux</li>
+<li><a href="https://lwn.net/Articles/649729/" target="_blank" rel="noopener">https://lwn.net/Articles/649729/</a> RCU-walk: faster pathname lookup in Linux</li>
+<li><a href="https://lwn.net/Articles/650786/" target="_blank" rel="noopener">https://lwn.net/Articles/650786/</a> A walk among the symlinks</li>
+</ul>
+<p>Written by Neil Brown with help from Al Viro and Jon Corbet.</p>
+<h4 id="Introduction"><a href="#Introduction" class="headerlink" title="Introduction"></a>Introduction</h4><p>The most obvious aspect of pathname lookup, which very little<br>exploration is needed to discover, is that it is complex.<br>There are many rules, special cases, and implementation alternatives that all<br>combine to confuse the unwary reader.</p>
+<p>对于路径查找很明显的一个概念就是：需要发现的探索很少，但它又是复杂的。<br>它有很多规则，特殊的情况，以及不同的实现，这些都会使读者感到困惑。</p>
+<p>Computer science has long been<br>acquainted with such complexity and has tools to help manage it.<br>One tool that we will make extensive use of is “divide and conquer”.<br>For the early parts of the analysis we will divide off symlinks - leaving<br>them until the final part.</p>
+<p>计算机科学对于这种复杂性情况已经很熟悉了，也有了相关工具帮助我们去解决它。<br>其中一个广泛使用的工具就是“分而治之”。<br>所以在早期的分析中，我们不考虑有符号链接的情况，把它留到后面。</p>
+<p>Well before we get to symlinks we have<br>another major division based on the VFS’s approach to locking which<br>will allow us to review “REF-walk” and “RCU-walk” separately.<br>But we are getting ahead of ourselves.  There are some important low level<br>distinctions we need to clarify first.</p>
+<p>在考虑符号链接之前，我们先来解决另一个主要部分：基于VFS的方法去锁定，它可以使我们独立地分析<br>“REF-walk” ， “RCU-walk” 这两种情况。<br>在深入之前，我们需要先了解一些低层次的区别。</p>
+<h4 id="There-are-two-sorts-of-…"><a href="#There-are-two-sorts-of-…" class="headerlink" title="There are two sorts of …"></a>There are two sorts of …</h4><p>Pathnames (sometimes “file names”), used to identify objects in the<br>filesystem, will be familiar to most readers.<br>They contain two sorts<br>of elements: “slashes” that are sequences of one or more “<code>/</code>“<br>characters, and “components” that are sequences of one or more<br>non-“<code>/</code>“ characters.<br>These form two kinds of paths.  Those that<br>start with slashes are “absolute” and start from the filesystem root.<br>The others are “relative” and start from the current directory, or<br>from some other location specified by a file descriptor given to a<br>“xxx<code>at</code>“ system call such as “<a href="http://man7.org/linux/man-pages/man2/openat.2.html" target="_blank" rel="noopener"><code>openat()</code></a>“.</p>
+<p>路径名（或者称为“文件名”），通常用来在文件系统中标识一个对象，大多数<br>读者对此不陌生。<br>它们包含了两种元素：一个或多个的 “\”，以及 “components” 也就剩下的非反斜杠字符。<br>因此就有了两种类型的路径，一种就是从文件系统根目录开始的绝对路径，以反斜杠开头。<br>另一种就是相对路径，要么是相对于当前目录开始，要么就是从一个指定的目录开始。</p>
+<p>It is tempting to describe the second kind as starting with a<br>component, but that isn’t always accurate: a pathname can lack both<br>slashes and components, it can be empty, in other words.<br>把第二种（相对路径）描述为以一个组件名开始的路径是很诱人的，但这种说法并不是<br>完全正确，因为一个路径名可以没有反斜杠和组件名，换句话说他可以是空的。</p>
+<p>This is<br>generally forbidden in POSIX, but some of those “xxx<code>at</code>“ system calls<br>in Linux permit it when the <code>AT_EMPTY_PATH</code> flag is given.<br>For<br>example, if you have an open file descriptor on an executable file you<br>can execute it by calling <a href="http://man7.org/linux/man-pages/man2/execveat.2.html" target="_blank" rel="noopener"><code>execveat()</code></a> passing the file descriptor,<br>an empty path, and the <code>AT_EMPTY_PATH</code> flag.</p>
+<p>这在 <code>POSIX</code> 中一般是被禁止的，但是一些带有 <code>“AT_EMPTY_PATH”</code> 标志的 <code>“xxx at”</code><br>系统调用允许使用空路径。<br>例如：如果你有个已打开文件的文件描述符，那么你可以把这个文件描述符，空路径，<br>以及 <code>“AT_EMPTY_PATH”</code> 传递给 <code>“execveat（）”</code> 系统调用。</p>
+<p>These paths can be divided into two sections: the final component and<br>everything else.  The “everything else” is the easy bit.  In all cases<br>it must identify a directory that already exists, otherwise an error<br>such as <code>ENOENT</code> or <code>ENOTDIR</code> will be reported.</p>
+<p>路径可以被分为两部分：“其他部分” 以及 “最后一项”，对于 “其他部分”，它一定<br>标识了某个已存在的目录，不然就会返回 <code>ENOENT</code> 或者 <code>ENOTDIR</code>  错误。</p>
+<p>The final component is not so simple.  Not only do different system<br>calls interpret it quite differently (e.g. some create it, some do<br>not), but it might not even exist: neither the empty pathname nor the<br>pathname that is just slashes have a final component.  If it does<br>exist, it could be “<code>.</code>“ or “<code>..</code>“ which are handled quite differently<br>from other components.</p>
+<p>“最后一项”并不是那么简单，不只是不同的系统调用对其的处理不同，但还有可能它根本不存在。<br>要么就是一个空路径名，或者就只是一个反斜杠。假设它存在，那么它可能是一个“.”或者“..”，<br>这两者与其他正常组件名有很大的区别。</p>
+<p>If a pathname ends with a slash, such as “<code>/tmp/foo/</code>“ it might be<br>tempting to consider that to have an empty final component.  In many<br>ways that would lead to correct results, but not always.  In<br>particular, <code>mkdir()</code> and <code>rmdir()</code> each create or remove a directory named<br>by the final component, and they are required to work with pathnames<br>ending in “<code>/</code>“.  According to <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_12" target="_blank" rel="noopener">POSIX</a></p>
+<p>如果路径名以斜杠结尾，比如 “/tmp/foo/”，那么很可能会认为最后一个组件是空的。<br>在很多时候，这将导致正确的结果，但并不总是这样。特别是，<code>mkdir()</code> 和 <code>rmdir()</code>各自创建<br>或删除一个由最终组件命名的目录，并且需要使用以 “/” 结尾的路径名。<br>根据POSIX:</p>
+<blockquote>
+<p>A pathname that contains at least one non- &lt;slash&gt; character and<br>that ends with one or more trailing &lt;slash&gt; characters shall not<br>be resolved successfully unless the last pathname component before<br>the trailing <slash> characters names an existing directory or a<br>directory entry that is to be created for a directory immediately<br>after the pathname is resolved.</p>
+</blockquote>
+<p>一个包含至少一个非 “/” 字符，并以一个或多个 “/” 字符结束的路径名是不应该被成功解析,<br>除非在结尾处 “/” 之前的最后一个路径名组件（分量）是一个已存在的目录名，或者是一个目录项<br>它表示了在路径名解析完后需要马上创建的目录。</p>
+<p>The Linux pathname walking code (mostly in <code>fs/namei.c</code>) deals with<br>all of these issues: breaking the path into components, handling the<br>“everything else” quite separately from the final component, and<br>checking that the trailing slash is not used where it isn’t<br>permitted.  It also addresses the important issue of concurrent<br>access.</p>
+<p><code>Linux</code> 路径名遍历代码(主要在 <code>fs/namei.c</code> 中)处理所有这些问题:将路径拆分成组件（分量），<br>“everything else” 的处理与最终组件（分量）的处理完全独立，并检查是否能使用尾反斜杠。<br>它还解决了并发访问的重要问题。</p>
+<p>While one process is looking up a pathname, another might be making<br>changes that affect that lookup.  One fairly extreme case is that if<br>“a/b” were renamed to “a/c/b” while another process were looking up<br>“a/b/..”, that process might successfully resolve on “a/c”.<br>Most races are much more subtle, and a big part of the task of<br>pathname lookup is to prevent them from having damaging effects.  Many<br>of the possible races are seen most clearly in the context of the<br>“dcache” and an understanding of that is central to understanding<br>pathname lookup.</p>
+<p>当一个进程正在查找路径名时，另一个进程可能正在进行影响查找的更改。一个相当极端的情况是，<br>如果 <code>a/b</code> 被重命名为 <code>a/c/b</code>，而另一个进程正在查找 <code>a/b/..</code>，该进程也许能成功解析到<br><code>a/c</code> 。大多数竞争要微妙得多，而 <code>pathname</code> 查找的主要任务是防止它们产生破坏性的影响。<br>在 <code>“dcache”</code> 上下文中可以清楚地看到许多可能的竞争，理解这一点对于理解路径名查找非常重要。</p>
+<h4 id="More-than-just-a-cache"><a href="#More-than-just-a-cache" class="headerlink" title="More than just a cache."></a>More than just a cache.</h4><p>The “dcache” caches information about names in each filesystem to<br>make them quickly available for lookup.  Each entry (known as a<br>“dentry”) contains three significant fields: a component name, a<br>pointer to a parent dentry, and a pointer to the “inode” which<br>contains further information about the object in that parent with<br>the given name.  The inode pointer can be <code>NULL</code> indicating that the<br>name doesn’t exist in the parent.  While there can be linkage in the<br>dentry of a directory to the dentries of the children, that linkage is<br>not used for pathname lookup, and so will not be considered here.</p>
+<p><code>dcache</code> 在每个文件系统中缓存关于名称的信息，以便能够快速地进行查找。每个条目(称为 <code>“dentry”</code>)<br>都包含三个重要字段: 组件名称、指向父目录的 <code>dentry</code> 指针和指向 <code>inode</code> 的指针，后者<br>包含父目录下对应于给定名称对象的进一步信息。<code>inode</code> 指针可以为空，表示该名称对应的对象在<br>父节点中不存在。虽然目录的 <code>dentry</code> 中可以有到子目录的 <code>dentries</code> 的链接，但该链接<br>不用于路径名查找，因此这里不考虑该链接。（这里父目录，父节点，父目录项表示的含义相同。）</p>
+<p>The dcache has a number of uses apart from accelerating lookup.  One<br>that will be particularly relevant is that it is closely integrated<br>with the mount table that records which filesystem is mounted where.<br>What the mount table actually stores is which dentry is mounted on top<br>of which other dentry.</p>
+<p>除了加速查找之外，<code>dcache</code> 还有许多用途。特别相关的一点是，它与记录文件系统挂载位置的<br>挂载表紧密集成。挂载表实际保存了哪个 <code>dentry</code> 挂载在哪个 <code>dentry</code> 之下。</p>
+<p>When considering the dcache, we have another of our “two types”<br>distinctions: there are two types of filesystems.<br>Some filesystems ensure that the information in the dcache is always<br>completely accurate (though not necessarily complete).  This can allow<br>the VFS to determine if a particular file does or doesn’t exist<br>without checking with the filesystem, and means that the VFS can<br>protect the filesystem against certain races and other problems.<br>These are typically “local” filesystems such as ext3, XFS, and Btrfs.</p>
+<p>在考虑 <code>dcache</code> 时，我们还有另一个 “两种类型” 的区别:有两种类型的文件系统。一些文件系统<br>确保 <code>dcache</code> 中的信息总是完全准确的(尽管不一定是完整的)。这允许 <code>VFS</code> 在不用文件系统<br>进行检查的情况下确定特定文件是否存在，这意味着 <code>VFS</code> 可以保护文件系统不受某些竞争和其他<br>问题的影响。这些文件系统通常是 “本地” 文件系统，比如 <code>ext3</code>、<code>XFS</code> 和 <code>Btrfs</code>。</p>
+<p>Other filesystems don’t provide that guarantee because they cannot.<br>These are typically filesystems that are shared across a network,<br>whether remote filesystems like NFS and 9P, or cluster filesystems<br>like ocfs2 or cephfs.  These filesystems allow the VFS to revalidate<br>cached information, and must provide their own protection against<br>awkward races.  The VFS can detect these filesystems by the<br><code>DCACHE_OP_REVALIDATE</code> flag being set in the dentry.</p>
+<p>其他文件系统不提供这种保证，因为它们不能。这些文件系统通常是跨网络共享的文件系统，无论是<br><code>NFS</code> 和 <code>9P</code> 这样的远程文件系统，还是 <code>ocfs2</code> 或 <code>cephfs</code> 这样的集群文件系统。这些<br>文件系统允许 <code>VFS</code> 重新验证缓存的信息，并且必须提供自己的保护，以防止出现尴尬的竞争。<br><code>VFS</code> 可以通过在 <code>dentry</code> 中设置的 <code>DCACHE_OP_REVALIDATE</code> 标志检测这些文件系统。</p>
+<h4 id="REF-walk-simple-concurrency-management-with-refcounts-and-spinlocks"><a href="#REF-walk-simple-concurrency-management-with-refcounts-and-spinlocks" class="headerlink" title="REF-walk: simple concurrency management with refcounts and spinlocks"></a>REF-walk: simple concurrency management with refcounts and spinlocks</h4><p>With all of those divisions carefully classified, we can now start<br>looking at the actual process of walking along a path.  In particular<br>we will start with the handling of the “everything else” part of a<br>pathname, and focus on the “REF-walk” approach to concurrency<br>management.  This code is found in the <code>link_path_walk()</code> function, if<br>you ignore all the places that only run when “<code>LOOKUP_RCU</code>“<br>(indicating the use of RCU-walk) is set.</p>
+<p>将所有这些划分仔细分类之后，我们现在可以开始查看沿着路径行走的实际过程。特别地，我们将<br>从处理路径名的 “其他所有部分” 开始，重点讨论 <code>REF-walk</code> 模式下并发管理的方式。如果忽略<br>所有设置了 <code>LOOKUP_RCU</code> (指示使用 <code>RCU-walk</code>)标志分支的代码，剩下的代码基本就是<br><code>REF-walk</code> 模式的代码了，可以在 <code>link_path_walk()</code>函数中找到这些代码。</p>
+<p>REF-walk is fairly heavy-handed with locks and reference counts.  Not<br>as heavy-handed as in the old “big kernel lock” days, but certainly not<br>afraid of taking a lock when one is needed.  It uses a variety of<br>different concurrency controls.  A background understanding of the<br>various primitives is assumed, or can be gleaned from elsewhere such<br>as in <a href="https://lwn.net/Articles/453685/" target="_blank" rel="noopener">Meet the Lockers</a>.</p>
+<p><code>REF-walk</code> 在锁和引用计数方面相当笨拙。虽然不像过去的“大内核锁”时代那样严厉，但在需要锁<br>的时候，肯定不会害怕使用锁。它使用各种不同的并发控制。假设您对各种原语（各种锁）有一定的<br>背景了解，或者您可以从其他地方(比如 <code>Meet the Lockers</code>)了解这些。</p>
+<p>The locking mechanisms used by REF-walk include:</p>
+<p><code>REF-walk</code> 锁机制包括了：</p>
+<h5 id="“dentry-gt-d-lockref”"><a href="#“dentry-gt-d-lockref”" class="headerlink" title="“dentry-&gt;d_lockref”"></a>“dentry-&gt;d_lockref”</h5><p>This uses the <a href="https://lwn.net/Articles/649115/" target="_blank" rel="noopener">lockref</a> primitive to provide both a spinlock and a<br>reference count.  The special-sauce of this primitive is that the<br>conceptual sequence “lock; inc_ref; unlock;” can often be performed<br>with a single atomic memory operation.</p>
+<p>这使用了最近引入的 <code>lockref</code> 原语来提供自旋锁和引用计数。这个本原语的特殊之处在于<br>它概念上的序列 “lock; inc_ref; unlock” 通常可以通过一个原子内存操作来执行。</p>
+<p>Holding a reference on a dentry ensures that the dentry won’t suddenly<br>be freed and used for something else, so the values in various fields<br>will behave as expected.  It also protects the <code>-&gt;d_inode</code> reference<br>to the inode to some extent.</p>
+<p>在 <code>dentry</code> 上保存引用可以确保 <code>dentry</code> 不会突然被释放并用于其他用途，因此各个字段中的值<br>将按预期运行。它还在一定程度上保护了 <code>-&gt;d_inode</code> 对 <code>inode</code> 的引用（间接引用了 <code>inode</code>）。</p>
+<p>The association between a dentry and its inode is fairly permanent.<br>For example, when a file is renamed, the dentry and inode move<br>together to the new location.  When a file is created the dentry will<br>initially be negative (i.e. <code>d_inode</code> is <code>NULL</code>), and will be assigned<br>to the new inode as part of the act of creation.</p>
+<p><code>dentry</code> 与其 <code>inode</code> 之间的关联是相当持久的。例如，当文件被重命名时，<code>dentry</code> 和 <code>inode</code><br>一起移动到新位置。创建文件时，<code>dentry</code> 最初为 <code>negative</code>(即 <code>d_inode</code> 为 <code>NULL</code> )，<br>并作为创建操作的一部分，之后 <code>dentry</code> 会指向一个新的 <code>inode</code>。</p>
+<p>When a file is deleted, this can be reflected in the cache either by<br>setting <code>d_inode</code> to <code>NULL</code>, or by removing it from the hash table<br>(described shortly) used to look up the name in the parent directory.<br>If the dentry is still in use the second option is used as it is<br>perfectly legal to keep using an open file after it has been deleted<br>and having the dentry around helps.  If the dentry is not otherwise in<br>use (i.e. if the refcount in <code>d_lockref</code> is one), only then will<br><code>d_inode</code> be set to <code>NULL</code>.  Doing it this way is more efficient for a<br>very common case.</p>
+<p>当一个文件被删除时，在缓存中的反映可以表现为：将 <code>d_inode</code> 设置为 <code>NULL</code> 或将其<br>从散列表中删除(稍后将进行描述)。散列表用于在父目录中查找名称。如果 <code>dentry</code> 仍然在使用，<br>则使用第二个选项，因为打开的文件在从缓存（散列表）被删除后继续使用是完全合法的，因为有 <code>dentry</code> 的协助。<br>如果 <code>dentry</code> 没有被使用中(例如，如果 <code>d_lockref</code> 中的 <code>refcount</code> 为 <strong>1</strong>)，<br>那么只有在这种情况下，<code>d_inode</code> 才会被设置为 <code>NULL</code> 。对于常见的情况，这样做更有效。</p>
+<p>So as long as a counted reference is held to a dentry, a non-<code>NULL</code> <code>-&gt;d_inode</code><br>value will never be changed.</p>
+<p>因此，只要计数的引用保存到 <code>dentry</code>，就不会更改非 <code>null</code> 的 <code>-&gt;d_inode</code>值。</p>
+<h5 id="“dentry-gt-d-lock”"><a href="#“dentry-gt-d-lock”" class="headerlink" title="“dentry-&gt;d_lock”"></a>“dentry-&gt;d_lock”</h5><p><code>d_lock</code> is a synonym for the spinlock that is part of <code>d_lockref</code> above.<br>For our purposes, holding this lock protects against the dentry being<br>renamed or unlinked.  In particular, its parent (<code>d_parent</code>), and its<br>name (<code>d_name</code>) cannot be changed, and it cannot be removed from the<br>dentry hash table.</p>
+<p><code>d_lock</code> 是上面 <code>d_lockref</code> 的一部分的自旋锁的同义词。出于我们的目的，持有这个锁可以<br>防止 <code>dentry</code> 被重命名或取消链接。特别是，它的父目录项 (<code>d_parent</code>) 和名称 (<code>d_name</code>)<br>字段不能被更改，并且不能从 <code>dentry</code> 散列表中删除它。</p>
+<p>When looking for a name in a directory, REF-walk takes <code>d_lock</code> on<br>each candidate dentry that it finds in the hash table and then checks<br>that the parent and name are correct.  So it doesn’t lock the parent<br>while searching in the cache; it only locks children.</p>
+<p>当在目录中查找名称时，<code>REF-walk</code> 对它在散列表中找到的每个候选 <code>dentry</code> 使用 <code>d_lock</code>，<br>然后检查父目录项（<code>d_parent</code>）和名称 (<code>d_name</code>) 是否正确。它在缓存中搜索时不会锁定父结点;<br>它只锁住孩子。</p>
+<p>注：父节点指的是当前进行搜索所在的目录，孩子指的是候选 <code>dentry</code>。比如路径名：<br>“a/b”，此时我要在目录 “a” 下搜索 “b” 对应的 <code>dentry</code>，那么父节点指的是 “a” 目录，<br>孩子指的是 “b”，<code>d_lock</code> 加锁对象就是找到的 “b” 对应的 <code>dentry</code>， 然后检查这个 <code>dentry</code><br>的内容是否正确。</p>
+<p>When looking for the parent for a given name (to handle “<code>..</code>“),<br>REF-walk can take <code>d_lock</code> to get a stable reference to <code>d_parent</code>,<br>but it first tries a more lightweight approach.  As seen in<br><code>dget_parent()</code>, if a reference can be claimed on the parent, and if<br>subsequently <code>d_parent</code> can be seen to have not changed, then there is<br>no need to actually take the lock on the child.</p>
+<p>在为给定名称寻找父目录项时(处理“..”)，<code>REF-walk</code> 可以使用 <code>d_lock</code> 来获得对 <code>d_parent</code><br>的稳定引用，但它首先尝试了一种更轻量级的方法。正如在 <code>dget_parent()</code> 中所看到的，如果<br>可以在父目录项声明引用，并且随后可以看到 <code>d_parent</code> 没有更改，那么实际上就没有必要对<br>子目录项使用锁。</p>
+<h5 id="“rename-lock”"><a href="#“rename-lock”" class="headerlink" title="“rename_lock”"></a>“rename_lock”</h5><p>Looking up a given name in a given directory involves computing a hash<br>from the two values (the name and the dentry of the directory),<br>accessing that slot in a hash table, and searching the linked list<br>that is found there.</p>
+<p>在给定目录（父目录）中查找给定名称涉及：根据两个值(<code>name</code> 和 父目录的 <code>dentry</code>)计算哈希值、<br>访问哈希表中的桶以及在其中找到的链表（桶对应的链表）中进行搜索。</p>
+<p>When a dentry is renamed, the name and the parent dentry can both<br>change so the hash will almost certainly change too.  This would move the<br>dentry to a different chain in the hash table.  If a filename search<br>happened to be looking at a dentry that was moved in this way,<br>it might end up continuing the search down the wrong chain,<br>and so miss out on part of the correct chain.</p>
+<p>当重新命名 <code>dentry</code> 时，<code>name</code> 和 父 <code>dentry</code> 都可以更改，所以哈希值几乎肯定也会更改。<br>这将把 <code>dentry</code> 移到哈希表中的另一个链表上。如果在文件名搜索时碰巧遇到这种 <code>dentry</code><br>移动问题，它可能会继续沿着错误的链表进行搜索，从而错过正确链表的一部分。</p>
+<p>The name-lookup process (<code>d_lookup()</code>) does <em>not</em> try to prevent this<br>from happening, but only to detect when it happens.<br><code>rename_lock</code> is a seqlock that is updated whenever any dentry is<br>renamed.  If <code>d_lookup</code> finds that a rename happened while it<br>unsuccessfully scanned a chain in the hash table, it simply tries<br>again.</p>
+<p>名称查找过程( <code>d_lookup()</code>)并不试图阻止这种情况发生，而是仅在发生时进行检测。<code>rename_lock</code><br>是一个 <code>seqlock</code>，每当重命名任何 <code>dentry</code> 时都会更新它。如果 <code>d_lookup</code>发现在扫描哈希表中<br>的链表失败时发生了重命名，它将再次尝试。</p>
+<h5 id="“inode-gt-i-mutex”"><a href="#“inode-gt-i-mutex”" class="headerlink" title="“inode-&gt;i_mutex”"></a>“inode-&gt;i_mutex”</h5><p><code>i_mutex</code> is a mutex that serializes all changes to a particular<br>directory.  This ensures that, for example, an <code>unlink()</code> and a <code>rename()</code><br>cannot both happen at the same time.  It also keeps the directory<br>stable while the filesystem is asked to look up a name that is not<br>currently in the dcache.</p>
+<p><code>i_mutex</code> 是一个互斥锁，它将序列化对特定目录的所有更改或者访问。这可以确保，例如，<br><code>unlink()</code> 和 <code>rename()</code> 不能同时发生。同样当文件系统查找当前不在 <code>dcache</code> 中的<br>目录项时它能保持目录稳定（不被修改）。</p>
+<p>This has a complementary role to that of <code>d_lock</code>: <code>i_mutex</code> on a<br>directory protects all of the names in that directory, while <code>d_lock</code><br>on a name protects just one name in a directory.  Most changes to the<br>dcache hold <code>i_mutex</code> on the relevant directory inode and briefly take<br><code>d_lock</code> on one or more the dentries while the change happens.  One<br>exception is when idle dentries are removed from the dcache due to<br>memory pressure.  This uses <code>d_lock</code>, but <code>i_mutex</code> plays no role.</p>
+<p>这与 <code>d_lock</code> 的作用互补:目录上的 <code>i_mutex</code> 保护该目录中的所有的 <code>name</code>，而 <code>name</code><br>的 <code>d_lock</code> 只保护目录中的一个 <code>name</code>。对 <code>dcache</code> 的大多数更改都将在相关目录的 <code>inode</code><br>上使用 <code>i_mutex</code> 互斥锁，并在更改发生时对一个或多个 <code>dentry</code> 使用 <code>d_lock</code>。一个例外<br>是由于内存压力而从 <code>dcache</code> 中删除空闲 <code>dentry</code>。这会使用 <code>d_lock</code> ，但是不需要使用<br><code>i_mutex</code>。</p>
+<p>The mutex affects pathname lookup in two distinct ways.  Firstly it<br>serializes lookup of a name in a directory.  <code>walk_component()</code> uses<br><code>lookup_fast()</code> first which, in turn, checks to see if the name is in the cache,<br>using only <code>d_lock</code> locking.  If the name isn’t found, then <code>walk_component()</code><br>falls back to <code>lookup_slow()</code> which takes <code>i_mutex</code>, checks again that<br>the name isn’t in the cache, and then calls in to the filesystem to get a<br>definitive answer.  A new dentry will be added to the cache regardless of<br>the result.</p>
+<p>互斥量以两种不同的方式影响路径名查找。首先，它序列化目录中名称的查找。<code>walk_component()</code><br>首先使用 <code>lookup_fast()</code> 检查名称是否在缓存中，只使用 <code>d_lock</code> 锁定。如果没有找到这个名称，<br>那么 <code>walk_component()</code> 将调用 <code>lookup_slow()</code>，它接受 <code>i_mutex</code>，再次检查这个名称是否<br>不在缓存中，然后调用文件系统具体相关方法来得到一个确定的答案。无论结果如何，都会向缓存添加<br>一个新的 <code>dentry</code>。</p>
+<p>Secondly, when pathname lookup reaches the final component, it will<br>sometimes need to take <code>i_mutex</code> before performing the last lookup so<br>that the required exclusion can be achieved.  How path lookup chooses<br>to take, or not take, <code>i_mutex</code> is one of the<br>issues addressed in a subsequent section.</p>
+<p>其次，当路径名查找到达最后一个组件时，有时需要在执行最后一次查找之前使用 <code>i_mutex</code>，以便<br>实现所需的排除。路径查找对于接不接受 <code>i_mutex</code> 如何选择的问题是后面一节讨论的问题之一。</p>
+<h5 id="“mnt-gt-mnt-count”"><a href="#“mnt-gt-mnt-count”" class="headerlink" title="“mnt-&gt;mnt_count”"></a>“mnt-&gt;mnt_count”</h5><p><code>mnt_count</code> is a per-CPU reference counter on “<code>mount</code>“ structures.<br>Per-CPU here means that incrementing the count is cheap as it only<br>uses CPU-local memory, but checking if the count is zero is expensive as<br>it needs to check with every CPU.  Taking a <code>mnt_count</code> reference<br>prevents the mount structure from disappearing as the result of regular<br>unmount operations, but does not prevent a “lazy” unmount.  So holding<br><code>mnt_count</code> doesn’t ensure that the mount remains in the namespace and,<br>in particular, doesn’t stabilize the link to the mounted-on dentry.  It<br>does, however, ensure that the <code>mount</code> data structure remains coherent,<br>and it provides a reference to the root dentry of the mounted<br>filesystem.  So a reference through <code>-&gt;mnt_count</code> provides a stable<br>reference to the mounted dentry, but not the mounted-on dentry.</p>
+<p><code>mnt_count</code> 是 <code>mount</code> 描述符的每 <code>cpu</code> 引用计数器。这里的 <code>Per-CPU</code> 意味着增加计数<br>很便宜，因为它只使用 <code>CPU</code> 本地内存，但是检查计数是否为零很昂贵，因为它需要检查每个 <code>CPU</code>。<br>使用 <code>mnt_count</code> 引用可以防止 <code>mount</code> 描述符由于常规卸载操作而消失，但不能防止“延迟”卸载。<br>因此，保存 <code>mnt_count</code> 并不能确保 <code>mount</code> 保持在名称空间中，特别是不能稳定指向挂载点的<br><code>dentry</code> 的链接。但是，它确保 <code>mount</code> 数据结构保持一致，并提供对已挂载文件系统根 <code>dentry</code><br>的引用。因此，通过 <code>-&gt;mnt_count</code> 的引用提供了对已挂载 <code>dentry</code> 的稳定引用，而不是挂载点的<br><code>dentry</code>。</p>
+<h5 id="“mount-lock”"><a href="#“mount-lock”" class="headerlink" title="“mount_lock”"></a>“mount_lock”</h5><p><code>mount_lock</code> is a global seqlock, a bit like <code>rename_lock</code>.  It can be used to<br>check if any change has been made to any mount points.</p>
+<p><code>mount_lock</code>是一个全局 <code>seqlock</code>，有点像 <code>rename_lock</code>。它可以用来检查任何挂载点的任何<br>修改。</p>
+<p>While walking down the tree (away from the root) this lock is used when<br>crossing a mount point to check that the crossing was safe.  That is,<br>the value in the seqlock is read, then the code finds the mount that<br>is mounted on the current directory, if there is one, and increments<br>the <code>mnt_count</code>.  Finally the value in <code>mount_lock</code> is checked against<br>the old value.  If there is no change, then the crossing was safe.  If there<br>was a change, the <code>mnt_count</code> is decremented and the whole process is<br>retried.</p>
+<p>往下遍历树(远离根)时，当穿过一个挂载点时被用来检查此次穿过是否安全。也就是说，读取<br><code>seqlock</code> 中的值，然后找到挂载在当前目录上的 <code>mount</code> 结构体(如果有的话)，并增加字段<br><code>mnt_count</code> 的值。最后根据旧值检查 <code>mount_lock</code> 中的值。如果没有变化，那么此时通过是<br>安全的。如果有更改，<code>mnt_count</code> 将递减，并重试整个过程。</p>
+<p>When walking up the tree (towards the root) by following a “..” link,<br>a little more care is needed.  In this case the seqlock (which<br>contains both a counter and a spinlock) is fully locked to prevent<br>any changes to any mount points while stepping up.  This locking is<br>needed to stabilize the link to the mounted-on dentry, which the<br>refcount on the mount itself doesn’t ensure.</p>
+<p>当沿着“..”链接向上遍历目录树(靠近根)时，需要多加注意。在这种情况下，<code>seqlock</code>(同时包含<br>计数器和自旋锁)被完全锁定，以防止在遍历时对任何挂载点的任何修改。需要使用此锁来稳定到<br>挂载点 <code>dentry</code> 的链接，而 <code>mount</code> 结构体本身的 <code>refcount</code> 不能确保这一点。</p>
+<h5 id="“RCU”"><a href="#“RCU”" class="headerlink" title="“RCU”"></a>“RCU”</h5><p>Finally the global (but extremely lightweight) RCU read lock is held<br>from time to time to ensure certain data structures don’t get freed<br>unexpectedly.<br>In particular it is held while scanning chains in the dcache hash<br>table, and the mount point hash table.</p>
+<p>最后，全局(但非常轻量级) <code>RCU</code> 读锁会不时被持有，以确保不会意外释放某些数据结构。<br>特别是，它在扫描 <code>dcache</code> 哈希表中的链表和挂载点哈希表时持有。</p>
+<h4 id="Bringing-it-together-with-“struct-nameidata”"><a href="#Bringing-it-together-with-“struct-nameidata”" class="headerlink" title="Bringing it together with “struct nameidata”"></a>Bringing it together with “struct nameidata”</h4><p>Throughout the process of walking a path, the current status is stored<br>in a <code>struct nameidata</code>, “namei” being the traditional name - dating<br>all the way back to <a href="http://minnie.tuhs.org/cgi-bin/utree.pl?file=V1/u2.s" target="_blank" rel="noopener">First Edition Unix</a> - of the function that<br>converts a “name” to an “inode”.  <code>struct nameidata</code> contains (among<br>other fields):</p>
+<p>在遍历路径的过程中，当前状态存储在一个 <code>struct nameidata</code> 中，“namei” 是一个传统的名称，<br>可以追溯到将 “name” 转换为 “inode” 的函数的第一版 <code>Unix</code>。<code>struct nameidata</code> 包含以下<br>字段：</p>
+<h5 id="“struct-path-path”"><a href="#“struct-path-path”" class="headerlink" title="“struct path path”"></a>“struct path path”</h5><p>A <code>path</code> contains a <code>struct vfsmount</code> (which is<br>embedded in a <code>struct mount</code>) and a <code>struct dentry</code>.  Together these<br>record the current status of the walk.  They start out referring to the<br>starting point (the current working directory, the root directory, or some other<br>directory identified by a file descriptor), and are updated on each<br>step.  A reference through <code>d_lockref</code> and <code>mnt_count</code> is always<br>held.</p>
+<p>一个 <code>path</code> 包含一个 <code>struct vfsmount</code>(它嵌入在 <code>struct mount</code> 中)和 <code>struct dentry</code>。<br>它们共同记录了遍历的当前状态。它们最开始引用的是 “起始点”(当前工作目录、根目录或由文件描述符<br>标识的其他目录)，并在每个步骤中更新。始终保存通过 <code>d_lockref</code> 和 <code>mnt_count</code> 的引用。</p>
+<h5 id="“struct-qstr-last”"><a href="#“struct-qstr-last”" class="headerlink" title="“struct qstr last”"></a>“struct qstr last”</h5><p>This is a string together with a length (i.e. <em>not</em> <code>nul</code> terminated)<br>that is the “next” component in the pathname.</p>
+<p>该结构体包含一个字符串和该字符串(即非 nul 终止)的长度，用来表示路径名中的<br>“下一个” 需要解析的组件。</p>
+<h5 id="“int-last-type”"><a href="#“int-last-type”" class="headerlink" title="“int last_type”"></a>“int last_type”</h5><p>This is one of <code>LAST_NORM</code>, <code>LAST_ROOT</code>, <code>LAST_DOT</code>, <code>LAST_DOTDOT</code>, or<br><code>LAST_BIND</code>.  The <code>last</code> field is only valid if the type is<br><code>LAST_NORM</code>.  <code>LAST_BIND</code> is used when following a symlink and no<br>components of the symlink have been processed yet.  Others should be<br>fairly self-explanatory.</p>
+<p><code>LAST_NORM</code>、<code>LAST_ROOT</code>、<code>LAST_DOT</code>、<code>LAST_DOTDOT</code> 或 <code>LAST_BIND</code> 其中之一的值。<br>只有当类型为 <code>LAST_NORM</code> 时，<code>last</code> 字段才有效。<code>LAST_BIND</code> 在跟踪符号链接时使用，<br>而该符号链接的组件还没有被处理。其他的应该是相当不言自明的。</p>
+<h5 id="“struct-path-root”"><a href="#“struct-path-root”" class="headerlink" title="“struct path root”"></a>“struct path root”</h5><p>This is used to hold a reference to the effective root of the<br>filesystem.  Often that reference won’t be needed, so this field is<br>only assigned the first time it is used, or when a non-standard root<br>is requested.  Keeping a reference in the <code>nameidata</code> ensures that<br>only one root is in effect for the entire path walk, even if it races<br>with a <code>chroot()</code> system call.</p>
+<p>这用于保存对文件系统有效根的引用。通常不需要该引用，因此仅在第一次使用该字段时或者<br>在请求非标准根时被赋值，在 <code>nameidata</code> 中保存一个引用可以确保在整个路径行走过程中<br>只有一个根有效，即使它与 <code>chroot()</code> 系统调用有竞争。</p>
+<p>The root is needed when either of two conditions holds: (1) either the<br>pathname or a symbolic link starts with a “‘/‘“, or (2) a “<code>..</code>“<br>component is being handled, since “<code>..</code>“ from the root must always stay<br>at the root.  The value used is usually the current root directory of<br>the calling process.  An alternate root can be provided as when<br><code>sysctl()</code> calls <code>file_open_root()</code>, and when NFSv4 or Btrfs call<br><code>mount_subtree()</code>.  In each case a pathname is being looked up in a very<br>specific part of the filesystem, and the lookup must not be allowed to<br>escape that subtree.  It works a bit like a local <code>chroot()</code>.</p>
+<p>当遇到以下情况时需要使用 <code>root</code> 字段:<br>(1)路径名或符号链接以 “/” 开始；<br>(2)当前处理的是 “..”；<br>使用的值通常是调用进程的当前根目录。可以提供一个替代的 <code>root</code>,如 <code>sysctl()</code> 调用<br><code>file_open_root()</code>,当 <code>NFSv4</code> 或 <code>Btrfs</code> 调用 <code>mount_subtree()</code>时。在每个案例中,<br>都可以在文件系统的一个非常特定的部分中查找路径名,并且不允许查找操作从该子树中逃脱。<br>它工作有点像本地的chroot()。</p>
+<p>Ignoring the handling of symbolic links, we can now describe the<br>“<code>link_path_walk()</code>“ function, which handles the lookup of everything<br>except the final component as:</p>
+<p>忽略符号链接的处理，我们现在可以将 <code>link_path_walk()</code> 函数描述为，它处理路径中除了<br>最后组件之外其他部分的查找。</p>
+<blockquote>
+<p>Given a path (<code>name</code>) and a nameidata structure (<code>nd</code>), check that the<br> current directory has execute permission and then advance <code>name</code><br> over one component while updating <code>last_type</code> and <code>last</code>.  If that<br> was the final component, then return, otherwise call<br> <code>walk_component()</code> and repeat from the top.</p>
+<p>给定一个路径 (<code>name</code>)和 <code>nameidata</code>结构(nd)，检查当前目录是否具有执行权限，<br>然后在更新 <code>last_type</code>和 <code>last</code> 时把 <code>name</code> 指向下一个组件。如果这是最后一个组件<br>则返回（此时 <code>name</code> 指向 <code>\0</code>），否则调用 <code>walk_component()</code> 并从顶部重复。</p>
+</blockquote>
+<p><code>walk_component()</code> is even easier.  If the component is <code>LAST_DOTS</code>,<br>it calls <code>handle_dots()</code> which does the necessary locking as already<br>described.  If it finds a <code>LAST_NORM</code> component it first calls<br>“<code>lookup_fast()</code>“ which only looks in the dcache, but will ask the<br>filesystem to revalidate the result if it is that sort of filesystem.<br>If that doesn’t get a good result, it calls “<code>lookup_slow()</code>“ which<br>takes the <code>i_mutex</code>, rechecks the cache, and then asks the filesystem<br>to find a definitive answer.  Each of these will call<br><code>follow_managed()</code> (as described below) to handle any mount points.</p>
+<p><code>walk_component()</code> 甚至更简单。如果组件是 <code>LAST_DOTS</code>，它将调用 <code>handle_dots()</code>，<br>如前所述，<code>handle_dots()</code> 执行必要的锁定。如果它找到 <code>LAST_NORM</code> 组件，它首先调用<br><code>lookup_fast()</code>，后者只在 <code>dcache</code> 中查找，对于某些文件系统（比如：网络文件系统）<br>它会要求文件系统重新验证结果。如果没有得到好的结果，它调用 <code>lookup_slow()</code>，后者接受<br><code>i_mutex</code>，重新检查缓存，然后要求文件系统找到一个确定的答案。每个函数都将调用<br><code>follow_managed()</code> (如下所述)来处理任何挂载点。</p>
+<p>In the absence of symbolic links, <code>walk_component()</code> creates a new<br><code>struct path</code> containing a counted reference to the new dentry and a<br>reference to the new <code>vfsmount</code> which is only counted if it is<br>different from the previous <code>vfsmount</code>.  It then calls<br><code>path_to_nameidata()</code> to install the new <code>struct path</code> in the<br><code>struct nameidata</code> and drop the unneeded references.</p>
+<p>在没有符号链接的情况下，<code>walk_component()</code> 创建一个新的 <code>struct path</code>，其中包含一个对<br>新 <code>dentry</code> 的计数引用和一个对新 <code>vfsmount</code> 的引用，这个引用只有在与前一个 <code>vfsmount</code><br>不同时才会被计数。然后调用 <code>path_to_nameidata()</code> 使用这个新的 <code>struct path</code> 更新<br><code>struct nameidate</code> 中的 <code>path</code> 字段并删除不需要的引用。</p>
+<p>This “hand-over-hand” sequencing of getting a reference to the new<br>dentry before dropping the reference to the previous dentry may<br>seem obvious, but is worth pointing out so that we will recognize its<br>analogue in the “RCU-walk” version.</p>
+<p>在删除对以前 <code>dentry</code> 的引用之前，先获取对新 <code>dentry</code> 的引用的这种 “hand-over-hand”<br>顺序可能看起来很明显，但是值得指出，以便我们能够在 “RCU-walk” 版本中识别它的类似物。</p>
+<h4 id="Handling-the-final-component"><a href="#Handling-the-final-component" class="headerlink" title="Handling the final component."></a>Handling the final component.</h4><p><code>link_path_walk()</code> only walks as far as setting <code>nd-&gt;last</code> and<br><code>nd-&gt;last_type</code> to refer to the final component of the path.  It does<br>not call <code>walk_component()</code> that last time.  Handling that final<br>component remains for the caller to sort out. Those callers are<br><code>path_lookupat()</code>, <code>path_parentat()</code>, <code>path_mountpoint()</code> and<br><code>path_openat()</code> each of which handles the differing requirements of<br>different system calls.</p>
+<p><code>link_path_walk()</code> 只执行到设置 <code>nd-&gt;last</code> 和 <code>nd-&gt;last_type</code> 以引用路径的最后一个组件<br>为止。所以它最后不会调用 <code>walk_component()</code>。处理最后一个组件的工作留给调用者来处理。这些<br>调用者是 <code>path_lookupat()</code>、<code>path_parentat()</code>、<code>path_mountpoint()</code> 和 <code>path_openat()</code>，<br>它们各自处理不同系统调用的不同需求。</p>
+<p><code>path_parentat()</code> is clearly the simplest - it just wraps a little bit<br>of housekeeping around <code>link_path_walk()</code> and returns the parent<br>directory and final component to the caller.  The caller will be either<br>aiming to create a name (via <code>filename_create()</code>) or remove or rename<br>a name (in which case <code>user_path_parent()</code> is used).  They will use<br><code>i_mutex</code> to exclude other changes while they validate and then<br>perform their operation.</p>
+<p><code>path_parentat()</code> 显然是最简单的;它只是对 <code>link_path_walk()</code> 进行了一些整理，并将父目录<br>和最终组件返回给调用者。调用者的目标要么是创建一个名称(通过 <code>filename_create()</code>)，要么是<br>删除或重命名一个名称(在这种情况下使用 <code>user_path_parent()</code>)。在验证和执行操作时，它们将<br>使用 <code>i_mutex</code> 来保证线程安全。</p>
+<p><code>path_lookupat()</code> is nearly as simple - it is used when an existing<br>object is wanted such as by <code>stat()</code> or <code>chmod()</code>.  It essentially just<br>calls <code>walk_component()</code> on the final component through a call to<br><code>lookup_last()</code>.  <code>path_lookupat()</code> returns just the final dentry.</p>
+<p><code>path_lookupat()</code> 几乎同样简单; 当需要一个现有的对象被使用它时(如 <code>stat()</code> 或 <code>chmod()</code><br>需要使用该对象)。它实际上只是通过调用 <code>lookup_last()</code> 在最后一个组件上调用<br><code>walk_component()</code>。<code>path_lookupat()</code> 只返回最后一个 <code>dentry</code>。</p>
+<p><code>path_mountpoint()</code> handles the special case of unmounting which must<br>not try to revalidate the mounted filesystem.  It effectively<br>contains, through a call to <code>mountpoint_last()</code>, an alternate<br>implementation of <code>lookup_slow()</code> which skips that step.  This is<br>important when unmounting a filesystem that is inaccessible, such as<br>one provided by a dead NFS server.</p>
+<p><code>path_mountpoint()</code> 处理卸载的特殊情况，它不能尝试重新验证已挂载的文件系统。<br>它通过调用 <code>mountpoint_last()</code> 有效地包含了 <code>lookup_slow()</code> 的另一个实现，该实现<br>跳过了这一步。当卸载无法访问的文件系统时，这一点非常重要，比如该文件系统由已死机的<br> <code>NFS</code> 服务器提供的。</p>
+<p>Finally <code>path_openat()</code> is used for the <code>open()</code> system call; it<br>contains, in support functions starting with “<code>do_last()</code>“, all the<br>complexity needed to handle the different subtleties of O_CREAT (with<br>or without O_EXCL), final “<code>/</code>“ characters, and trailing symbolic<br>links.  We will revisit this in the final part of this series, which<br>focuses on those symbolic links.  “<code>do_last()</code>“ will sometimes, but<br>not always, take <code>i_mutex</code>, depending on what it finds.</p>
+<p>最后，将 <code>path_openat()</code> 用于 <code>open()</code> 系统调用；在以 <code>do_last()</code> 开头的支持函数中，<br>它包含了处理 <code>O_CREAT</code>(有或没有 <code>O_EXCL</code>)的不同细微之处所需的所有复杂性、最后的 “/”<br>字符和尾随符号链接。在本系列的最后一部分中，我们将重新讨论这个问题，重点是这些符号链接。<br><code>do_last()</code> 有时会(但不总是)接受 <code>i_mutex</code>，这取决于它找到了什么。</p>
+<p>Each of these, or the functions which call them, need to be alert to<br>the possibility that the final component is not <code>LAST_NORM</code>.  If the<br>goal of the lookup is to create something, then any value for<br><code>last_type</code> other than <code>LAST_NORM</code> will result in an error.  For<br>example if <code>path_parentat()</code> reports <code>LAST_DOTDOT</code>, then the caller<br>won’t try to create that name.  They also check for trailing slashes<br>by testing <code>last.name[last.len]</code>.  If there is any character beyond<br>the final component, it must be a trailing slash.</p>
+<p>其中的每一个，或者调用它们的函数，都需要警惕最终组件不是 <code>LAST_NORM</code> 的可能性。如果查找<br>的目标是创建一些东西，那么 <code>last_type</code> (<code>LAST_NORM</code> 除外)的任何值都会导致错误。例如，<br>如果 <code>path_parentat()</code> 报告 <code>LAST_DOTDOT</code>，那么调用者将不会尝试创建该名称。它们还通过<br>测试 <code>last.name[last.len]</code>来检查尾随斜杠。如果在最后一个组件之外还有任何字符，那么它必须<br>是一个尾反斜杠。</p>
+<h4 id="Revalidation-and-automounts"><a href="#Revalidation-and-automounts" class="headerlink" title="Revalidation and automounts"></a>Revalidation and automounts</h4><p>Apart from symbolic links, there are only two parts of the “REF-walk”<br>process not yet covered.  One is the handling of stale cache entries<br>and the other is automounts.</p>
+<p>除了符号链接之外，“REF-walk” 过程只有两部分尚未涉及。一个是处理旧的缓存条目，<br>另一个是自动加载。</p>
+<p>On filesystems that require it, the lookup routines will call the<br><code>-&gt;d_revalidate()</code> dentry method to ensure that the cached information<br>is current.  This will often confirm validity or update a few details<br>from a server.  In some cases it may find that there has been change<br>further up the path and that something that was thought to be valid<br>previously isn’t really.  When this happens the lookup of the whole<br>path is aborted and retried with the “<code>LOOKUP_REVAL</code>“ flag set.  This<br>forces revalidation to be more thorough.  We will see more details of<br>this retry process in the next article.</p>
+<p>在需要它的文件系统上，查找例程将调用 <code>dentry</code> 的 <code>-&gt;d_revalidate()</code> 方法，以确保缓存<br>的信息不是过期的。这通常会从服务器确认有效性或更新一些细节。在某些情况下，它可能会发现在<br>这条路径上已经有了进一步的改变，而之前被认为是有效的东西可能并不是当前的真实状态。当这种<br>情况发生时，整个路径的查找将中止，设置 <code>LOOKUP_REVAL</code> 标志并重试。这将迫使重新验证更加<br>彻底。在下一篇文章中，我们将看到这个重试过程的更多细节。</p>
+<p>Automount points are locations in the filesystem where an attempt to<br>lookup a name can trigger changes to how that lookup should be<br>handled, in particular by mounting a filesystem there.  These are<br>covered in greater detail in autofs4.txt in the Linux documentation<br>tree, but a few notes specifically related to path lookup are in order<br>here.</p>
+<p>自动安装点是文件系统中的一些位置，在这些位置上，尝试查找一个名称可以触发对当前查找的特殊<br>处理，特别是通过将文件系统挂载在那里。在 <code>Linux</code> 文档树中的 <code>autofs4.txt</code> 中<br>有更详细的介绍，但是这里介绍一些与路径查找相关的说明。</p>
+<p>The Linux VFS has a concept of “managed” dentries which is reflected<br>in function names such as “<code>follow_managed()</code>“.  There are three<br>potentially interesting things about these dentries corresponding<br>to three different flags that might be set in <code>dentry-&gt;d_flags</code>:</p>
+<p><code>Linux VFS</code> 有一个 <code>managed dentries</code> 的概念，它反映在名字为： <code>follow_managed()</code><br>等函数中。这些 <code>dentry</code> 有三个潜在的有趣之处，对应于 <code>dentry—&gt;d_flags</code> 可能设置为三个<br>不同的标志值。</p>
+<h5 id="“DCACHE-MANAGE-TRANSIT”"><a href="#“DCACHE-MANAGE-TRANSIT”" class="headerlink" title="“DCACHE_MANAGE_TRANSIT”"></a>“DCACHE_MANAGE_TRANSIT”</h5><p>If this flag has been set, then the filesystem has requested that the<br><code>d_manage()</code> dentry operation be called before handling any possible<br>mount point.  This can perform two particular services:</p>
+<p>如果设置了这个标志，那么文件系统就要求在处理任何可能的挂载点之前执行 <code>dentry</code> 的<br><code>d_manage()</code> 操作。这可以执行两个特定的服务:</p>
+<p>It can block to avoid races.  If an automount point is being<br>unmounted, the <code>d_manage()</code> function will usually wait for that<br>process to complete before letting the new lookup proceed and possibly<br>trigger a new automount.</p>
+<p>它可以阻塞以避免竞争。如果卸载了一个自动挂载点，<code>d_manage()</code> 函数通常会等待该进程完成，<br>然后继续执行新的查找，并可能触发一个新的自动挂载。</p>
+<p>It can selectively allow only some processes to transit through a<br>mount point.  When a server process is managing automounts, it may<br>need to access a directory without triggering normal automount<br>processing.  That server process can identify itself to the <code>autofs</code><br>filesystem, which will then give it a special pass through<br><code>d_manage()</code> by returning <code>-EISDIR</code>.</p>
+<p>它可以选择性地只允许某些进程通过挂载点。当服务器进程管理自动挂载时，它可能需要访问一个目录<br>而不触发正常的自动挂载处理。该服务器进程可以将自己标识为 <code>autofs</code> 文件系统，然后 <code>d_manage()</code><br>通过返回 <code>-EISDIR</code> 给它一个特殊的通过（不会阻塞）。</p>
+<h5 id="“DCACHE-MOUNTED”"><a href="#“DCACHE-MOUNTED”" class="headerlink" title="“DCACHE_MOUNTED”"></a>“DCACHE_MOUNTED”</h5><p>This flag is set on every dentry that is mounted on.  As Linux<br>supports multiple filesystem namespaces, it is possible that the<br>dentry may not be mounted on in <em>this</em> namespace, just in some<br>other.  So this flag is seen as a hint, not a promise.</p>
+<p>每个挂载点的 <code>dentry</code> 会设置该标志。由于 <code>Linux</code> 支持多个文件系统名称空间，所以<br><code>dentry</code> 可能不会挂载在这个名称空间中，而是挂载在其他名称空间中。所以这个标志被看作是<br>一个暗示，而不是一个承诺。</p>
+<p>If this flag is set, and <code>d_manage()</code> didn’t return <code>-EISDIR</code>,<br><code>lookup_mnt()</code> is called to examine the mount hash table (honoring the<br><code>mount_lock</code> described earlier) and possibly return a new <code>vfsmount</code><br>and a new <code>dentry</code> (both with counted references).</p>
+<p>如果设置了这个标志，并且 <code>d_manage()</code> 没有返回 <code>-EISDIR</code>，则调用 <code>lookup_mnt()</code> 来<br>检查挂载散列表(遵守前面描述的 <code>mount_lock</code>)，并可能返回一个新的 <code>vfsmount</code> 和一个新<br>的 <code>dentry</code> (两者都有已计数的引用)。</p>
+<h5 id="“DCACHE-NEED-AUTOMOUNT”"><a href="#“DCACHE-NEED-AUTOMOUNT”" class="headerlink" title="“DCACHE_NEED_AUTOMOUNT”"></a>“DCACHE_NEED_AUTOMOUNT”</h5><p>If <code>d_manage()</code> allowed us to get this far, and <code>lookup_mnt()</code> didn’t<br>find a mount point, then this flag causes the <code>d_automount()</code> dentry<br>operation to be called.</p>
+<p>如果 <code>d_manage()</code> 允许我们走到这一步，而 <code>lookup_mnt()</code> 没有找到挂载点，那么这个标志<br>将导致调用 <code>dentry</code> 的 <code>d_automount()</code> 操作。</p>
+<p>The <code>d_automount()</code> operation can be arbitrarily complex and may<br>communicate with server processes etc. but it should ultimately either<br>report that there was an error, that there was nothing to mount, or<br>should provide an updated <code>struct path</code> with new <code>dentry</code> and <code>vfsmount</code>.</p>
+<p><code>d_automount()</code> 操作可以是任意复杂的，也可以与服务器进程通信等等，但是它最终应该报告<br>要么是一个错误，要么就是没有什么需要挂载的，或者应该提供带有新的 <code>dentry</code> 和 <code>vfsmount</code><br>已更新的 <code>struct path</code> 。</p>
+<p>In the latter case, <code>finish_automount()</code> will be called to safely<br>install the new mount point into the mount table.</p>
+<p>在后一种情况下，将调用 <code>finish_automount()</code> 将新的挂载点安全地更新到挂载表中。</p>
+<p>There is no new locking of import here and it is important that no<br>locks (only counted references) are held over this processing due to<br>the very real possibility of extended delays.<br>This will become more important next time when we examine RCU-walk<br>which is particularly sensitive to delays.</p>
+<p>这里没有新的导入锁，重要的是在这个处理过程中没有锁(只有被计数的引用)被持有，<br>因为很有可能会有额外的延迟。这将在下次我们研究RCU-walk时变得更加重要，它对延迟<br>特别敏感。</p>
+<h3 id="RCU-walk-faster-pathname-lookup-in-Linux"><a href="#RCU-walk-faster-pathname-lookup-in-Linux" class="headerlink" title="RCU-walk - faster pathname lookup in Linux"></a>RCU-walk - faster pathname lookup in Linux</h3><p>==========================================</p>
+<p>RCU-walk is another algorithm for performing pathname lookup in Linux.<br>It is in many ways similar to REF-walk and the two share quite a bit<br>of code.  The significant difference in RCU-walk is how it allows for<br>the possibility of concurrent access.</p>
+<p><code>RCU-walk</code> 是一种在 <code>Linux</code> 中执行路径名查找的算法。它在很多方面与我们上次见过的 <code>REF-walk</code><br>相似，并且两者共享相当多的代码。<code>RCU-walk</code> 的显著区别在于它允许并发访问的可能性。</p>
+<p>We noted that REF-walk is complex because there are numerous details<br>and special cases.RCU-walk reduces this complexity by simply<br>refusing to handle a number of cases – it instead falls back to<br>REF-walk.  The difficulty with RCU-walk comes from a different<br>direction: unfamiliarity. The locking rules when depending on RCU are<br>quite different from traditional locking, so we will spend a little extra<br>time when we come to those.</p>
+<p>我们注意到 <code>REF-walk</code> 之所以复杂是因为它需要考虑很多细节以及特殊情况。<br><code>RCU-walk</code> 模式之所以减少了复杂度，是因为很多情况它不会去处理，而是直接回退到 <code>REF-walk</code><br>模式，在 <code>REF-walk</code> 模式中处理这些情况。<code>RCU-walk</code> 的难度来自于锁的陌生规则。<br><code>RCU</code> 锁的规则跟传统锁的不太一样。所以我们会额外花一些时间来解释。</p>
+<h4 id="Clear-demarcation-of-roles"><a href="#Clear-demarcation-of-roles" class="headerlink" title="Clear demarcation of roles"></a>Clear demarcation of roles</h4><p>The easiest way to manage concurrency is to forcibly stop any other thread<br>from changing the data structures that a given thread is looking at. In cases<br>where no other thread would even think of changing the data and lots of<br>different threads want to read at the same time, this can be very costly.<br>Even when using locks that permit multiple concurrent readers, the simple<br>act of updating the count of the number of current readers can impose an<br>unwanted cost. So the goal when reading a shared data structure that no<br>other process is changing is to avoid writing anything to memory at all.<br>Take no locks, increment no counts, leave no footprints.</p>
+<p>管理并发性最简单的方法是强制停止任何其他线程更改给定线程正在查看的数据结构。<br>如果没有其他线程考虑修改数据，而有许多不同的线程希望同时读取数据，那么这可能会非常昂贵。<br>即使使用允许多个并发读取器的锁，更新当前读取器数量的简单操作也会带来不必要的开销。<br>因此，当读取没有其他进程更改的共享数据结构时，我们的目标是完全避免将任何内容写入内存。<br>不带锁，不增加计数，不留下脚印。</p>
+<p>The REF-walk mechanism already described certainly doesn’t follow this principle,<br>but then it is really designed to work when there may well be other threads<br>modifying the data. RCU-walk, in contrast, is designed for the common situation<br>where there are lots of frequent readers and only occasional writers. This may<br>not be common in all parts of the filesystem tree, but in many parts it will be.<br>For the other parts it is important that RCU-walk can quickly fall back to<br>using REF-walk.</p>
+<p>前面描述的 <code>REF-walk</code> 机制当然不遵循这一原则，但它确实是为在可能有其他线程修改数据时工作<br>而设计的。相反，<code>RCU-walk</code>是为常见的情况而设计的，在这种情况下，有很多频繁的读者，只有<br>偶尔的作者。这在文件系统树的所有部分中可能并不常见，但在许多部分中却会很常见。<br>对于其他部分，重要的是 <code>RCU-walk</code> 可以快速地回到使用 <code>REF-walk</code>。</p>
+<p>Pathname lookup always starts in RCU-walk mode but only remains there<br>as long as what it is looking for is in the cache and is stable.  It dances<br>lightly down the cached filesystem image, leaving no footprints and<br>carefully watching where it is, to be sure it doesn’t trip. If it notices that<br>something has changed or is changing, or if something isn’t in the cache,<br>then it tries to stop gracefully and switch to REF-walk.</p>
+<p>路径名查找总是在 <code>RCU-walk</code> 模式下启动，但是只要它要查找的对象在缓存中并且是稳定的，<br>那么路径名查找就始终保持在 <code>RCU-walk</code> 模式下。<br>它轻快地沿着缓存的文件系统映像移动，没有留下任何足迹，并仔细地监视它的位置，<br>以确保它不会被绊倒。如果它注意到某些内容已经更改或正在更改，或者缓存中没有这些内容，<br>那么它将尝试优雅地停止并切换到 <code>REF-walk</code>。</p>
+<p>This stopping requires getting a counted reference on the current vfsmount and<br>dentry,and ensuring that these are still valid that a path walk with REF-walk<br>would have found the same entries.This is an invariant that RCU-walk must guarantee.<br>It can only make decisions, such as selecting the next step, that are decisions<br>which REF-walk could also have made if it were walking down the tree at the same time.<br>If the graceful stop succeeds, the rest ofthe path is processed with the reliable,<br>if slightly sluggish, REF-walk. If RCU-walk finds it cannot stop gracefully,<br>it simply gives up and restarts from the top with REF-walk.</p>
+<p>这个停止动作需要获取当前 <code>vfsmount</code> 和 <code>dentry</code> 的计数引用，并且确保这些引用对使用<br><code>REF-walk</code> 模式进行路径查找仍然有效，并将找到相同的条目。这是一个 <code>RCU-walk</code> 必须保证的<br>不变式。它只能做出决定，比如选择下一步，<code>REF-walk</code> 也可以做出这些决定（也就是切换到<br><code>REF-walk</code> 模式后进行的下一步跟切换前 <code>RCU-walk</code> 模式选择的下一步相同）。如果这个停止操作<br>成功了，剩下的路就会用可靠的，即使有点缓慢的 <code>REF-walk</code> 模式来处理。如果 <code>RCU-walk</code> 发现<br>它不能优雅地停止，它就会放弃，然后使用 <code>REF-walk</code> 从头开始。</p>
+<p>This pattern of “try RCU-walk, if that fails try REF-walk” can be clearly seen<br>in functions like filename_lookup(), filename_parentat(), filename_mountpoint(),<br>do_filp_open(),and do_file_open_root(). These five correspond roughly to the<br>four <code>path_*</code> functions we met last time, each of which calls link_path_walk().<br>The <code>path_*</code> functions are called using different mode flags until a mode is found<br>which works. They are first called with LOOKUP_RCU set to request “RCU-walk”.<br>If that fails with the error ECHILD<br>they are called again with no special flag to request “REF-walk”.  If either<br>of those report the error ESTALE a final attempt is made with LOOKUP_REVAL<br>set (and no LOOKUP_RCU) to ensure that entries found in the cache are forcibly<br>revalidated   normally entries are only revalidated if the filesystem determines<br>that they are too old to trust.</p>
+<p>在 <code>filename_lookup()</code>、<code>filename_parentat()</code>、<code>filename_mountpoint()</code>、<code>do_filp_open()</code><br>和 <code>do_file_open_root()</code> 等函数中可以清楚地看到这种“尝试 <code>RCU-walk</code>，如果失败，则尝试<br><code>REF-walk</code> 的模式。这五个函数大致对应于我们上次遇到的四个 <code>path_*</code>函数，每个函数都调用<br> <code>link_path_walk()</code>。使用不同的 <code>mode</code> 标志调用 <code>path_*</code> 函数，直到找到一个可以工作的<br>模式为止。首次调用它们时，设置 <code>LOOKUP_RCU</code> 标志来请求 <code>“RCU-walk”</code>。<br>如果失败（错误码为 <code>ECHILD</code>），则尝试不带标志的 <code>“REF-walk”</code>。<br>如果其中一个报告错误 <code>ESTALE</code>，则使用带 <code>LOOKUP_REVAL</code> 标志（没有 <code>LOOKUP_RCU</code>）<br>进行最后一次尝试，以确保强制重新验证缓存中找到的条目。通常，只有当文件系统确定这些条目<br>太旧而不能信任时，才会重新验证这些条目。</p>
+<p>The LOOKUP_RCU attempt may drop that flag internally and switch to REF-walk,<br>but will never then try to switch back to RCU-walk. Places that trip up RCU-walk<br>are much more likely to be near the leaves and so it is very unlikely that there<br>will be much, if any, benefit from switching back.</p>
+<p><code>LOOKUP_RCU</code> 尝试可能会在内部删除该标志并切换到 <code>REF-walk</code> 模式，但永远不会尝试切换回<br><code>RCU-walk</code> 模式。在 <code>RCU-walk</code> 模式上绊倒的地方更有可能是在树叶附近，因此，如果有的话，<br>从返回中（这里指返回到 <code>RCU-walk</code> 模式）获益不大。</p>
+<h4 id="RCU-and-seqlocks-fast-and-light"><a href="#RCU-and-seqlocks-fast-and-light" class="headerlink" title="RCU and seqlocks: fast and light"></a>RCU and seqlocks: fast and light</h4><p>RCU is, unsurprisingly, critical to RCU-walk mode.  The<br><code>rcu_read_lock()</code> is held for the entire time that RCU-walk is walking<br>down a path.  The particular guarantee it provides is that the key<br>data structures - dentries, inodes, super_blocks, and mounts - will<br>not be freed while the lock is held.  They might be unlinked or<br>invalidated in one way or another, but the memory will not be<br>repurposed so values in various fields will still be meaningful.  This<br>is the only guarantee that RCU provides; everything else is done using<br>seqlocks.</p>
+<p>毫无疑问，<code>RCU</code> 对 <code>RCU-walk</code> 模式至关重要。<br><code>rcu_read_lock()</code> 在 <code>RCU-walk</code> 沿着路径行走的整个过程中一直被持有。<br>（也就是在整个过程中会保持锁）它提供的特殊保证是，当锁被持有时，关键数据结构：<br><code>dentries</code>、<code>inode</code>、<code>super_blocks</code> 和 <code>mount</code> 等描述符不会被释放。它们（这些描述符）<br>可能以某种方式被取消链接或失效，但是内存不会被重新使用，因此各个字段中的值仍然有意义。<br>这是 <code>RCU</code> 提供的唯一保证;其他所有操作都是使用 <code>seqlocks</code> 完成的。</p>
+<p>As we saw last time, REF-walk holds a counted reference to the current dentry<br>and the current vfsmount, and does not release those references before taking<br>references to the “next” dentry or vfsmount. It also sometimes takes the d_lock<br>spinlock.  These references and locks are taken to prevent certain changes from<br>happening.  RCU-walk must not take those references or locks and so cannot<br>prevent such changes. Instead, it checks to see if a change has been made,<br>and aborts or retries if it has.</p>
+<p>正如我们上次看到的，<code>REF-walk</code> 持有当前 <code>dentry</code>，<code>vfsmount</code> 描述符的计数引用，<br>并且在引用 “下一个” <code>dentry</code> 或 <code>vfsmount</code> 之前不会释放这些引用。<br>它有时也使用 <code>d_lock</code> 自旋锁。<br>这些引用和锁用于防止发生某些更改。<br><code>RCU-walk</code> 不能接受这些引用或锁，因此不能阻止此类更改。<br>相反，它检查是否进行了更改，如果进行了更改，则中止或重试。</p>
+<p>总结起来 <code>REF-walk</code> 模式使用一系列的锁来防止其他线程修改当前线程正在访问的数据，而<br><code>RCU-walk</code> 模式则不会使用锁来进行防止，而是先尝试访问数据，如果在访问完数据后，通过<br>检查发现数据有发生改变，那么<br>就终止当前的操作或者进行重试。</p>
+<p>To preserve the invariant mentioned above (that RCU-walk may only make decisions<br>that REF-walk could have made), it must make the checks at or near the same places<br>that REF-walk holds the references.  So, when REF-walk increments a reference count<br>or takes a spinlock, RCU-walk samples the status of a seqlock using read_seqcount_begin()<br>or a similar function.  When REF-walk decrements the count or drops the lock,<br>RCU-walk checks if the sampled status is still valid using read_seqcount_retry()<br>or similar.</p>
+<p>为了保持上面提到的不变式（<code>RCU-walk</code> 可能只做 <code>REF-walk</code> 可以做的决定），它必须在 <code>REF-walk</code><br>保存引用的相同位置或附近进行检查。因此，当 <code>REF-walk</code> 增加引用计数或采用自旋锁时，<br><code>RCU-walk</code> 使用 <code>read_seqcount_begin()</code> 或类似的函数对 <code>seqlock</code> 的状态进行采样。<br>当 <code>REF-walk</code> 减少计数或删除锁时，<code>RCU-walk</code> 使用 <code>read_seqcount_retry()</code> 或类似方法检查采样<br>状态是否仍然有效。<br>上面一段话的意思就是，<code>RCU-walk</code> 在进行操作之前会通过 <code>read_seqcount_begin()</code> 函数来获取<br>一个初始状态（一般来说就是一个初始 <code>int</code> 值），然后在操作完之后，再使用 <code>read_seqcount_retry()</code><br>来检测初始状态有没发生变化，如果发生变化（<code>int</code> 值改变了）那就就进行重试或者终止。</p>
+<p>However, there is a little bit more to seqlocks than that.<br>If RCU-walk accesses two different fields in a seqlock-protected structure, or<br>accesses the same field twice, there is no a-priori guarantee of any consistency<br>between those accesses. When consistency is needed   which it usually is RCU-walk<br>must take a copy and then use read_seqcount_retry() to validate that copy.</p>
+<p>然而，<code>seqlock</code> 还有更多的功能。<br>如果 <code>RCU-walk</code> 访问 <code>seqlock-protected</code> 结构中的两个不同字段，或者访问同一个字段两次，<br>那么就不能预先保证这些访问之间的一致性。当需要一致性时，通常做法：<code>RCU-walk</code> 必须<br>获取一个副本，然后使用 <code>read_seqcount_retry()</code> 验证该副本。</p>
+<p>read_seqcount_retry() not only checks the sequence number, but also imposes a memory<br>barrier so that no memory-read instruction from before the call can be delayed until<br>after the call, either by the CPU or by the compiler. A simple example of this can be<br>seen in slow_dentry_cmp() which, for filesystems which do not use simple byte-wise<br>name equality, calls into the filesystem to compare a name against a dentry.</p>
+<p><code>read_seqcount_retry()</code> 不仅检查序列号，还设置了一个内存屏障，这样 <code>CPU</code> 或编译器都不会将<br>调用之前的内存读取指令延迟到调用之后。一个简单的例子可以在 <code>slow_dentry_cmp()</code> 中看到，<br>对于不是简单地按字节来比较名称的文件系统中，该函数可以用来比较 <code>dentry</code> 的名称。</p>
+<p>The length and name pointer are copied into local variables, then read_seqcount_retry()<br>is called to confirm the two are consistent, and only then is -&gt;d_compare() called. When<br>standard filename comparison is used, dentry_cmp() is called instead. Notably it does not<br>use read_seqcount_retry(), but instead has a large comment explaining why the consistency<br>guarantee isn’t necessary. A subsequent read_seqcount_retry() will be sufficient to catch<br>any problem that could occur at this point.</p>
+<p>将长度和名称指针复制到本地变量中，调用 <code>read_seqcount_retry()</code> 来确认这两个指针（名称和长度）<br>的一致性，然后才调用 <code>-&gt;d_compare()</code>。如果是使用标准文件名比较的情况，将调用 <code>dentry_cmp()</code>。<br>值得注意的是，它（这里指的是 <code>dentry_cmp</code> 函数）没有使用 <code>read_seqcount_retry()</code>，而是用一个<br>大注释解释为什么没有必要保证一致性。后续的 <code>read_seqcount_retry()</code> 将足以捕获此时可能发生的任何问题。</p>
+<p>这里我们可以看到一个很好代码风格，对于同步问题，这里不交给 <code>d_compare（）</code> 去考虑，也就是文件系统<br>设计者不用去考虑，这样能提高开发效率以及安全性。</p>
+<p>With that little refresher on seqlocks out of the way we can look at the bigger<br>picture of how RCU-walk uses seqlocks.</p>
+<p>通过这个关于 <code>seqlocks</code> 的小复习，我们可以看到 <code>RCU-walk</code> 如何使用 <code>seqlocks</code> 的更大的图景。</p>
+<p>这里我结合代码来理解下：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">static noinline enum slow_d_compare slow_dentry_cmp(</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">struct</span> dentry *parent,</span><br><span class="line">		<span class="keyword">struct</span> dentry *dentry,</span><br><span class="line">		unsigned <span class="keyword">int</span> seq,</span><br><span class="line">		<span class="keyword">const</span> <span class="keyword">struct</span> qstr *name)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> tlen = dentry-&gt;d_name.<span class="built_in">len</span>;</span><br><span class="line">	<span class="keyword">const</span> char* tname = dentry-&gt;d_name.name;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (read_seqcount_retry(&amp;dentry-&gt;d_seq, seq)) &#123;</span><br><span class="line">		cpu_relax();</span><br><span class="line">		<span class="keyword">return</span> D_COMP_SEQRETRY;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">if</span> (parent-&gt;d_op-&gt;d_compare(parent, dentry, tlen, tname, name))</span><br><span class="line">		<span class="keyword">return</span> D_COMP_NOMATCH;</span><br><span class="line">	<span class="keyword">return</span> D_COMP_OK;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"> seq = raw_seqcount_begin(&amp;dentry-&gt;d_seq);</span><br><span class="line"> slow_dentry_cmp(parent, dentry, seq, name)</span><br></pre></td></tr></table></figure>
+
+<p>看到最后两行，我们先使用 <code>raw_seqcount_begin（）</code>函数来获取一个初始状态<br>（一个初始的 <code>int</code> 值）<code>seq</code>。然后传递给 <code>slow_dentry_cmp（）</code>函数。接下来我们看<br><code>slow_dentry_cmp（）</code> 函数，首先把 <code>dentry</code> 的名字以及长度保存到本地变量<br><code>tlen</code> 和 <code>tname</code>，接着调用 <code>read_seqcount_retry（）</code> 函数。这里要说的是上面<br>提到的是 <code>read_seqcount_retry（）</code> 函数的第一个作用，在调用之前会插入一个<br>读内存屏障，也就是     <code>smp_rmb();</code> 其中 <strong>smp</strong> 表明是多处理器系统（有多个 <code>CPU</code>)<br>因为现代 <code>CPU</code> 采用的是指令流水线设计，而 <code>read_seqcount_retry（）</code>函数的调用与<br>前面的两条本地赋值指令没有依赖关系，所以 <code>CPU</code> 就可能会出现“顺序流入，乱序流出”的情况，<br>同样编译器优化也有可能造成指令的重排序。如果上面例子中出现了重排序，那么在 <code>dentry</code> 改变后<br>才进行赋值，那么就无法进行一致性检验，因此此时的检验已经无用了，会误以为修改后的 <code>dentry</code><br>依然有效。<code>read_seqcount_retry（）</code>第二个作用就是检验在使用 <code>dentry</code> 期间，有没有其他线程<br>在对其进行修改。（此时 <code>dentry</code> 就是在内存中一个数据表现，所谓的检测就是检查是否有没有<br>对该段内存做修改。）如果有（返回 1）那么就直接返回，否则调用 <code>d_compare（）</code> 进行实际比较。</p>
+<h4 id="“mount-lock”-and-“nd-gt-m-seq”"><a href="#“mount-lock”-and-“nd-gt-m-seq”" class="headerlink" title="“mount_lock” and “nd-&gt;m_seq”"></a>“mount_lock” and “nd-&gt;m_seq”</h4><p>We already met the <code>mount_lock</code> seqlock when REF-walk used it to<br>ensure that crossing a mount point is performed safely.<br>RCU-walk uses it for that too, but for quite a bit more.</p>
+<p>前面提到过 <code>REF-walk</code> 使用 <code>mount_lock</code> seqlock 以确保安全地通过挂载点。<br><code>RCU-walk</code> 也用它来实现这一点，但它的作用要大得多。</p>
+<p>Instead of taking a counted reference to each <code>vfsmount</code> as it<br>descends the tree, RCU-walk samples the state of <code>mount_lock</code> at the<br>start of the walk and stores this initial sequence number in the<br><code>struct nameidata</code> in the <code>m_seq</code> field.</p>
+<p><code>RCU-walk</code> 没有在下降树的时候（内存中目录结构以树的形式进行组织，这里指的<br>是从树的根节点向叶节点遍历的过程）对每个 <code>vfsmount</code> 进行计数引用，而是在<br>该遍历开始时对 <code>mount_lock</code> 的状态进行采样，并将这个初始序列号存储<br>在 <code>nameidata</code> 结构中的 <code>m_seq</code> 字段中。</p>
+<p>This one lock and one<br>sequence number are used to validate all accesses to all <code>vfsmounts</code>,<br>and all mount point crossings.<br>As changes to the mount table are relatively rare, it is reasonable<br>to fall back on REF-walk any time<br>that any “mount” or “unmount” happens.</p>
+<p>此一个锁（<code>mout_lock</code>）和一个序列号（<code>m_seq</code>）用于验证对所有 <code>vfsmounts</code>  和<br>所有挂载点交叉的所有访问，由于对挂载表的更改相对较少，所以在任何“挂载”或“卸载”发生时<br>都可以回退到 <code>REF-walk</code>。</p>
+<p><code>m_seq</code> is checked (using <code>read_seqretry()</code>) at the end of an RCU-walk<br>sequence, whether switching to REF-walk for the rest of the path or<br>when the end of the path is reached.  It is also checked when stepping<br>down over a mount point (in <code>__follow_mount_rcu()</code>) or up (in<br><code>follow_dotdot_rcu()</code>). If it is ever found to have changed, the<br>whole RCU-walk sequence is aborted and the path is processed again by<br>REF-walk.</p>
+<p><code>m_seq</code>  在一个 <code>RCU-walk</code> 序列的末尾被检查(使用 <code>read_seqretry()</code>)，无论是<br>在路径的其余部分切换到 <code>REF-walk</code>，还是在到达路径的末尾时。<br>同样在下行(<code>follow_mount_rcu()</code> 中–进入挂载点)或上行(在 <code>follow_dotdot_rcu()</code> 中，<br>也就是返回父目录，一般是遇到 “..” 的情况下调用)遇到挂载点时，也会检查它。<br>如果发现它发生了更改，则终止整个 <code>RCU-walk</code> 序列，并通过 <code>REF-walk</code> 再次处理该路径。</p>
+<p>If RCU-walk finds that <code>mount_lock</code>  hasn’t changed then it can be sure<br>that, had REF-walk taken counted references on each <code>vfsmount</code>, the<br>results would have been the same.<br>如果 <code>RCU-walk</code> 发现 <code>mount_lock</code> 没有改变，那么可以肯定， 如果采用<br>对每个 <code>vfsmount</code>  获取计数引用的 <code>REF-walk</code> 方式进行。那么结果是一样。</p>
+<blockquote>
+<p>在虚拟语气的 <code>if</code> 从句中，若有过去完成时助动词 <code>had</code>,或表 “万一” 的 <code>should</code><br>或是 <code>were</code> 出现时，可将这三个词提前，将 <code>if</code> 省略。<br>Had he done it（if he had done it），he would have felt sorry.<br>如果他当时做了这件事，他会后悔的</p>
+</blockquote>
+<p>This ensures the invariant holds, at least for vfsmount structures.<br>这确保了不变式的有效性，至少对于 <code>vfsmount</code>  结构是这样。</p>
+<h4 id="“dentry-gt-d-seq”-and-“nd-gt-seq”"><a href="#“dentry-gt-d-seq”-and-“nd-gt-seq”" class="headerlink" title="“dentry-&gt;d_seq” and “nd-&gt;seq”."></a>“dentry-&gt;d_seq” and “nd-&gt;seq”.</h4><p>In place of taking a count or lock on <code>d_reflock</code>, RCU-walk samples<br>the per-dentry <code>d_seq</code> seqlock, and stores the sequence number in the<br><code>seq</code> field of the nameidata structure, so <code>nd-&gt;seq</code> should always be<br>the current sequence number of <code>nd-&gt;dentry</code>. This number needs to be<br>revalidated after copying, and before using, the name, parent, or<br>inode of the dentry.</p>
+<p><code>RCU-walk</code> 没有对 <code>d_reflock</code> 进行计数或锁定，而是对对应的 <code>dentry</code> 的 <code>d_seq</code> seqlock<br>进行采样，并将序列号存储在 <code>nameidata</code> 结构的 <code>seq</code> 字段中，因此 <code>nd-&gt;seq</code> 应该始终是<br><code>nd-&gt;dentry</code> 的当前序列号。在复制这些内容（<code>name</code>，<code>parent</code> 或者 <code>dentry</code> 的索引节点）<br>之后以及使用之前，需要重新验证这个数字。</p>
+<p>The handling of the name we have already looked at, and the parent is<br>only accessed in <code>follow_dotdot_rcu()</code> which fairly trivially follows<br>the required pattern, though it does so for three different cases.</p>
+<p>我们已经看到了对名称的处理，父类只在 <code>follow_dotdot_rcu()</code> 中访问，它非常简单地遵循了<br>所需的模式，尽管它在三种不同的情况下都是这样做的。</p>
+<p>When not at a mount point, <code>d_parent</code> is followed and its <code>d_seq</code> is<br>collected.  When we are at a mount point, we instead follow the<br><code>mnt-&gt;mnt_mountpoint</code> link to get a new dentry and collect its<br><code>d_seq</code>.  Then, after finally finding a <code>d_parent</code> to follow, we must<br>check if we have landed on a mount point and, if so, must find that<br>mount point and follow the <code>mnt-&gt;mnt_root</code> link.  This would imply a<br>somewhat unusual, but certainly possible, circumstance where the<br>starting point of the path lookup was in part of the filesystem that<br>was mounted on, and so not visible from the root.</p>
+<p>当不在挂载点时，跟随 <code>d_parent</code> 并收集它的 <code>d_seq</code>。<br>当我们在一个挂载点时，我们按照 <code>mnt-&gt;mnt_mountpoint</code> 链接获取一个新的 <code>dentry</code> 并收集<br>它的 <code>d_seq</code>。然后，在最终找到要跟踪的 <code>d_parent</code> 之后，我们必须检查是否已经到达了挂载点，<br>如果是，则必须找到该挂载点并遵循 <code>mnt-&gt;mnt_root</code> 链接。这将意味着一种不太常见但肯定是<br>可能的情况，即路径查找的起点位于安装在其上的文件系统的一部分，因此从根目录中是不可见的。</p>
+<p>The inode pointer, stored in <code>-&gt;d_inode</code>, is a little more<br>interesting.  The inode will always need to be accessed at least<br>twice, once to determine if it is NULL and once to verify access<br>permissions.  Symlink handling requires a validated inode pointer too.<br>Rather than revalidating on each access, a copy is made on the first<br>access and it is stored in the <code>inode</code> field of <code>nameidata</code> from where<br>it can be safely accessed without further validation.</p>
+<p>存储在 <code>-&gt;d_inode</code> 字段中的 <code>inode</code> 指针更有趣一些。<code>inode</code> 始终需要至少访问两次，一次用于<br>确定是否为空，一次用于验证访问权限。符号链接处理也需要经过验证的 <code>inode</code> 指针。与其在<br>每次访问时都进行重新验证，不如在第一次访问时进行复制，并将其存储在 <code>nameidata</code> 的 <code>inode</code><br>字段中，在不进行进一步验证的情况下可以安全地访问它。</p>
+<p><code>lookup_fast()</code> is the only lookup routine that is used in RCU-mode,<br><code>lookup_slow()</code> being too slow and requiring locks.  It is in<br><code>lookup_fast()</code> that we find the important “hand over hand” tracking<br>of the current dentry.</p>
+<p><code>lookup_fast()</code> 是惟一在 <code>RCU</code> 模式下使用的查找例程，<br><code>lookup_slow()</code> 太慢，需要锁。在 <code>lookup_fast()</code> 中，<br>我们发现了对当前 <code>dentry</code> 的重要 <code>“hand over hand”</code> 跟踪。</p>
+<p>The current <code>dentry</code> and current <code>seq</code> number are passed to<br><code>__d_lookup_rcu()</code> which, on success, returns a new <code>dentry</code> and a<br>new <code>seq</code> number.  <code>lookup_fast()</code> then copies the inode pointer and<br>revalidates the new <code>seq</code> number.  It then validates the old <code>dentry</code><br>with the old <code>seq</code> number one last time and only then continues.  This<br>process of getting the <code>seq</code> number of the new dentry and then<br>checking the <code>seq</code> number of the old exactly mirrors the process of<br>getting a counted reference to the new dentry before dropping that for<br>the old dentry which we saw in REF-walk.</p>
+<p>当前 <code>dentry</code> 和当前 <code>seq</code> 号被传递给 <code>_d_lookup_rcu()</code>，如果成功，它将返回一个新的 <code>dentry</code><br>和一个新的 <code>seq</code> 号。然后，<code>lookup_fast()</code> 复制 <code>inode</code> 指针并重新验证新的 <code>seq</code> 号。然后最后<br>一次用旧的 <code>seq</code> 号验证旧的 <code>dentry</code>，然后继续。这个过程获取新 <code>dentry</code> 的 <code>seq</code> 号，然后检查<br>旧 <code>dentry</code> 的 <code>seq</code> 号，这恰好反映了我们在 <code>REF-walk</code><br>中看到的流程：在删除旧 <code>dentry</code> 之前，需要先获取对新 <code>dentry</code>的计数引用。</p>
+<blockquote>
+<p>这里旧的 <code>dentry</code> 指的是上面提到的当前 <code>dentry</code> 和 <code>seq</code>，即保存在 <code>nameidata</code><br>结构中的 <code>seq</code> 和 <code>path.dentry</code>。</p>
+</blockquote>
+<h4 id="No-“inode-gt-i-mutex”-or-even-“rename-lock”"><a href="#No-“inode-gt-i-mutex”-or-even-“rename-lock”" class="headerlink" title="No “inode-&gt;i_mutex” or even “rename_lock”"></a>No “inode-&gt;i_mutex” or even “rename_lock”</h4><p>A mutex is a fairly heavyweight lock that can only be taken when it is<br>permissible to sleep.  As <code>rcu_read_lock()</code> forbids sleeping,<br><code>inode-&gt;i_mutex</code> plays no role in RCU-walk.  If some other thread does<br>take <code>i_mutex</code> and modifies the directory in a way that RCU-walk needs<br>to notice, the result will be either that RCU-walk fails to find the<br>dentry that it is looking for, or it will find a dentry which<br><code>read_seqretry()</code> won’t validate.  In either case it will drop down to<br>REF-walk mode which can take whatever locks are needed.</p>
+<p>互斥锁是一种重量级的锁，只有在允许休眠的情况下才能使用。由于 <code>rcu_read_lock()</code> 禁止睡眠，<br>所以 <code>inode-&gt;i_mutex</code> 在 <code>RCU-walk</code> 中不起作用。<br>如果其他线程确实使用 <code>i_mutex</code> 并且修改 <code>RCU-walk</code> 需要注意的某个目录，<br>那么结果将是要么 <code>RCU-walk</code> 已失败方式结束它正在寻找的 <code>dentry</code>，<br>要么它将找到一个没有 <code>read_seqretry()</code> 验证的 <code>dentry</code>。<br>在任何一种情况下，它将下降到 <code>REF-walk</code> 模式，可以采取任何锁需要。</p>
+<p>Though <code>rename_lock</code> could be used by RCU-walk as it doesn’t require<br>any sleeping, RCU-walk doesn’t bother.  REF-walk uses <code>rename_lock</code> to<br>protect against the possibility of hash chains in the dcache changing<br>while they are being searched.  This can result in failing to find<br>something that actually is there.  When RCU-walk fails to find<br>something in the dentry cache, whether it is really there or not, it<br>already drops down to REF-walk and tries again with appropriate<br>locking.  This neatly handles all cases, so adding extra checks on<br>rename_lock would bring no significant value.</p>
+<p>虽然 <code>rename_lock</code> 可以由 <code>RCU-walk</code> 使用，因为它不需要任何睡眠，但 <code>RCU-walk</code> 不需要。<br><code>REF-walk</code> 使用 <code>rename_lock</code> 来防止在搜索 <code>dcache</code> 时哈希链发生变化。否则可能会导致找不到实际<br>在那的东西。（这里的意思：本来在某个哈希链表上可以找到的对象，由于发生了变化，对象移动到<br>其他链表上导致找不到）当 <code>RCU-walk</code> 在 <code>dentry</code> 缓存中找不到某些东西时，不管它是否在 <code>dentry</code><br>缓存中，它都已经下降到 <code>REF-walk</code>，并使用适当的锁定进行再次尝试。这基本很好地处理了所有的<br>情况，所以在 <code>RCU</code> 中添加对 <code>rename_lock</code> 额外的检查并没有多大意义。</p>
+<h4 id="“unlazy-walk-”-and-“complete-walk-”"><a href="#“unlazy-walk-”-and-“complete-walk-”" class="headerlink" title="“unlazy_walk()” and “complete_walk()”"></a>“unlazy_walk()” and “complete_walk()”</h4><p>That “dropping down to REF-walk” typically involves a call to<br><code>unlazy_walk()</code>, so named because “RCU-walk” is also sometimes<br>referred to as “lazy walk”.  <code>unlazy_walk()</code> is called when<br>following the path down to the current vfsmount/dentry pair seems to<br>have proceeded successfully, but the next step is problematic.  This<br>can happen if the next name cannot be found in the dcache, if<br>permission checking or name revalidation couldn’t be achieved while<br>the <code>rcu_read_lock()</code> is held (which forbids sleeping), if an<br>automount point is found, or in a couple of cases involving symlinks.<br>It is also called from <code>complete_walk()</code> when the lookup has reached<br>the final component, or the very end of the path, depending on which<br>particular flavor of lookup is used.</p>
+<p>“回退到 <code>REF-walk</code>” 通常涉及到对函数 <code>unlazy_walk()</code> 的调用，之所以这样命名是因为<br><code>“RCU-walk”</code> 有时也被称为 <code>“lazy walk”</code>。当跟踪到当前 <code>vfsmount/dentry</code>对的路径<br>似乎已经成功进行时，但是下一步出现问题时，就会调用 <code>unlazy_walk()</code>。比如以下情况：<br>1.在 <code>dcache</code> 中找不到下一个名称（就是路径下一个分量）时。<br>2.或者在持有 <code>rcu_read_lock()</code> 时不能实现权限检查或者名称重新验证(这禁止休眠)。<br>3.如果遇到自动挂载点。<br>4.涉及符号链接的一些情况下。<br>当查找到达最后一个组件或路径的末尾时，也会从 <code>complete_walk()</code> 调用它，<br>这取决于使用的是哪种查找风格（<code>RCU-walk</code> 或者 <code>REF-walk</code> 这两种方式）。</p>
+<p>Other reasons for dropping out of RCU-walk that do not trigger a call<br>to <code>unlazy_walk()</code> are when some inconsistency is found that cannot be<br>handled immediately, such as <code>mount_lock</code> or one of the <code>d_seq</code><br>seqlocks reporting a change.  In these cases the relevant function<br>will return <code>-ECHILD</code> which will percolate up until it triggers a new<br>attempt from the top using REF-walk.</p>
+<p>在不会触发 <code>unlazy_walk()</code> 调用情况下退出 <code>RCU-walk</code> 的其他原因是：当发现一些不能<br>立即处理的不一致性问题时，例如 <code>mount_lock</code> 或某一个序列锁 <code>d_seq</code> 发生了改变。<br>在这些情况下，相关函数将返回 <code>-ECHILD</code>，它将一直渗透，直到使用 <code>REF-walk</code> 从顶部触发<br>一个新的尝试（这里指的是使用 <code>REF-walk</code> 模式从头开始查找路径）。</p>
+<p>For those cases where <code>unlazy_walk()</code> is an option, it essentially<br>takes a reference on each of the pointers that it holds (vfsmount,<br>dentry, and possibly some symbolic links) and then verifies that the<br>relevant seqlocks have not been changed.  If there have been changes,<br>it, too, aborts with <code>-ECHILD</code>, otherwise the transition to REF-walk<br>has been a success and the lookup process continues.</p>
+<p>对于 <code>unlazy_walk()</code> 是一个选项的情况，本质上是对它所持有的每个指针<br>(<code>vfsmount</code>、<code>dentry</code>，可能还有一些符号链接)进行引用，然后验证相关的 <code>seqlocks</code><br>是否没有被更改。如果有更改，它也会使用 <code>-ECHILD</code> 中止，否则成功地转换成<br><code>REF-walk</code> 方式，查找过程将继续。</p>
+<p>Taking a reference on those pointers is not quite as simple as just<br>incrementing a counter.  That works to take a second reference if you<br>already have one (often indirectly through another object), but it<br>isn’t sufficient if you don’t actually have a counted reference at<br>all.  For <code>dentry-&gt;d_lockref</code>, it is safe to increment the reference<br>counter to get a reference unless it has been explicitly marked as<br>“dead” which involves setting the counter to <code>-128</code>.<br><code>lockref_get_not_dead()</code> achieves this.</p>
+<p>引用这些指针并不像增加计数器那么简单。如果您已经有了一个引用(通常通过另一个对象间接地)，<br>那么可以使用第二个引用，但是如果您实际上根本没有一个已计数的引用，那么这样做是不够的。<br>对于 <code>dentry-&gt;d_lockref</code>，如果引用计数器没有被显式地标记为“死”(这涉及将计数器设置为<strong>-128</strong>)，<br>那么增加引用计数器以获取引用是安全的。可以通过 <code>lockref_get_not_dead()</code> 实现（获得引用）。</p>
+<p>For <code>mnt-&gt;mnt_count</code> it is safe to take a reference as long as<br><code>mount_lock</code> is then used to validate the reference.  If that<br>validation fails, it may <em>not</em> be safe to just drop that reference in<br>the standard way of calling <code>mnt_put()</code> - an unmount may have<br>progressed too far.  So the code in <code>legitimize_mnt()</code>, when it<br>finds that the reference it got might not be safe, checks the<br><code>MNT_SYNC_UMOUNT</code> flag to determine if a simple <code>mnt_put()</code> is<br>correct, or if it should just decrement the count and pretend none of<br>this ever happened.</p>
+<p>对于 <code>mnt-&gt;mnt_count</code>，只要使用 <code>mount_lock</code> 来验证引用，就可以安全地使用引用。<br>如果验证失败，如果只是简单地调用 <code>mnt_put()</code> 标准方式来删除引用可能会不安全，<br>卸载可能进行得太过。因此，在 <code>legitimize_mnt()</code> 函数代码中：当发现它得到的引用<br>可能不安全时，它会检查 <code>MNT_SYNC_UMOUNT</code> 标志，以确定一个简单的 <code>mnt_put()</code><br>是正确的，还是应该减少计数并假装这些都没有发生。</p>
+<h4 id="Taking-care-in-filesystems"><a href="#Taking-care-in-filesystems" class="headerlink" title="Taking care in filesystems"></a>Taking care in filesystems</h4><p>RCU-walk depends almost entirely on cached information and often will<br>not call into the filesystem at all.  However there are two places,<br>besides the already-mentioned component-name comparison, where the<br>file system might be included in RCU-walk, and it must know to be<br>careful.</p>
+<p><code>RCU-walk</code> 几乎完全依赖于缓存的信息，而且通常根本不会调用文件系统。但是，除了<br>已经提到的组件名称比较之外，还有两个地方可能会将文件系统包含在 <code>RCU-walk</code> 中，<br>并且必须知道要小心。</p>
+<p>If the filesystem has non-standard permission-checking requirements -<br>such as a networked filesystem which may need to check with the server -<br>the <code>i_op-&gt;permission</code> interface might be called during RCU-walk.<br>In this case an extra “<code>MAY_NOT_BLOCK</code>“ flag is passed so that it<br>knows not to sleep, but to return <code>-ECHILD</code> if it cannot complete<br>promptly.  <code>i_op-&gt;permission</code> is given the inode pointer, not the<br>dentry, so it doesn’t need to worry about further consistency checks.<br>However if it accesses any other filesystem data structures, it must<br>ensure they are safe to be accessed with only the <code>rcu_read_lock()</code><br>held.  This typically means they must be freed using <code>kfree_rcu()</code> or<br>similar.</p>
+<p>如果文件系统有非标准的权限检查需求，比如需要与服务器进行检查的网络文件系统，<br>则可能在 <code>RCU-walk</code> 期间调用 <code>i_op-&gt;permission</code> 接口。在这种情况下，会传递一个<br>额外的 <code>“MAY_NOT_BLOCK”</code> 标志，以便让它知道不能休眠，但如果不能立即完成，<br>则返回 <code>-ECHILD</code>。<code>i_op-&gt;permission</code> 被赋予 <code>inode</code> 指针（这里指接收一个 <code>inode</code> 参数），<br>而不是 <code>dentry</code>，因此它不需要担心进一步的一致性检查。但是，如果它访问任何其他<br>文件系统数据结构，那么必须确保以持有 <code>rcu_read_lock()</code> 的方式安全地访问它们。<br>这通常意味着必须使用 <code>kfree_rcu()</code> 或类似的方法释放它们。</p>
+<p>If the filesystem may need to revalidate dcache entries, then<br><code>d_op-&gt;d_revalidate</code> may be called in RCU-walk too.  This interface<br><em>is</em> passed the dentry but does not have access to the <code>inode</code> or the<br><code>seq</code> number from the <code>nameidata</code>, so it needs to be extra careful<br>when accessing fields in the dentry.  This “extra care” typically<br>involves using <a href="https://lwn.net/Articles/508991/" target="_blank" rel="noopener"><code>ACCESS_ONCE()</code></a> or the newer <a href="https://lwn.net/Articles/624126/" target="_blank" rel="noopener"><code>READ_ONCE()</code></a> to access<br>fields, and verifying the result is not NULL before using it.  This<br>pattern can be see in <code>nfs_lookup_revalidate()</code>.</p>
+<p>如果文件系统可能需要重新验证 <code>dcache</code> 条目，那么也可以在 <code>RCU-walk</code> 中调用<br><code>d_op-&gt;d_revalidate</code>。这个接口被传递给 <code>dentry</code>，但不能访问 <code>inode</code> 或来自 <code>nameidata</code><br>的 <code>seq</code> 号，因此在访问 <code>dentry</code> 中的字段时需要格外小心。这种额外的注意通常包括使用<br><code>ACCESS_ONCE()</code> 或更新的 <code>READ_ONCE()</code> 访问字段，并在使用它之前验证结果是否为<br><code>NULL</code>。这种模式可以在 <code>nfs_lookup_revalidate()</code> 中看到。</p>
+<h4 id="A-pair-of-patterns"><a href="#A-pair-of-patterns" class="headerlink" title="A pair of patterns"></a>A pair of patterns</h4><p>In various places in the details of REF-walk and RCU-walk, and also in<br>the big picture, there are a couple of related patterns that are worth<br>being aware of.</p>
+<p>已经在很多地方的详细介绍了 <code>REF-walk</code> 和 <code>RCU-walk</code>，同时纵观全局，有几个相关的模式是值得了解。</p>
+<p>The first is “try quickly and check, if that fails try slowly”.  We<br>can see that in the high-level approach of first trying RCU-walk and<br>then trying REF-walk, and in places where <code>unlazy_walk()</code> is used to<br>switch to REF-walk for the rest of the path.  We also saw it earlier<br>in <code>dget_parent()</code> when following a “<code>..</code>“ link.  It tries a quick way<br>to get a reference, then falls back to taking locks if needed.</p>
+<p>第一个是“尝试快速模式并检查，如果失败了，尝试慢速模式”。我们可以看到，在高级方法中，<br>首先尝试 <code>RCU-walk</code>，然后再尝试 <code>REF-walk</code>，在有些地方 <code>unlazy_walk()</code> 用于切换到<br><code>REF-walk</code>以完成路径的其余部分。我们上次在 <code>dget_parent()</code> 中跟随“..”链接时也看到了它。<br>它尝试一种快速获取引用的方法，然后在需要时回退到获取锁的方式。</p>
+<p>The second pattern is “try quickly and check, if that fails try<br>again - repeatedly”.  This is seen with the use of <code>rename_lock</code> and<br><code>mount_lock</code> in REF-walk.  RCU-walk doesn’t make use of this pattern -<br>if anything goes wrong it is much safer to just abort and try a more<br>sedate approach.</p>
+<p>第二种模式：“尝试快速模式并检查，如果失败，再试一次”。在 REF-walk 中使用 <code>rename_lock</code><br>和 <code>mount_lock</code> 可以看到这一点。RCU-walk 没有使用这种模式; 如果出了什么问题，直接中止并<br>尝试更稳定的方法会更安全。</p>
+<p>The emphasis here is “try quickly and check”.  It should probably be<br>“try quickly <em>and carefully,</em> then check”.  The fact that checking is<br>needed is a reminder that the system is dynamic and only a limited<br>number of things are safe at all.  The most likely cause of errors in<br>this whole process is assuming something is safe when in reality it<br>isn’t.  Careful consideration of what exactly guarantees the safety of<br>each access is sometimes necessary.</p>
+<p>这里的重点是“快速尝试并检查”。应该是“快速仔细地尝试，然后检查”。需要进行检查的事实<br>提醒我们，系统是动态的，并且只有有限数量的东西是安全的。在整个过程中，最可能导致错误的<br>原因是，假设某样东西是安全的，而实际上它不是。有时需要仔细考虑到底是什么确保了每次访问的<br>安全性。</p>
+<h3 id="A-walk-among-the-symlinks"><a href="#A-walk-among-the-symlinks" class="headerlink" title="A walk among the symlinks"></a>A walk among the symlinks</h3><p>==========================================</p>
+<p>There are several basic issues that we will examine to understand the<br>handling of symbolic links:  the symlink stack, together with cache<br>lifetimes, will help us understand the overall recursive handling of<br>symlinks and lead to the special care needed for the final component.<br>Then a consideration of access-time updates and summary of the various<br>flags controlling lookup will finish the story.</p>
+<p>为了理解符号链接的处理，我们将研究几个基本问题:符号链接堆栈和缓存生存期将帮助我们理解<br>符号链接的整体递归处理，并为最终组件提供所需的特殊处理。<br>然后，考虑访问时的更新和控制查找的各种标志的摘要来完成本文。</p>
+<h4 id="The-symlink-stack"><a href="#The-symlink-stack" class="headerlink" title="The symlink stack"></a>The symlink stack</h4><p>There are only two sorts of filesystem objects that can usefully<br>appear in a path prior to the final component: directories and symlinks.<br>Handling directories is quite straightforward: the new directory<br>simply becomes the starting point at which to interpret the next<br>component on the path.  Handling symbolic links requires a bit more<br>work.</p>
+<p>只有两种文件系统对象可以有效地出现在最终组件之前的路径中:目录和符号链接。<br>处理目录非常简单：新目录只是成为从路径上获取下一个组件的起点。处理符号链接需要做更多的工作。</p>
+<p>Conceptually, symbolic links could be handled by editing the path.  If<br>a component name refers to a symbolic link, then that component is<br>replaced by the body of the link and, if that body starts with a ‘/‘,<br>then all preceding parts of the path are discarded.  This is what the<br>“<code>readlink -f</code>“ command does, though it also edits out “<code>.</code>“ and<br>“<code>..</code>“ components.</p>
+<p>从概念上讲，符号链接可以通过编辑路径来处理。如果组件名引用符号链接，则该组件将被链接主体<br>（也就是符号链接指向的目标路径）替换，如果该主体以 ‘/‘ 开头，则将丢弃路径的所有前面部分。<br>这就是 <code>“readlink -f”</code> 命令所做的，尽管它也会编辑 “.” 和 “..” 组件。</p>
+<p>Directly editing the path string is not really necessary when looking<br>up a path, and discarding early components is pointless as they aren’t<br>looked at anyway.  Keeping track of all remaining components is<br>important, but they can of course be kept separately; there is no need<br>to concatenate them.  As one symlink may easily refer to another,<br>which in turn can refer to a third, we may need to keep the remaining<br>components of several paths, each to be processed when the preceding<br>ones are completed.  These path remnants are kept on a stack of<br>limited size.</p>
+<p>在查找路径时，实际上并不需要直接编辑路径字符串，丢弃早期组件是没有意义的，因为它们不会<br>被查看。跟踪所有剩余的组件很重要，但它们当然可以单独保存;没有必要把它们串联起来。由于<br>一个符号链接可以很容易地引用另一个符号链接，而另一个符号链接又可以引用第三个符号链接，<br>因此我们可能需要保留几个路径的其余组件，当前面的路径完成时，将对每个组件进行处理。<br>路径未完成的剩余部分被保存在有限大小的堆栈中。</p>
+<p>There are two reasons for placing limits on how many symlinks can<br>occur in a single path lookup.  The most obvious is to avoid loops.<br>If a symlink referred to itself either directly or through<br>intermediaries, then following the symlink can never complete<br>successfully - the error <code>ELOOP</code> must be returned.  Loops can be<br>detected without imposing limits, but limits are the simplest solution<br>and, given the second reason for restriction, quite sufficient.</p>
+<p>限制在单个路径查找中可以出现多少符号链接有两个原因。最明显的是避免循环。如果解析的符号链接<br>直接或间接地引用自己（指向本身），那么遵循符号链接的处理是永远无法成功完成，必须返回<br>错误 <code>ELOOP</code>。循环可以在不施加限制的情况下被检测到，但是限制是最简单的解决方案，并且，<br>考虑到限制的第二个原因，限制已经足够了。</p>
+<p>The second reason was <a href="http://thread.gmane.org/gmane.linux.kernel/1934390/focus=1934550" target="_blank" rel="noopener">outlined recently</a> by Linus:</p>
+<blockquote>
+<p>Because it’s a latency and DoS issue too. We need to react well to<br>true loops, but also to “very deep” non-loops. It’s not about memory<br>use, it’s about users triggering unreasonable CPU resources.</p>
+</blockquote>
+<p>Linux imposes a limit on the length of any pathname: <code>PATH_MAX</code>, which<br>is 4096.  There are a number of reasons for this limit; not letting the<br>kernel spend too much time on just one path is one of them.  With<br>symbolic links you can effectively generate much longer paths so some<br>sort of limit is needed for the same reason.  Linux imposes a limit of<br>at most 40 symlinks in any one path lookup.  It previously imposed a<br>further limit of eight on the maximum depth of recursion, but that was<br>raised to 40 when a separate stack was implemented, so there is now<br>just the one limit.</p>
+<p><code>Linux</code> 对任何路径名的长度施加限制: <code>PATH_MAX</code>，即 <strong>4096</strong>。造成这种限制的原因有很多;<br>不让内核在一条路径上花费太多时间就是其中原因之一。使用符号链接，您可以有效地生成更长的<br>路径，因此出于同样的原因，需要某种限制。<code>Linux</code> 在任何一个路径查找中限制最多 <strong>40</strong> 个符号链接。<br>它以前只是对递归的最大深度（<strong>8</strong>）做了进一步的限制。（以前有两个限制，一个是递归深度，<br>一个是路径中允许出现符号链接的最大数量），但是当实现一个单独的堆栈时，这个限制<br>提高到了 <strong>40</strong> （这里指的是递归深度，以前是 <strong>8</strong>），所以现在只有一个限制。</p>
+<p>The <code>nameidata</code> structure that we met in an earlier article contains a<br>small stack that can be used to store the remaining part of up to two<br>symlinks.  In many cases this will be sufficient.  If it isn’t, a<br>separate stack is allocated with room for 40 symlinks.  Pathname<br>lookup will never exceed that stack as, once the 40th symlink is<br>detected, an error is returned.</p>
+<p>我们在前一篇文章中遇到的 <code>nameidata</code> 结构包含一个小堆栈，可用于存储最多两个符号链接的其余部分。<br>在许多情况下，这就足够了。如果不够用，则分配一个单独的堆栈，其中包含 <strong>40</strong> 个符号链接。路径名<br>查找永远不会超过该堆栈，因为一旦检测到第 <strong>40</strong> 个符号链接，就会返回一个错误。</p>
+<p>It might seem that the name remnants are all that needs to be stored on<br>this stack, but we need a bit more.  To see that, we need to move on to<br>cache lifetimes.</p>
+<p>似乎这个堆栈中只需要存储路径中未解析部分的名称，但是我们还需要更多。为此，我们需要缓存生存期。</p>
+<h4 id="Storage-and-lifetime-of-cached-symlinks"><a href="#Storage-and-lifetime-of-cached-symlinks" class="headerlink" title="Storage and lifetime of cached symlinks"></a>Storage and lifetime of cached symlinks</h4><p>Like other filesystem resources, such as inodes and directory<br>entries, symlinks are cached by Linux to avoid repeated costly access<br>to external storage.  It is particularly important for RCU-walk to be<br>able to find and temporarily hold onto these cached entries, so that<br>it doesn’t need to drop down into REF-walk.</p>
+<p>与其他文件系统资源(如 <code>inode</code> 和 目录项)一样，符号链接被 <code>Linux</code> 系统缓存，以避免对外部存储的<br>重复昂贵访问。对于 <code>RCU-walk</code> 来说，能够找到并暂时保存这些缓存的条目是特别重要的，这样它就<br>不需要下拉到 <code>REF-walk</code> 中。</p>
+<p>While each filesystem is free to make its own choice, symlinks are<br>typically stored in one of two places.  Short symlinks are often<br>stored directly in the inode.  When a filesystem allocates a <code>struct
+inode</code> it typically allocates extra space to store private data (a<br>common <a href="https://lwn.net/Articles/446317/" target="_blank" rel="noopener">object-oriented design pattern</a> in the kernel).  This will<br>sometimes include space for a symlink.  The other common location is<br>in the page cache, which normally stores the content of files.  The<br>pathname in a symlink can be seen as the content of that symlink and<br>can easily be stored in the page cache just like file content.</p>
+<p>虽然每个文件系统都可以自由地做出自己的选择，但是符号链接通常存储在两个地方之一。短符号链接<br>通常直接存储在 <code>inode</code> 中。当文件系统分配 <code>inode</code> 结构体时，它通常分配额外的空间来存储私有数据<br>(内核中常见的面向对象设计模式)。这有时包括了符号链接的空间。另一个常用位置在页面缓存中，<br>页面缓存通常存储文件的内容。符号链接中的路径名可以看作符号链接的内容，并且可以像文件内容<br>一样轻松地存储在页面缓存中。</p>
+<p>When neither of these is suitable, the next most likely scenario is<br>that the filesystem will allocate some temporary memory and copy or<br>construct the symlink content into that memory whenever it is needed.</p>
+<p>当这两种方法都不合适时，下一个最有可能的场景是文件系统将分配一些临时内存，并在需要时将<br>符号链接内容复制或构造到该内存中。</p>
+<p>When the symlink is stored in the inode, it has the same lifetime as<br>the inode which, itself, is protected by RCU or by a counted reference<br>on the dentry.  This means that the mechanisms that pathname lookup<br>uses to access the dcache and icache (inode cache) safely are quite<br>sufficient for accessing some cached symlinks safely.  In these cases,<br>the <code>i_link</code> pointer in the inode is set to point to wherever the<br>symlink is stored and it can be accessed directly whenever needed.</p>
+<p>当符号链接存储在 <code>inode</code> 中时，它的生存期与 <code>inode</code> 相同，后者本身由 <code>RCU</code> 或 <code>dentry</code> 上的<br>计数引用保护。这意味着路径名查找过程中用于访问 <code>dcache</code> 和 <code>icache</code> (<code>inode</code> 缓存)的安全机制<br>已经足够用来安全地访问某些已缓存的符号链接。在这些情况下，<code>inode</code> 中的 <code>i_link</code> 指针被设置为<br>指向存储符号链接的位置，并且可以在需要时直接访问它。</p>
+<p>When the symlink is stored in the page cache or elsewhere, the<br>situation is not so straightforward.  A reference on a dentry or even<br>on an inode does not imply any reference on cached pages of that<br>inode, and even an <code>rcu_read_lock()</code> is not sufficient to ensure that<br>a page will not disappear.  So for these symlinks the pathname lookup<br>code needs to ask the filesystem to provide a stable reference and,<br>significantly, needs to release that reference when it is finished<br>with it.</p>
+<p>当符号链接存储在页面缓存或其他地方时，情况就不那么简单了。<code>dentry</code> 甚至 <code>inode</code> 上的引用并<br>不意味着对缓存页面上该 <code>inode</code> 有引用，即使使用 <code>rcu_read_lock()</code> 也不足以确保页面不会消失。<br>因此，对于这些符号链接，路径名查找代码需要请求文件系统提供一个稳定的引用，而且重要的是，<br>需要在使用完该引用后释放该引用。</p>
+<p>Taking a reference to a cache page is often possible even in RCU-walk<br>mode.  It does require making changes to memory, which is best avoided,<br>but that isn’t necessarily a big cost and it is better than dropping<br>out of RCU-walk mode completely.  Even filesystems that allocate<br>space to copy the symlink into can use <code>GFP_ATOMIC</code> to often successfully<br>allocate memory without the need to drop out of RCU-walk.  If a<br>filesystem cannot successfully get a reference in RCU-walk mode, it<br>must return <code>-ECHILD</code> and <code>unlazy_walk()</code> will be called to return to<br>REF-walk mode in which the filesystem is allowed to sleep.</p>
+<p>即使在 <code>RCU-walk</code> 模式下，也常常会引用缓存页面。<br>它确实需要对内存进行更改，理论上最好避免这种修改，但这并不意味着一定需要很大的成本，而且它比<br>完全退出 <code>RCU-walk</code> 模式要好。即使是分配空间来复制符号链接的文件系统也可以使用 <code>GFP_ATOMIC</code><br>成功地分配内存，而不需要退出 <code>RCU-walk</code>。如果文件系统不能成功地在 <code>RCU-walk</code> 模式下获得引用，<br>那么它必须返回 <code>-ECHILD</code>，并且 <code>unlazy_walk()</code> 将被调用，以回退到允许文件系统休眠的<br><code>REF-walk</code> 模式。</p>
+<p>The place for all this to happen is the <code>i_op-&gt;follow_link()</code> inode<br>method.  In the present mainline code this is never actually called in<br>RCU-walk mode as the rewrite is not quite complete.  It is likely that<br>in a future release this method will be passed an <code>inode</code> pointer when<br>called in RCU-walk mode so it both (1) knows to be careful, and (2) has the<br>validated pointer.  Much like the <code>i_op-&gt;permission()</code> method we<br>looked at previously, <code>-&gt;follow_link()</code> would need to be careful that<br>all the data structures it references are safe to be accessed while<br>holding no counted reference, only the RCU lock.  Though getting a<br>reference with <code>-&gt;follow_link()</code> is not yet done in RCU-walk mode, the<br>code is ready to release the reference when that does happen.</p>
+<p>发生这一切的地方是 <code>i_op-&gt;follow_link()</code> <code>inode</code> 方法。在当前的主线代码中，由于重写还没有<br>完全完成，所以实际上从来没有在 RCU-walk 模式中调用这个函数。在将来的版本中，当以 <code>RCU-walk</code><br>模式调用此方法时，很可能会向它传递一个 <code>inode</code> 指针，以便(1)知道要小心，(2)拥有经过验证的指针。<br>就像我们前面看到的 <code>i_op-&gt;permission()</code> 方法一样，<code>-&gt;follow_link()</code> 需要注意的是它引用的<br>所有数据结构都是安全的，可以在只有 <code>RCU</code> 锁，没有计数引用的情况下访问。虽然使用<br><code>-&gt;follow_link()</code> 获取引用还没有在 <code>RCU-walk</code> 模式中完成，但是代码已经准备好在这种情况<br>发生时释放引用。（后面这句话暂时没理解？？）</p>
+<p>This need to drop the reference to a symlink adds significant<br>complexity.  It requires a reference to the inode so that the<br><code>i_op-&gt;put_link()</code> inode operation can be called.  In REF-walk, that<br>reference is kept implicitly through a reference to the dentry, so<br>keeping the <code>struct path</code> of the symlink is easiest.  For RCU-walk,<br>the pointer to the inode is kept separately.  To allow switching from<br>RCU-walk back to REF-walk in the middle of processing nested symlinks<br>we also need the seq number for the dentry so we can confirm that<br>switching back was safe.</p>
+<p>这需要删除对符号链接的引用，这增加了极大的复杂性。它需要对 <code>inode</code> 的引用，以便可以调用<br><code>i_op-&gt;put_link()</code> 操作。在 <code>REF-walk</code> 中，该引用通过对 <code>dentry</code> 的引用隐式地保持，因此<br>保持符号链接的 <code>struct path</code> 是最简单的。对于 <code>RCU-walk</code>，指向 <code>inode</code> 的指针是单独保存的。<br>为了允许在处理嵌套符号链接的过程中从 <code>RCU-walk</code> 切换回 <code>REF-walk</code>，我们还需要 <code>dentry</code> 的<br><code>seq</code> 号，以便确认切换过程是安全的。</p>
+<p>Finally, when providing a reference to a symlink, the filesystem also<br>provides an opaque “cookie” that must be passed to <code>-&gt;put_link()</code> so that it<br>knows what to free.  This might be the allocated memory area, or a<br>pointer to the <code>struct page</code> in the page cache, or something else<br>completely.  Only the filesystem knows what it is.</p>
+<p>最后，当提供对符号链接的引用时，文件系统还提供了一个不透明的 <code>cookie</code>，必须将其传递给<br><code>-&gt;put_link()</code>，以便它知道释放什么。这可能是分配的内存区域，或者是指向页面缓存中的<br><code>struct page</code> 的指针，或者完全是其他的东西。只有文件系统知道它是什么。</p>
+<p>In order for the reference to each symlink to be dropped when the walk completes,<br>whether in RCU-walk or REF-walk, the symlink stack needs to contain,<br>along with the path remnants:</p>
+<p>为了在遍历完成时删除对每个符号链接的引用，无论是在 <code>RCU-walk</code> 还是 <code>REF-walk</code> 中，符号链接<br>堆栈都需要包含路径剩余未解析的部分。</p>
+<ul>
+<li>the <code>struct path</code> to provide a reference to the inode in REF-walk</li>
+<li>the <code>struct inode *</code> to provide a reference to the inode in RCU-walk</li>
+<li>the <code>seq</code> to allow the path to be safely switched from RCU-walk to REF-walk</li>
+<li>the <code>cookie</code> that tells <code>-&gt;put_path()</code> what to put.</li>
+</ul>
+<ul>
+<li><code>struct path</code> 在 <code>REF-walk</code> 模式下保持了对 <code>inode</code> 的引用。</li>
+<li><code>struct inode *</code> 在 <code>RCU-walk</code> 模式下保持了对 <code>inode</code> 的引用。</li>
+<li><code>seq</code> 允许路径查找过程中可以安全地由  <code>RCU-walk</code> 模式切换到 <code>REF-walk</code> 模式。</li>
+<li><code>cookie</code> 告诉了 <code>-&gt;put_path()</code> 需要释放什么。</li>
+</ul>
+<p>This means that each entry in the symlink stack needs to hold five<br>pointers and an integer instead of just one pointer (the path<br>remnant).  On a 64-bit system, this is about 40 bytes per entry;<br>with 40 entries it adds up to 1600 bytes total, which is less than<br>half a page.  So it might seem like a lot, but is by no means<br>excessive.</p>
+<p>这意味着符号链接堆栈中的每个条目需要包含五个指针和一个整数，而不是只有一个指针<br>(路径中未解析部分的字符串)。在 <strong>64</strong> 位系统上，每个条目大约 <strong>40</strong> 个字节；<strong>40</strong> 个<br>条目加起来总共 <strong>1600</strong> 字节，不到半页。所以这看起来很多，但绝不是过度。</p>
+<p>Note that, in a given stack frame, the path remnant (<code>name</code>) is not<br>part of the symlink that the other fields refer to.  It is the remnant<br>to be followed once that symlink has been fully parsed.<br>注意，在给定的堆栈帧中，路径剩余部分(名称)不是其他字段引用的符号链接的一部分。<br>一旦符号链接被完全解析，剩余部分将被继续解析。</p>
+<h4 id="Following-the-symlink"><a href="#Following-the-symlink" class="headerlink" title="Following the symlink"></a>Following the symlink</h4><p>The main loop in <code>link_path_walk()</code> iterates seamlessly over all<br>components in the path and all of the non-final symlinks.  As symlinks<br>are processed, the <code>name</code> pointer is adjusted to point to a new<br>symlink, or is restored from the stack, so that much of the loop<br>doesn’t need to notice.  Getting this <code>name</code> variable on and off the<br>stack is very straightforward; pushing and popping the references is<br>a little more complex.</p>
+<p>link_path_walk() 中的主循环无缝地遍历路径中的所有组件和所有非最终符号链接。当符号链接<br>被处理时，<code>name</code> 指针被调整为指向一个新的符号链接（当符号链接最后一个组件又是另一个符号<br>链接时），或者从堆栈中恢复，这样大部分循环就不需要注意了。在堆栈上和堆栈外获取 <code>name</code> 变量<br>非常简单； 入栈和弹出引用稍微复杂一些。</p>
+<p>When a symlink is found, <code>walk_component()</code> returns the value <code>1</code><br>(<code>0</code> is returned for any other sort of success, and a negative number<br>is, as usual, an error indicator).  This causes <code>get_link()</code> to be<br>called; it then gets the link from the filesystem.  Providing that<br>operation is successful, the old path <code>name</code> is placed on the stack,<br>and the new value is used as the <code>name</code> for a while.  When the end of<br>the path is found (i.e. <code>*name</code> is <code>&#39;\0&#39;</code>) the old <code>name</code> is restored<br>off the stack and path walking continues.</p>
+<p>当找到符号链接时，<code>walk_component()</code> 返回值 1 (对于任何其他类型的成功，都返回0，通常，<br>负数指示一个错误)。这将调用 <code>get_link()</code>；然后，它从文件系统获取链接。如果操作成功，则将<br>旧路径名 <code>name</code> 保存到堆栈上，并将新值暂时用作 <code>name</code>。当找到路径的末尾时(例如 <code>*name = &#39;\0&#39;</code> )，<br>旧的名称将从堆栈中恢复并继续执行路径遍历。</p>
+<p>Pushing and popping the reference pointers (inode, cookie, etc.) is more<br>complex in part because of the desire to handle tail recursion.  When<br>the last component of a symlink itself points to a symlink, we<br>want to pop the symlink-just-completed off the stack before pushing<br>the symlink-just-found to avoid leaving empty path remnants that would<br>just get in the way.</p>
+<p>推入和弹出引用指针(<code>inode</code>、<code>cookie</code> 等)更加复杂，部分原因是希望处理尾部递归。当一个符号链接<br>的最后一个组件本身指向一个符号链接时，我们希望在推入刚刚发现的符号链接之前将刚刚完成的<br>符号链接从堆栈中取出，以避免留下只会碍事的空路径残余物。</p>
+<p>It is most convenient to push the new symlink references onto the<br>stack in <code>walk_component()</code> immediately when the symlink is found;<br><code>walk_component()</code> is also the last piece of code that needs to look at the<br>old symlink as it walks that last component.  So it is quite<br>convenient for <code>walk_component()</code> to release the old symlink and pop<br>the references just before pushing the reference information for the<br>new symlink.  It is guided in this by two flags; <code>WALK_GET</code>, which<br>gives it permission to follow a symlink if it finds one, and<br><code>WALK_PUT</code>, which tells it to release the current symlink after it has been<br>followed.  <code>WALK_PUT</code> is tested first, leading to a call to<br><code>put_link()</code>.  <code>WALK_GET</code> is tested subsequently (by<br><code>should_follow_link()</code>) leading to a call to <code>pick_link()</code> which sets<br>up the stack frame.</p>
+<p>当发现符号链接时，最方便的方法是立即将新的符号链接引用推入 <code>walk_component()</code> 中的堆栈;<br><code>walk_component()</code> 也是旧符号链接在遍历最后一个组件时需要查看的最后一段代码。<br>因此，可以在 <code>walk_component()</code> 中很方便地实现先释放旧符号链接并弹出引用后再为新符号链接<br>推入引用信息。它由两个 <code>flag</code> 引导；<code>WALK_GET</code> 和 <code>WALK_PUT</code> 允许它在找到符号链接后释放当前<br>符号链接。首先测试 WALK_PUT，从而调用 <code>put_link()</code>。随后(通过 <code>should_follow_link()</code> )<br>测试 WALK_GET，从而调用 <code>pick_link()</code>，后者设置堆栈帧。</p>
+<h4 id="Symlinks-with-no-final-component"><a href="#Symlinks-with-no-final-component" class="headerlink" title="Symlinks with no final component"></a>Symlinks with no final component</h4><p>A pair of special-case symlinks deserve a little further explanation.<br>Both result in a new <code>struct path</code> (with mount and dentry) being set<br>up in the <code>nameidata</code>, and result in <code>get_link()</code> returning <code>NULL</code>.</p>
+<p>有一对符号链的接特殊情况值得进一步解释。两者都会在 nameidata 中创建一个新的 <code>struct path</code><br>(带有 <code>moun</code> 和 <code>dentry</code> )，并导致 <code>get_link()</code> 返回 <code>NULL</code>。</p>
+<p>The more obvious case is a symlink to “<code>/</code>“.  All symlinks starting<br>with “<code>/</code>“ are detected in <code>get_link()</code> which resets the <code>nameidata</code><br>to point to the effective filesystem root.  If the symlink only<br>contains “<code>/</code>“ then there is nothing more to do, no components at all,<br>so <code>NULL</code> is returned to indicate that the symlink can be released and<br>the stack frame discarded.</p>
+<p>比较明显的例子是指向 “/” 的符号链接。当 <code>get_link()</code> 检测到以 “/” 开头的符号链接时，它会<br>重置 <code>nameidata</code> 以指向有效的文件系统根。如果符号链接只包含 “/”，那么就没有什么要做的了，<br>根本没有组件，因此返回 <code>NULL</code>，表示可以释放符号链接并丢弃堆栈帧。</p>
+<p>The other case involves things in <code>/proc</code> that look like symlinks but<br>aren’t really.</p>
+<p>另一种情况就是某些涉及到 <code>/proc</code> 的东西，它行为看起来像符号链接，但其实不是。</p>
+<blockquote>
+<p>$ ls -l /proc/self/fd/1</p>
+<p>lrwx—— 1 neilb neilb 64 Jun 13 10:19 /proc/self/fd/1 -&gt; /dev/pts/4</p>
+</blockquote>
+<p>Every open file descriptor in any process is represented in <code>/proc</code> by<br>something that looks like a symlink.  It is really a reference to the<br>target file, not just the name of it.  When you <code>readlink</code> these<br>objects you get a name that might refer to the same file - unless it<br>has been unlinked or mounted over.  When <code>walk_component()</code> follows<br>one of these, the <code>-&gt;follow_link()</code> method in “procfs” doesn’t return<br>a string name, but instead calls <code>nd_jump_link()</code> which updates the<br><code>nameidata</code> in place to point to that target.  <code>-&gt;follow_link()</code> then<br>returns <code>NULL</code>.  Again there is no final component and <code>get_link()</code><br>reports this by leaving the <code>last_type</code> field of <code>nameidata</code> as<br><code>LAST_BIND</code>.</p>
+<p>在任何进程中，每个打开的文件描述符都用 /proc 中的符号链接表示。它实际上是对目标文件的引用，<br>而不仅仅是它的名称。当您读取这些对象时，您将得到一个可能引用相同文件的名称，除非该文件已被<br>解除链接或卸载。当 <code>walk_component()</code> 碰到这样的 /proc 符号链接时，“procfs” 中的<br><code>-&gt;follow_link()</code>方法不返回字符串名，而是调用 <code>nd_jump_link()</code>，后者更新适当的 <code>nameidata</code><br>以指向该目标。<code>-&gt;follow_link()</code> 然后返回 <code>NULL</code>。同样，也没有最终的组件，<code>get_link()</code><br>通过将 <code>nameidata</code> 的 <code>last_type</code> 字段设置为 <code>LAST_BIND</code> 来报告这一点。</p>
+<h4 id="Following-the-symlink-in-the-final-component"><a href="#Following-the-symlink-in-the-final-component" class="headerlink" title="Following the symlink in the final component"></a>Following the symlink in the final component</h4><p>All this leads to <code>link_path_walk()</code> walking down every component, and<br>following all symbolic links it finds, until it reaches the final<br>component.  This is just returned in the <code>last</code> field of <code>nameidata</code>.<br>For some callers, this is all they need; they want to create that<br><code>last</code> name if it doesn’t exist or give an error if it does.  Other<br>callers will want to follow a symlink if one is found, and possibly<br>apply special handling to the last component of that symlink, rather<br>than just the last component of the original file name.  These callers<br>potentially need to call <code>link_path_walk()</code> again and again on<br>successive symlinks until one is found that doesn’t point to another<br>symlink.</p>
+<p>所有这些导致 link_path_walk( ) 遍历每个组件，并跟踪它找到的所有符号链接，直到到达最后<br>一个组件。并通过 <code>nameidata</code> 结构中的 <code>last</code> 字段来返回。对于一些调用者来说，这就是它们<br>所需要的；如果 <code>last</code> 不存在，那么创建它；如果存在，则给出一个错误。如果找到符号链接，<br>其他某些调用者将希望跟踪该符号链接，并可能对该符号链接的最后一个组件应用特殊处理，而不仅仅<br>是原始文件名的最后一个组件。这些调用者可能需要对连续的符号链接一次又一次地调用 <code>link_path_walk()</code>，<br>直到找到一个不指向另一个符号链接的符号链接为止。<br>这里表达的意思是：当在 <code>link_path_walk()</code> 函数中发现链接时，有些该函数的调用者只是需要返回<br>找到的符号链接，而有些调用者则会一直跟踪最新找到的符号链接。这个是通过下文中 <code>LOOKUP_FOLLOW</code><br>标志来控制的。</p>
+<p>This case is handled by the relevant caller of <code>link_path_walk()</code>, such as<br><code>path_lookupat()</code> using a loop that calls <code>link_path_walk()</code>, and then<br>handles the final component.  If the final component is a symlink<br>that needs to be followed, then <code>trailing_symlink()</code> is called to set<br>things up properly and the loop repeats, calling <code>link_path_walk()</code><br>again.  This could loop as many as 40 times if the last component of<br>each symlink is another symlink.</p>
+<p>这种情况由 <code>link_path_walk()</code> 的相关调用者 (如 <code>path_lookupat()</code> ) 处理，使用一个循环调用<br><code>link_path_walk()</code>，然后处理最后一个组件。如果最后一个组件是一个需要跟踪的符号链接，那么就<br>调用 <code>trailing_symlink( )</code> 来正确地设置内容，并重复这个循环，再次调用 <code>link_path_walk()</code>。<br>如果每个符号链接的最后一个组件是另一个符号链接，则可能会循环多达 <strong>40</strong> 次。上文中提到符号链接<br>的限制。</p>
+<p>The various functions that examine the final component and possibly<br>report that it is a symlink are <code>lookup_last()</code>, <code>mountpoint_last()</code><br>and <code>do_last()</code>, each of which use the same convention as<br><code>walk_component()</code> of returning <code>1</code> if a symlink was found that needs<br>to be followed. Of these, <code>do_last()</code> is the most interesting as it is used for<br>opening a file.  Part of <code>do_last()</code> runs with <code>i_mutex</code> held and this<br>part is in a separate function: <code>lookup_open()</code>.</p>
+<p>检查最终组件并可能报告它是符号链接的函数有： <code>lookup_last()</code>、<code>mountpoint_last()</code> 和<br> <code>do_last()</code>，它们都使用与 <code>walk_component()</code> 相同的约定，如果发现需要跟踪的符号链接时，<br>则返回1。其中，<code>do_last()</code> 最有趣，因为它用于打开文件。<code>do_last()</code> 的一部分在持有 i_mutex<br>的情况下运行，这一部分在一个单独的函数中: <code>lookup_open()</code>。</p>
+<p>Explaining <code>do_last()</code> completely is beyond the scope of this article,<br>but a few highlights should help those interested in exploring the<br>code.</p>
+<p>对于 <code>do_last()</code> 的详解完全超出这篇文章的范畴了，但还是提一些有助于研究这部分代码的重点部分。</p>
+<ol>
+<li><p>Rather than just finding the target file, <code>do_last()</code> needs to open<br>it.  If the file was found in the dcache, then <code>vfs_open()</code> is used for<br>this.  If not, then <code>lookup_open()</code> will either call <code>atomic_open()</code> (if<br>the filesystem provides it) to combine the final lookup with the open, or<br>will perform the separate <code>lookup_real()</code> and <code>vfs_create()</code> steps<br>directly.  In the later case the actual “open” of this newly found or<br>created file will be performed by <code>vfs_open()</code>, just as if the name<br>were found in the dcache.<br><code>do_last()</code> 需要打开目标文件，而不仅仅是查找目标文件。如果在 <code>dcache</code> 中找到该文件，则使用<br><code>vfs_open()</code>。如果没有，那么 <code>lookup_open()</code> 将调用 <code>atomic_open()</code> (如果文件系统提供了它)<br>来结合最后的查找和 <code>open</code> 操作，或者直接执行单独的 <code>lookup_real()</code> 和 <code>vfs_create()</code> 步骤。<br>在后一种情况下，这个新发现的文件或者创建的文件实际 “打开” 操作将由 <code>vfs_open()</code> 执行，<br>就像在 <code>dcache</code> 中找到名称一样。</p>
+</li>
+<li><p><code>vfs_open()</code> can fail with <code>-EOPENSTALE</code> if the cached information<br>wasn’t quite current enough.  Rather than restarting the lookup from<br>the top with <code>LOOKUP_REVAL</code> set, <code>lookup_open()</code> is called instead,<br>giving the filesystem a chance to resolve small inconsistencies.<br>If that doesn’t work, only then is the lookup restarted from the top.<br>如果缓存的信息不够及时（新鲜），<code>vfs_open()</code> 可能会使用 <code>-EOPENSTALE</code> 来返回失败。这时<br>不会直接设置 <code>LOOKUP_REVAL</code> 标志来从顶部重新启动查找，而是先调用 <code>lookup_open()</code> 让<br>文件系统有机会解决一些小的不一致。如果无法解决，才会从顶部重新开始查找。</p>
+</li>
+<li><p>An open with O_CREAT <strong>does</strong> follow a symlink in the final component,<br> unlike other creation system calls (like <code>mkdir</code>).  So the sequence:<br> 如果一个 <code>open</code> 操作带有 <code>O_CREAT</code> 标志，那么它会跟踪最后一个组件发现的符号链接，<br> 与其他创建系统调用（比如 <code>mkdir</code>）不一样。所以下面的命令：</p>
+<blockquote>
+<p>ln -s bar /tmp/foo</p>
+<p>echo hello &gt; /tmp/foo</p>
+</blockquote>
+<p> will create a file called <code>/tmp/bar</code>.  This is not permitted if<br> <code>O_EXCL</code> is set but otherwise is handled for an O_CREAT open much<br> like for a non-creating open: <code>should_follow_link()</code> returns <code>1</code>, and<br> so does <code>do_last()</code> so that <code>trailing_symlink()</code> gets called and the<br> open process continues on the symlink that was found.</p>
+<p> 将创建一个名为 <code>/tmp/bar</code> 的文件。如果设置了 <code>O_EXCL</code>，这是不允许的，但是 <code>O_CREAT</code><br> <code>open</code> 的处理方法与非创建 <code>open</code> 的处理方法非常相似: <code>should_follow_link()</code> 返回 <strong>1</strong>,<br> <code>do_last()</code> 也返回 <strong>1</strong>，因此调用 <code>trailing_symlink()</code>，然后打开进程继续在找到的符号链接<br> 上运行。</p>
+</li>
+</ol>
+<h4 id="Updating-the-access-time"><a href="#Updating-the-access-time" class="headerlink" title="Updating the access time"></a>Updating the access time</h4><p>We previously said of RCU-walk that it would “take no locks, increment<br>no counts, leave no footprints.”  We have since seen that some<br>“footprints” can be needed when handling symlinks as a counted<br>reference (or even a memory allocation) may be needed.  But these<br>footprints are best kept to a minimum.</p>
+<p>我们之前说过 <code>RCU-walk</code> 不需要锁，不增加计数，不留下脚印”。我们已经看到，在处理符号链接<br>作为计数引用(甚至内存分配)时，可能需要一些 “足迹”。但最好将这些足迹控制在最低限度。</p>
+<p>One other place where walking down a symlink can involve leaving<br>footprints in a way that doesn’t affect directories is in updating access times.<br>In Unix (and Linux) every filesystem object has a “last accessed<br>time”, or “<code>atime</code>“.  Passing through a directory to access a file<br>within is not considered to be an access for the purposes of<br><code>atime</code>; only listing the contents of a directory can update its <code>atime</code>.<br>Symlinks are different it seems.  Both reading a symlink (with <code>readlink()</code>)<br>and looking up a symlink on the way to some other destination can<br>update the atime on that symlink.</p>
+<p>在其他地方，使用符号链接可能会以不影响目录的方式留下足迹，这就是更新访问时间。<br>在 <code>Unix</code>(和 <code>Linux</code>)中，每个文件系统对象都有一个 “最后访问时间” 或 <code>atime</code>。<br>通过目录访问文件不被视为具有访问 <code>atime</code> 的意图;只有列出目录的内容才能更新它的 atime。<br>符号链接看起来是不同的。无论是读取符号链接(使用 <code>readlink()</code>)，还是在前往其他目的地的途中<br>查找符号链接，都可以更新该符号链接的 <code>atime</code>。</p>
+<p>It is not clear why this is the case; POSIX has little to say on the<br>subject.  The <a href="http://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap04.html#tag_04_08" target="_blank" rel="noopener">clearest statement</a> is that, if a particular implementation<br>updates a timestamp in a place not specified by POSIX, this must be<br>documented “except that any changes caused by pathname resolution need<br>not be documented”.  This seems to imply that POSIX doesn’t really<br>care about access-time updates during pathname lookup.</p>
+<p>具体原因尚不清楚;<code>POSIX</code> 对这个问题没什么可说的。最清楚的说明是，如果某个特定的实现在 <code>POSIX</code><br>没有指定的地方更新了时间戳，那么必须将其记录下来，“除非不需要记录由路径名解析引起的任何更改”。<br>这似乎意味着 <code>POSIX</code> 并不真正关心路径名查找期间的访问时更新。</p>
+<p>An examination of history shows that prior to <a href="https://git.kernel.org/cgit/linux/kernel/git/history/history.git/diff/fs/ext2/symlink.c?id=f806c6db77b8eaa6e00dcfb6b567706feae8dbb8" target="_blank" rel="noopener">Linux 1.3.87</a>, the ext2<br>filesystem, at least, didn’t update atime when following a link.<br>Unfortunately we have no record of why that behavior was changed.</p>
+<p>回顾历史可以发现，在 <code>Linux 1.3.87</code> 之前，<code>ext2</code> 文件系统至少在跟踪链接时没有更新 <code>atime</code>。<br>不幸的是，我们没有记录为什么这种行为会发生改变。</p>
+<p>In any case, access time must now be updated and that operation can be<br>quite complex.  Trying to stay in RCU-walk while doing it is best<br>avoided.  Fortunately it is often permitted to skip the <code>atime</code><br>update.  Because <code>atime</code> updates cause performance problems in various<br>areas, Linux supports the <code>relatime</code> mount option, which generally<br>limits the updates of <code>atime</code> to once per day on files that aren’t<br>being changed (and symlinks never change once created).  Even without<br><code>relatime</code>, many filesystems record <code>atime</code> with a one-second<br>granularity, so only one update per second is required.</p>
+<p>无论如何，现在必须更新访问时间，而且操作可能非常复杂。在做的时候，尽量避免在 “RCU-walk”<br>中停留。幸运的是，通常允许跳过 <code>atime</code> 更新。因为 <code>atime</code> 更新会在某些方面导致性能问题，<br>所以 <code>Linux</code> 支持 <code>relatime</code> 挂载选项，它通常将 <code>atime</code> 的更新限制为每天只更新一次未<br>更改的文件(并且符号链接一旦创建就不会更改)。即使没有 <code>relatime</code>，许多文件系统也以一秒的<br>粒度记录 <code>atime</code>，因此每秒只需要一次更新。</p>
+<p>It is easy to test if an <code>atime</code> update is needed while in RCU-walk<br>mode and, if it isn’t, the update can be skipped and RCU-walk mode<br>continues.  Only when an <code>atime</code> update is actually required does the<br>path walk drop down to REF-walk.  All of this is handled in the<br><code>get_link()</code> function.<br>在 <code>RCU-walk</code> 模式下很容易测试是否需要 <code>atime</code> 更新，如果不需要，则可以跳过更新并继续<br><code>RCU-walk</code> 模式。只有在实际需要 <code>atime</code> 更新时，路径查找才会回退到 <code>REF-walk</code>。所有<br>这些都在 <code>get_link()</code> 函数中处理。</p>
+<h4 id="A-few-flags"><a href="#A-few-flags" class="headerlink" title="A few flags"></a>A few flags</h4><p>A suitable way to wrap up this tour of pathname walking is to list<br>the various flags that can be stored in the <code>nameidata</code> to guide the<br>lookup process.  Many of these are only meaningful on the final<br>component, others reflect the current state of the pathname lookup.<br>And then there is <code>LOOKUP_EMPTY</code>, which doesn’t fit conceptually with<br>the others.  If this is not set, an empty pathname causes an error<br>very early on.  If it is set, empty pathnames are not considered to be<br>an error.</p>
+<p>结束路径名遍历的一种合适方法是列出可以存储在 <code>nameidata</code> 中的各种标志，以指导查找过程。<br>其中许多只对最终组件有意义，<strong>其他</strong> 的则反映了路径名查找的当前状态。然后是 <code>LOOKUP_EMPTY</code>，<br>它在概念上不符合 <strong>其它</strong> 类别。如果没有设置此值，则空路径名会在早期导致错误。如果设置了<br>该标志，则不会将空路径名视为错误。</p>
+<h4 id="Global-state-flags"><a href="#Global-state-flags" class="headerlink" title="Global state flags"></a>Global state flags</h4><p>We have already met two global state flags: <code>LOOKUP_RCU</code> and<br><code>LOOKUP_REVAL</code>.  These select between one of three overall approaches<br>to lookup: <code>RCU-walk</code>, <code>REF-walk</code>, and <code>REF-walk</code> with forced revalidation.</p>
+<p>我们已经遇到了两个全局状态标志:<code>LOOKUP_RCU</code> 和 <code>LOOKUP_REVAL</code>。这些选项在三种全面的<br>查找方法中进行选择:<code>RCU-walk</code>、<code>REF-walk</code> 和 使用强制重新验证的 <code>REF-walk</code>。</p>
+<p><code>LOOKUP_PARENT</code> indicates that the final component hasn’t been reached<br>yet.  This is primarily used to tell the audit subsystem the full<br>context of a particular access being audited.</p>
+<p><code>LOOKUP_PARENT</code> 表示尚未到达最终组件。这主要用于告诉 <code>audit</code> 子系统，当前特定访问的<br>完整上下文被 <code>audit</code>。</p>
+<p><code>LOOKUP_ROOT</code> indicates that the <code>root</code> field in the <code>nameidata</code> was<br>provided by the caller, so it shouldn’t be released when it is no<br>longer needed.</p>
+<p><code>LOOKUP_ROOT</code> 指出 <code>nameidata</code> 中的 <code>root</code> 字段是由调用者提供的，因此在不需要它时候<br>不应该释放它。</p>
+<p><code>LOOKUP_JUMPED</code> means that the current dentry was chosen not because<br>it had the right name but for some other reason.  This happens when<br>following “<code>..</code>“, following a symlink to <code>/</code>, crossing a mount point<br>or accessing a “<code>/proc/$PID/fd/$FD</code>“ symlink.  In this case the<br>filesystem has not been asked to revalidate the name (with<br><code>d_revalidate()</code>).  In such cases the inode may still need to be<br>revalidated, so <code>d_op-&gt;d_weak_revalidate()</code> is called if<br><code>LOOKUP_JUMPED</code> is set when the look completes - which may be at the<br>final component or, when creating, unlinking, or renaming, at the penultimate<br>component.</p>
+<p><code>LOOKUP_JUMPED</code> 意味着选择当前 <code>dentry</code> 不是因为它的名称正确，而是出于其他原因。当跟随<br>“..” 时就会发生这种情况。跟随一个符号链接查找到 “/”，通过挂载点时或访问 “/proc/$PID/fd/$ fd”<br>符号链接。在这种情况下，文件系统没有被要求重新验证 <code>name</code> (使用 <code>d_revalidate()</code>)。然而<br><code>inode</code> 可能仍然需要重新验证，因此，如果设置了 <code>LOOKUP_JUMPED</code>，那么当查找完成时（此时<br>可能位于最终组件，或者在创建、解除链接或重命名倒数第二个组件）函数 <code>d_op-&gt;d_weak_revalidate()</code><br>会被调用。</p>
+<h4 id="Final-component-flags"><a href="#Final-component-flags" class="headerlink" title="Final-component flags"></a>Final-component flags</h4><p>Some of these flags are only set when the final component is being<br>considered.  Others are only checked for when considering that final<br>component.</p>
+<p>其中一些标志仅在考虑最终组件时才设置。<strong>其他</strong> 标志只在考虑最后一个组件时才进行检查。</p>
+<p><code>LOOKUP_AUTOMOUNT</code> ensures that, if the final component is an automount<br>point, then the mount is triggered.  Some operations would trigger it<br>anyway, but operations like <code>stat()</code> deliberately don’t.  <code>statfs()</code><br>needs to trigger the mount but otherwise behaves a lot like <code>stat()</code>, so<br>it sets <code>LOOKUP_AUTOMOUNT</code>, as does “<code>quotactl()</code>“ and the handling of<br>“<code>mount --bind</code>“.</p>
+<p><code>LOOKUP_AUTOMOUNT</code> 确保，如果最后一个组件是 <code>automount</code> 点，那么就触发挂载。有些操作<br>无论如何都会触发它，但是像 <code>stat()</code> 这样的操作故意不触发它。<code>statfs()</code> 需要触发挂载，<br>但其他方面的行为与 <code>stat()</code> 很相似，因此它设置了 <code>LOOKUP_AUTOMOUNT</code>, <code>quotactl()</code> 和<br>“<code>mount --bind</code>” 的处理也是如此。</p>
+<p><code>LOOKUP_FOLLOW</code> has a similar function to <code>LOOKUP_AUTOMOUNT</code> but for<br>symlinks.  Some system calls set or clear it implicitly, while<br>others have API flags such as <code>AT_SYMLINK_FOLLOW</code> and<br><code>UMOUNT_NOFOLLOW</code> to control it.  Its effect is similar to<br><code>WALK_GET</code> that we already met, but it is used in a different way.</p>
+<p><code>LOOKUP_FOLLOW</code> 有一个类似于 <code>LOOKUP_AUTOMOUNT</code> 的函数，但用于符号链接。一些系统调用<br>隐式地设置或清除它，而另一些则使用诸如 <code>AT_SYMLINK_FOLLOW</code> 和 <code>UMOUNT_NOFOLLOW</code> 之类<br>的 <code>API</code> 标志来控制它。它的效果类似于我们已经见过的 <code>WALK_GET</code>，但是它的用法不同。</p>
+<p><code>LOOKUP_DIRECTORY</code> insists that the final component is a directory.<br>Various callers set this and it is also set when the final component<br>is found to be followed by a slash.</p>
+<p><code>LOOKUP_DIRECTORY</code> 坚持最后一个组件是一个目录。某些调用者都会设置这个值，同样当发现最后<br>一个组件后面有一个斜杠时，也会设置这个值。</p>
+<p>Finally <code>LOOKUP_OPEN</code>, <code>LOOKUP_CREATE</code>, <code>LOOKUP_EXCL</code>, and<br><code>LOOKUP_RENAME_TARGET</code> are not used directly by the VFS but are made<br>available to the filesystem and particularly the <code>-&gt;d_revalidate()</code><br>method.  A filesystem can choose not to bother revalidating too hard<br>if it knows that it will be asked to open or create the file soon.<br>These flags were previously useful for <code>-&gt;lookup()</code> too but with the<br>introduction of <code>-&gt;atomic_open()</code> they are less relevant there.</p>
+<p>最后，<code>LOOKUP_OPEN</code>、<code>LOOKUP_CREATE</code>、<code>LOOKUP_EXCL</code> 和 <code>LOOKUP_RENAME_TARGET</code>不是<br><code>VFS</code> 直接使用的，而是提供给文件系统，特别是 <code>-&gt;d_revalidate()</code> 方法。如果文件系统知道<br>很快就会被要求打开或创建文件，那么它可以选择不费力地重新验证。这些标志以前对 <code>-&gt;lookup()</code><br>也很有用，但是随着 <code>-&gt;atomic_open()</code> 的引入，它们在这里就不那么相关了。</p>
+<h4 id="End-of-the-road"><a href="#End-of-the-road" class="headerlink" title="End of the road"></a>End of the road</h4><p>Despite its complexity, all this pathname lookup code appears to be<br>in good shape - various parts are certainly easier to understand now<br>than even a couple of releases ago.  But that doesn’t mean it is<br>“finished”.   As already mentioned, RCU-walk currently only follows<br>symlinks that are stored in the inode so, while it handles many ext4<br>symlinks, it doesn’t help with NFS, XFS, or Btrfs.  That support<br>is not likely to be long delayed.</p>
+<p>尽管它很复杂，但是所有这些路径名查找代码看起来都很好，现在各个部分都比几个版本之前更容易<br>理解。但这并不意味着它已经“完成”。如前所述，<code>RCU-walk</code> 目前只跟踪存储在 <code>inode</code> 中的<br>符号链接，因此，虽然它处理许多 <code>ext4</code> 符号链接，但它对 <code>NFS</code>、<code>XFS</code> 或 <code>Btrfs</code>没有帮助。<br>这种支持不太可能拖延太久。</p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LiangLiang.li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://woitaylor.github.io.git/2019/08/28/Linux-path_lookup%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/">https://woitaylor.github.io.git/2019/08/28/Linux-path_lookup%E6%96%87%E6%A1%A3%E7%BF%BB%E8%AF%91/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LiangLiang.li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                                    <span class="chip bg-color">文件系统</span>
+                                </a>
+                            
+                                <a href="/tags/open/">
+                                    <span class="chip bg-color">open</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2019/08/29/Linux-Open%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%AF%87%E4%B8%80/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/18.jpg" class="responsive-img" alt="Linux-Open系统调用篇（一）">
+                        
+                        <span class="card-title">Linux-Open系统调用篇（一）</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            内核源码：linux-4.4目标平台：ARM体系结构源码工具：source insight 4
+
+说明： 文中由于 md 语法问题，无法在代码高亮的同时而忽略由于 __ 或者 * 造成斜体的问题，所以类似 __user 改成 __ user
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2019-08-29
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Linux%E5%86%85%E6%A0%B8/" class="post-category">
+                                    Linux内核
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">文件系统</span>
+                    </a>
+                    
+                    <a href="/tags/open/">
+                        <span class="chip bg-color">open</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+                        <span class="chip bg-color">系统调用</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/08/28/Linux-Open%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%AF%87(%E4%BA%8C)/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/19.jpg" class="responsive-img" alt="Linux Open系统调用篇（二）">
+                        
+                        <span class="card-title">Linux Open系统调用篇（二）</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            上篇中我们已经获取到路径名 filename（用户空间传递过来的），fd 文件描述符。如果获取的 fd 有效，那么接着调用 do_filp_open() 函数。
+1234567891011121314151617struct file * 
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-08-28
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Linux%E5%86%85%E6%A0%B8/" class="post-category">
+                                    Linux内核
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">文件系统</span>
+                    </a>
+                    
+                    <a href="/tags/open/">
+                        <span class="chip bg-color">open</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+                        <span class="chip bg-color">系统调用</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">LiangLiang.li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>

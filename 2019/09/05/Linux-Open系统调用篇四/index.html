@@ -1,0 +1,1270 @@
+<!DOCTYPE HTML>
+<html lang="zh-CN">
+
+
+<head>
+    <meta charset="utf-8">
+    <meta name="keywords" content="Linux-Open系统调用篇（四）, Hexo">
+    <meta name="description" content="">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <meta name="renderer" content="webkit|ie-stand|ie-comp">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="format-detection" content="telephone=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- Global site tag (gtag.js) - Google Analytics -->
+
+
+    <title>Linux-Open系统调用篇（四） | Hexo</title>
+    <link rel="icon" type="image/png" href="/favicon.png">
+
+    <link rel="stylesheet" type="text/css" href="/libs/awesome/css/all.css">
+    <link rel="stylesheet" type="text/css" href="/libs/materialize/materialize.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/aos/aos.css">
+    <link rel="stylesheet" type="text/css" href="/libs/animate/animate.min.css">
+    <link rel="stylesheet" type="text/css" href="/libs/lightGallery/css/lightgallery.min.css">
+    <link rel="stylesheet" type="text/css" href="/css/matery.css">
+    <link rel="stylesheet" type="text/css" href="/css/my.css">
+
+    <script src="/libs/jquery/jquery.min.js"></script>
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+
+<body>
+    <header class="navbar-fixed">
+    <nav id="headNav" class="bg-color nav-transparent">
+        <div id="navContainer" class="nav-wrapper container">
+            <div class="brand-logo">
+                <a href="/" class="waves-effect waves-light">
+                    
+                    <img src="/medias/logo.png" class="logo-img" alt="LOGO">
+                    
+                    <span class="logo-span">Hexo</span>
+                </a>
+            </div>
+            
+
+<a href="#" data-target="mobile-nav" class="sidenav-trigger button-collapse"><i class="fas fa-bars"></i></a>
+<ul class="right nav-menu">
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/" class="waves-effect waves-light">
+      
+      <i class="fas fa-home" style="zoom: 0.6;"></i>
+      
+      <span>首页</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/tags" class="waves-effect waves-light">
+      
+      <i class="fas fa-tags" style="zoom: 0.6;"></i>
+      
+      <span>标签</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/categories" class="waves-effect waves-light">
+      
+      <i class="fas fa-bookmark" style="zoom: 0.6;"></i>
+      
+      <span>分类</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/archives" class="waves-effect waves-light">
+      
+      <i class="fas fa-archive" style="zoom: 0.6;"></i>
+      
+      <span>归档</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/about" class="waves-effect waves-light">
+      
+      <i class="fas fa-user-circle" style="zoom: 0.6;"></i>
+      
+      <span>关于</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/contact" class="waves-effect waves-light">
+      
+      <i class="fas fa-comments" style="zoom: 0.6;"></i>
+      
+      <span>留言板</span>
+    </a>
+    
+  </li>
+  
+  <li class="hide-on-med-and-down nav-item">
+    
+    <a href="/friends" class="waves-effect waves-light">
+      
+      <i class="fas fa-address-book" style="zoom: 0.6;"></i>
+      
+      <span>友情链接</span>
+    </a>
+    
+  </li>
+  
+  <li>
+    <a href="#searchModal" class="modal-trigger waves-effect waves-light">
+      <i id="searchIcon" class="fas fa-search" title="搜索" style="zoom: 0.85;"></i>
+    </a>
+  </li>
+</ul>
+
+
+<div id="mobile-nav" class="side-nav sidenav">
+
+    <div class="mobile-head bg-color">
+        
+        <img src="/medias/logo.png" class="logo-img circle responsive-img">
+        
+        <div class="logo-name">Hexo</div>
+        <div class="logo-desc">
+            
+            Never really desperate, only the lost of the soul.
+            
+        </div>
+    </div>
+
+    
+
+    <ul class="menu-list mobile-menu-list">
+        
+        <li class="m-nav-item">
+	  
+		<a href="/" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-home"></i>
+			
+			首页
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/tags" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-tags"></i>
+			
+			标签
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/categories" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-bookmark"></i>
+			
+			分类
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/archives" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-archive"></i>
+			
+			归档
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/about" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-user-circle"></i>
+			
+			关于
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/contact" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-comments"></i>
+			
+			留言板
+		</a>
+          
+        </li>
+        
+        <li class="m-nav-item">
+	  
+		<a href="/friends" class="waves-effect waves-light">
+			
+			    <i class="fa-fw fas fa-address-book"></i>
+			
+			友情链接
+		</a>
+          
+        </li>
+        
+        
+        <li><div class="divider"></div></li>
+        <li>
+            <a href="https://github.com/blinkfox/hexo-theme-matery" class="waves-effect waves-light" target="_blank">
+                <i class="fab fa-github-square fa-fw"></i>Fork Me
+            </a>
+        </li>
+        
+    </ul>
+</div>
+
+
+        </div>
+
+        
+            <style>
+    .nav-transparent .github-corner {
+        display: none !important;
+    }
+
+    .github-corner {
+        position: absolute;
+        z-index: 10;
+        top: 0;
+        right: 0;
+        border: 0;
+        transform: scale(1.1);
+    }
+
+    .github-corner svg {
+        color: #0f9d58;
+        fill: #fff;
+        height: 64px;
+        width: 64px;
+    }
+
+    .github-corner:hover .octo-arm {
+        animation: a 0.56s ease-in-out;
+    }
+
+    .github-corner .octo-arm {
+        animation: none;
+    }
+
+    @keyframes a {
+        0%,
+        to {
+            transform: rotate(0);
+        }
+        20%,
+        60% {
+            transform: rotate(-25deg);
+        }
+        40%,
+        80% {
+            transform: rotate(10deg);
+        }
+    }
+</style>
+
+<a href="https://github.com/blinkfox/hexo-theme-matery" class="github-corner tooltipped hide-on-med-and-down" target="_blank"
+   data-tooltip="Fork Me" data-position="left" data-delay="50">
+    <svg viewBox="0 0 250 250" aria-hidden="true">
+        <path d="M0,0 L115,115 L130,115 L142,142 L250,250 L250,0 Z"></path>
+        <path d="M128.3,109.0 C113.8,99.7 119.0,89.6 119.0,89.6 C122.0,82.7 120.5,78.6 120.5,78.6 C119.2,72.0 123.4,76.3 123.4,76.3 C127.3,80.9 125.5,87.3 125.5,87.3 C122.9,97.6 130.6,101.9 134.4,103.2"
+              fill="currentColor" style="transform-origin: 130px 106px;" class="octo-arm"></path>
+        <path d="M115.0,115.0 C114.9,115.1 118.7,116.5 119.8,115.4 L133.7,101.6 C136.9,99.2 139.9,98.4 142.2,98.6 C133.8,88.0 127.5,74.4 143.8,58.0 C148.5,53.4 154.0,51.2 159.7,51.0 C160.3,49.4 163.2,43.6 171.4,40.1 C171.4,40.1 176.1,42.5 178.8,56.2 C183.1,58.6 187.2,61.8 190.9,65.4 C194.5,69.0 197.7,73.2 200.1,77.6 C213.8,80.2 216.3,84.9 216.3,84.9 C212.7,93.1 206.9,96.0 205.4,96.6 C205.1,102.4 203.0,107.8 198.3,112.5 C181.9,128.9 168.3,122.5 157.7,114.1 C157.9,116.9 156.7,120.9 152.7,124.9 L141.0,136.5 C139.8,137.7 141.6,141.9 141.8,141.8 Z"
+              fill="currentColor" class="octo-body"></path>
+    </svg>
+</a>
+        
+    </nav>
+
+</header>
+
+    
+
+
+
+<div class="bg-cover pd-header post-cover" style="background-image: url('/medias/featureimages/13.jpg')">
+    <div class="container" style="right: 0px;left: 0px;">
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <div class="brand">
+                    <h1 class="description center-align post-title">Linux-Open系统调用篇（四）</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<main class="post-container content">
+
+    
+    <link rel="stylesheet" href="/libs/tocbot/tocbot.css">
+<style>
+    #articleContent h1::before,
+    #articleContent h2::before,
+    #articleContent h3::before,
+    #articleContent h4::before,
+    #articleContent h5::before,
+    #articleContent h6::before {
+        display: block;
+        content: " ";
+        height: 100px;
+        margin-top: -100px;
+        visibility: hidden;
+    }
+
+    #articleContent :focus {
+        outline: none;
+    }
+
+    .toc-fixed {
+        position: fixed;
+        top: 64px;
+    }
+
+    .toc-widget {
+        width: 345px;
+        padding-left: 20px;
+    }
+
+    .toc-widget .toc-title {
+        margin: 35px 0 15px 0;
+        padding-left: 17px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        line-height: 1.5rem;
+    }
+
+    .toc-widget ol {
+        padding: 0;
+        list-style: none;
+    }
+
+    #toc-content {
+        height: calc(100vh - 250px);
+        overflow: auto;
+    }
+
+    #toc-content ol {
+        padding-left: 10px;
+    }
+
+    #toc-content ol li {
+        padding-left: 10px;
+    }
+
+    #toc-content .toc-link:hover {
+        color: #42b983;
+        font-weight: 700;
+        text-decoration: underline;
+    }
+
+    #toc-content .toc-link::before {
+        background-color: transparent;
+        max-height: 25px;
+
+        position: absolute;
+        right: 23.5vw;
+        display: block;
+    }
+
+    #toc-content .is-active-link {
+        color: #42b983;
+    }
+
+    #floating-toc-btn {
+        position: fixed;
+        right: 15px;
+        bottom: 76px;
+        padding-top: 15px;
+        margin-bottom: 0;
+        z-index: 998;
+    }
+
+    #floating-toc-btn .btn-floating {
+        width: 48px;
+        height: 48px;
+    }
+
+    #floating-toc-btn .btn-floating i {
+        line-height: 48px;
+        font-size: 1.4rem;
+    }
+</style>
+<div class="row">
+    <div id="main-content" class="col s12 m12 l9">
+        <!-- 文章内容详情 -->
+<div id="artDetail">
+    <div class="card">
+        <div class="card-content article-info">
+            <div class="row tag-cate">
+                <div class="col s7">
+                    
+                    <div class="article-tag">
+                        
+                            <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                                <span class="chip bg-color">文件系统</span>
+                            </a>
+                        
+                            <a href="/tags/open/">
+                                <span class="chip bg-color">open</span>
+                            </a>
+                        
+                            <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+                                <span class="chip bg-color">系统调用</span>
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+                <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/Linux%E5%86%85%E6%A0%B8/" class="post-category">
+                                Linux内核
+                            </a>
+                        
+                    </div>
+                    
+                </div>
+            </div>
+
+            <div class="post-info">
+                
+                <div class="post-date info-break-policy">
+                    <i class="far fa-calendar-minus fa-fw"></i>发布日期:&nbsp;&nbsp;
+                    2019-09-05
+                </div>
+                
+
+                
+
+                
+
+                
+
+                
+            </div>
+        </div>
+        <hr class="clearfix">
+        <div class="card-content article-card-content">
+            <div id="articleContent">
+                <h4 id="符号链接处理"><a href="#符号链接处理" class="headerlink" title="符号链接处理"></a>符号链接处理</h4><figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Do we need to follow links? We _really_ want to be able</span></span><br><span class="line"><span class="comment"> * to do this check without having to look at inode-&gt;i_op,</span></span><br><span class="line"><span class="comment"> * so we keep a cache of "no, this doesn't need follow_link"</span></span><br><span class="line"><span class="comment"> * for the common case.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">static inline <span class="keyword">int</span> should_follow_link(<span class="keyword">struct</span> nameidata * nd, <span class="keyword">struct</span> path * link,</span><br><span class="line">	<span class="keyword">int</span> follow, <span class="keyword">struct</span> inode * inode, unsigned seq)</span><br><span class="line">&#123;</span><br><span class="line">  	<span class="comment">// 判断是否是符号链接类型</span></span><br><span class="line">	<span class="keyword">if</span> (likely(!d_is_symlink(link-&gt;dentry)))</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// follow = flags &amp; WALK_GET 这里为true。</span></span><br><span class="line">	<span class="keyword">if</span> (!follow)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* make sure that d_is_symlink above matches inode */</span></span><br><span class="line">	<span class="keyword">if</span> (nd-&gt;flags &amp; LOOKUP_RCU) &#123;</span><br><span class="line">        <span class="comment">// 如果当前为 rcu-walk 模式，期间 dentry 发生了改变，也就是无效了，</span></span><br><span class="line">        <span class="comment">// 那么返回 - ECHILD，退出 rcu-walk 模式。</span></span><br><span class="line">		<span class="keyword">if</span> (read_seqcount_retry(&amp;link-&gt;dentry-&gt;d_seq, seq))</span><br><span class="line">			<span class="keyword">return</span> - ECHILD;</span><br><span class="line">	&#125;</span><br><span class="line">  	<span class="comment">// 把 link 保存到 nd-&gt;stack，有可能需要 stack 的扩容处理。</span></span><br><span class="line">	<span class="keyword">return</span> pick_link(nd, link, inode, seq);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">int</span> pick_link(<span class="keyword">struct</span> nameidata * nd, <span class="keyword">struct</span> path * link,</span><br><span class="line">	<span class="keyword">struct</span> inode * inode, unsigned seq)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> error;</span><br><span class="line">	<span class="keyword">struct</span> saved * last;</span><br><span class="line"></span><br><span class="line">  <span class="comment">// 如果当前路径中已包含的符号链接数量超过 MAXSYMLINKS = 40。</span></span><br><span class="line">	<span class="keyword">if</span> (unlikely(nd-&gt;total_link_count++ &gt;= MAXSYMLINKS)) &#123;</span><br><span class="line">		path_to_nameidata(link, nd);</span><br><span class="line">        <span class="comment">// 返回错误</span></span><br><span class="line">		<span class="keyword">return</span> - ELOOP;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当前为 ref-walk 模式</span></span><br><span class="line">	<span class="keyword">if</span> (! (nd-&gt;flags &amp; LOOKUP_RCU)) &#123;</span><br><span class="line">		<span class="keyword">if</span> (link-&gt;mnt == nd-&gt;path.mnt)</span><br><span class="line">			mntget(link-&gt;mnt); <span class="comment">//增加挂载描述符 mount 的引用</span></span><br><span class="line">	&#125;</span><br><span class="line">  	<span class="comment">// 检查是否需要进行扩容 stack。 初始使用大小为 2。</span></span><br><span class="line">	error = nd_alloc_stack(nd);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(error)) &#123;</span><br><span class="line">        <span class="comment">// 需要退出 rcu-walk 模式，使用 ref-walk 模式处理符号链接。</span></span><br><span class="line">		<span class="keyword">if</span> (error == -ECHILD) &#123;</span><br><span class="line">            <span class="comment">// 使用 ref-walk 模式处理符号链接，如果处理失败，返回 -ECHILD，那么返回给 walk_component</span></span><br><span class="line">            <span class="comment">// 函数处理，walk_component 函数再返回给 link_path_walk 函数处理。link_path_walk 再返回给</span></span><br><span class="line">            <span class="comment">// path_openat，最后本次 open 操作失败。</span></span><br><span class="line">			<span class="keyword">if</span> (unlikely(unlazy_link(nd, link, seq)))</span><br><span class="line">				<span class="keyword">return</span> - ECHILD;</span><br><span class="line">        	<span class="comment">// 在 ref-walk 模式下再次进行扩容。</span></span><br><span class="line">			error = nd_alloc_stack(nd);</span><br><span class="line">		&#125;</span><br><span class="line">        <span class="comment">// 如果 ref-walk 模式下扩容再次失败，表示当前内存不够用。这时释放 link，返回错误。</span></span><br><span class="line">		<span class="keyword">if</span> (error) &#123;</span><br><span class="line">			path_put(link);</span><br><span class="line">			<span class="keyword">return</span> error;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 保存符号链接信息到 stack 相关信息。先使用 nd-&gt;depth 的值（从 0 开始），再进行 ++ 操作。</span></span><br><span class="line">	last = nd-&gt;stack + nd-&gt;depth++;</span><br><span class="line">	last-&gt;link = *link;</span><br><span class="line">	last-&gt;cookie = NULL;</span><br><span class="line">	last-&gt;inode = inode;</span><br><span class="line">	last-&gt;seq = seq;</span><br><span class="line">  	<span class="comment">// 返回 1，返回给 link_path_walk 函数处理。if (err) &#123;...&#125;，取出符合链接指向的路径，继续 for 循环处理。</span></span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">// 增加 mnt 的引用计数，如果是 SMP 模式，那么给对应 CPU 的本地变量加 1，如果是单处理器模式</span></span><br><span class="line"><span class="comment">// 先禁止进程抢占再对变量加 1，然后恢复抢占。</span></span><br><span class="line"><span class="keyword">struct</span> vfsmount *mntget(<span class="keyword">struct</span> vfsmount *mnt)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">if</span> (mnt)</span><br><span class="line">		mnt_add_count(real_mount(mnt), <span class="number">1</span>);</span><br><span class="line">	<span class="keyword">return</span> mnt;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static inline <span class="keyword">int</span> nd_alloc_stack(<span class="keyword">struct</span> nameidata * nd)</span><br><span class="line">&#123;</span><br><span class="line">    <span class="comment">// 如果已记录符号链接的深度（嵌套深度）不为 2。返回 0；</span></span><br><span class="line">	<span class="keyword">if</span> (likely(nd-&gt;depth != EMBEDDED_LEVELS))</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">    <span class="comment">// 在 set_nameidata 函数中 p-&gt;stack = p-&gt;internal;也就是初始的 stack 是指向 internal 数组。</span></span><br><span class="line">	<span class="keyword">if</span> (likely(nd-&gt;stack != nd-&gt;internal))</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 当 nd-&gt;depth == 2 &amp;&amp; nd-&gt;stack == nd-&gt;internal，当已保存的符号链接个数超过 2 个时候</span></span><br><span class="line">    <span class="comment">// 进行扩容。</span></span><br><span class="line">	<span class="keyword">return</span> __nd_alloc_stack(nd);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static <span class="keyword">int</span> __nd_alloc_stack(<span class="keyword">struct</span> nameidata * nd)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">struct</span> saved * p;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (nd-&gt;flags &amp; LOOKUP_RCU) &#123;</span><br><span class="line">        <span class="comment">// GFP_ATOMIC 表示调用者不能睡眠并且保证分配会成功。它可以访问系统预留的内存，</span></span><br><span class="line">        <span class="comment">// 这个标志通常使用在中断处理程序、下半部、持有自旋锁或者其他不能睡眠的地方，</span></span><br><span class="line">        <span class="comment">// 这里为 RCU 模式，所以不能睡眠。 大小为：可以用来保存 40 个符号链接的信息。</span></span><br><span class="line">		p = kmalloc(MAXSYMLINKS * sizeof(<span class="keyword">struct</span> saved), GFP_ATOMIC);</span><br><span class="line">        <span class="comment">// 内存分配失败，返回 -ECHILD，以退出 rcu-walk。</span></span><br><span class="line">		<span class="keyword">if</span> (unlikely(!p))</span><br><span class="line">			<span class="keyword">return</span> - ECHILD;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">        <span class="comment">// GFP_KERNEL 内核分配内存最常用的标志之一。它可能会被阻塞，即分配过程可能会睡眠。</span></span><br><span class="line">		p = kmalloc(MAXSYMLINKS * sizeof(<span class="keyword">struct</span> saved), GFP_KERNEL);</span><br><span class="line">        <span class="comment">// 内存分配失败，返回 -ENOMEM，表示内存过低。</span></span><br><span class="line">		<span class="keyword">if</span> (unlikely(!p))</span><br><span class="line">			<span class="keyword">return</span> - ENOMEM;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">  	<span class="comment">// 把以前 nd-&gt;internal 保存的内容保存到新分配的内存中。</span></span><br><span class="line">	memcpy(p, nd-&gt;internal, sizeof(nd-&gt;internal));</span><br><span class="line">  	<span class="comment">// 指向新分配的 stack。</span></span><br><span class="line">	nd-&gt;stack = p;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p> 从本质上来讲符号链接就是一个路径字符串，这和硬连接有着本质上的区别。而且对于创建目录的链接，硬连接有着严格的限制（比如普通用户就不允许创建目录的硬连接），但是符号链接就没有那么多的限制，用户可以随意创建目录的链接，甚至可以创建一个链接的死循环（比如：a-&gt;b;b-&gt;c;c-&gt;a）。既然不限制创建各式各样的符号链接，那么在读取的时候就需要格外小心了，Kernel 设置了限制：<code>MAXSYMLINKS</code>，它的值是 40 表示当前待处理符号链接的最大数量。<br> 接下来看 <code>link_path_walk</code> 函数对符号链接的处理，主要代码如下：<br> <figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line"> <span class="comment">/*</span></span><br><span class="line"><span class="comment">  * Name resolution.</span></span><br><span class="line"><span class="comment">  * This is the basic name resolution function, turning a pathname into</span></span><br><span class="line"><span class="comment">  * the final dentry. We expect 'base' to be positive and a directory.</span></span><br><span class="line"><span class="comment">  *</span></span><br><span class="line"><span class="comment">  * Returns 0 and nd will have valid dentry and mnt on success.</span></span><br><span class="line"><span class="comment">  * Returns error and drops reference to input namei data on failure.</span></span><br><span class="line"><span class="comment">  */</span></span><br><span class="line"> static <span class="keyword">int</span> link_path_walk(<span class="keyword">const</span> char * name, <span class="keyword">struct</span> nameidata * nd)</span><br><span class="line"> &#123;</span><br><span class="line">	 <span class="keyword">for</span>(;;)&#123;</span><br><span class="line">			 ...</span><br><span class="line">		 <span class="keyword">if</span> (err) &#123;</span><br><span class="line">			 <span class="comment">// 获取符号链接指向的目标（路径）</span></span><br><span class="line">			 <span class="keyword">const</span> char * s = get_link(nd);</span><br><span class="line">			 <span class="comment">// 判断 get_link 是否返回错误。</span></span><br><span class="line">			 <span class="keyword">if</span> (IS_ERR(s))</span><br><span class="line">				 <span class="keyword">return</span> PTR_ERR(s);</span><br><span class="line"></span><br><span class="line">			 err = <span class="number">0</span>;</span><br><span class="line">			 <span class="comment">// 如果指向的路径为空，释放当前符号链接，跳过不处理。</span></span><br><span class="line">			 <span class="keyword">if</span> (unlikely(!s)) &#123;</span><br><span class="line">				 <span class="comment">/* jumped */</span></span><br><span class="line">				 put_link(nd);</span><br><span class="line">			 &#125;</span><br><span class="line">			 <span class="keyword">else</span> &#123;</span><br><span class="line">				 <span class="comment">// 否则保存当前剩余部分的路径，例如：“a/b/c/d.txt”，其中 “b” 是当前处理的符号链接，那么需要保存 “c/d.txt”。</span></span><br><span class="line">				 nd-&gt;stack[nd-&gt;depth - <span class="number">1</span>].name = name;</span><br><span class="line">				 <span class="comment">// 把接下来要处理的路径设置为符号链接指向的路径。例如：“b” 指向 “e/f”，那么 name 设置为 “e/f”。</span></span><br><span class="line">				 name = s;</span><br><span class="line">				 <span class="keyword">continue</span>;</span><br><span class="line">			 &#125;</span><br><span class="line">		 &#125;</span><br><span class="line">		 <span class="comment">// 检查是否是目录</span></span><br><span class="line">		 <span class="keyword">if</span> (unlikely(!d_can_lookup(nd-&gt;path.dentry))) &#123;</span><br><span class="line">		 <span class="keyword">if</span> (nd-&gt;flags &amp; LOOKUP_RCU) &#123;</span><br><span class="line">			 <span class="keyword">if</span> (unlazy_walk(nd, NULL, <span class="number">0</span>))</span><br><span class="line">				 <span class="keyword">return</span> - ECHILD;</span><br><span class="line">		 &#125;</span><br><span class="line"></span><br><span class="line">		 <span class="keyword">return</span> - ENOTDIR;</span><br><span class="line">	 &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br></pre></td><td class="code"><pre><span class="line">static __always_inline <span class="keyword">const</span> char * get_link(<span class="keyword">struct</span> nameidata * nd)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 获取保存的符号链接。</span></span><br><span class="line">	<span class="keyword">struct</span> saved * last = nd-&gt;stack + nd-&gt;depth - <span class="number">1</span>;</span><br><span class="line">	<span class="keyword">struct</span> dentry * dentry = last-&gt;link.dentry;</span><br><span class="line">	<span class="keyword">struct</span> inode * inode = last-&gt;inode;</span><br><span class="line">	<span class="keyword">int</span> error;</span><br><span class="line">	<span class="keyword">const</span> char * res;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (! (nd-&gt;flags &amp; LOOKUP_RCU)) &#123;</span><br><span class="line">		<span class="comment">// 更新符号链接的访问时间。</span></span><br><span class="line">		touch_atime(&amp;last-&gt;link);</span><br><span class="line">		<span class="comment">// 因为我门刚刚从 rcu-walk 模式切换过来，而 rcu-walk 是不允许抢占的，所以现在需要看看</span></span><br><span class="line">		<span class="comment">// 刚才有没有想要抢占但又抢占失败的进程，如果有的话就让人家先运行，毕竟我们现在是 ref-walk 模式，</span></span><br><span class="line">		<span class="comment">// 不是那么着急的，这就是 cond_resched 所做的。</span></span><br><span class="line">		cond_resched();</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (atime_needs_update(&amp;last-&gt;link, inode)) &#123;<span class="comment">// 判断是否需要更新访问时间</span></span><br><span class="line">		<span class="comment">// 如果需要，那么退出 rcu-walk 模式，unlazy_walk 尝试使当前的 nd-&gt;path，nd-&gt;root，dentry</span></span><br><span class="line">		<span class="comment">// 在 ref-walk 模式下有效。</span></span><br><span class="line">		<span class="keyword">if</span> (unlikely(unlazy_walk(nd, NULL, <span class="number">0</span>)))</span><br><span class="line">			<span class="keyword">return</span> ERR_PTR(-ECHILD);</span><br><span class="line"></span><br><span class="line">		touch_atime(&amp;last-&gt;link);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	error = security_inode_follow_link(dentry, inode, nd-&gt;flags &amp; LOOKUP_RCU);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(error))</span><br><span class="line">		<span class="keyword">return</span> ERR_PTR(error);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// LAST_BIND 在跟踪符号链接时使用，而该符号链接的组件还没有被处理。</span></span><br><span class="line">	nd-&gt;last_type = LAST_BIND;</span><br><span class="line">	res = inode-&gt;i_link;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!res) &#123;</span><br><span class="line">		<span class="keyword">if</span> (nd-&gt;flags &amp; LOOKUP_RCU) &#123;</span><br><span class="line">			<span class="keyword">if</span> (unlikely(unlazy_walk(nd, NULL, <span class="number">0</span>)))</span><br><span class="line">				<span class="keyword">return</span> ERR_PTR(-ECHILD);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// 调用 inode  的 follow_link 方法获取符号链接指向的路径。</span></span><br><span class="line">		res = inode-&gt;i_op-&gt;follow_link(dentry, &amp;last-&gt;cookie);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (IS_ERR_OR_NULL(res)) &#123;</span><br><span class="line">			last-&gt;cookie = NULL;</span><br><span class="line">			<span class="keyword">return</span> res;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 这里的处理跟 path_init 函数里面的处理差不多，处理绝对路径，设置 nd-&gt;path 为文件系统的根目录。</span></span><br><span class="line">	<span class="keyword">if</span> (*res == <span class="string">'/'</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (nd-&gt;flags &amp; LOOKUP_RCU) &#123;</span><br><span class="line">			<span class="keyword">struct</span> dentry * d;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (!nd-&gt;root.mnt)</span><br><span class="line">				set_root_rcu(nd);</span><br><span class="line"></span><br><span class="line">			nd-&gt;path = nd-&gt;root;</span><br><span class="line">			d = nd-&gt;path.dentry;</span><br><span class="line">			nd-&gt;inode = d-&gt;d_inode;</span><br><span class="line">			nd-&gt;seq = nd-&gt;root_seq;</span><br><span class="line"></span><br><span class="line">			<span class="keyword">if</span> (unlikely(read_seqcount_retry(&amp;d-&gt;d_seq, nd-&gt;seq)))</span><br><span class="line">				<span class="keyword">return</span> ERR_PTR(-ECHILD);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			<span class="keyword">if</span> (!nd-&gt;root.mnt)</span><br><span class="line">				set_root(nd);</span><br><span class="line"></span><br><span class="line">			path_put(&amp;nd-&gt;path);</span><br><span class="line">			nd-&gt;path = nd-&gt;root;</span><br><span class="line">			path_get(&amp;nd-&gt;root);</span><br><span class="line">			nd-&gt;inode = nd-&gt;path.dentry-&gt;d_inode;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="comment">// LOOKUP_JUMPED 意味着选择当前 dentry 不是因为它的名称正确，而是出于其他原因。</span></span><br><span class="line">		<span class="comment">// 当跟随“..” 时就会发生这种情况。跟随一个符号链接跳转到 “/”（这里就是这种情况），</span></span><br><span class="line">		<span class="comment">// 通过挂载点时 或访问 /proc/$PID/fd/$FD 符号链接。</span></span><br><span class="line">		nd-&gt;flags |= LOOKUP_JUMPED;</span><br><span class="line"></span><br><span class="line">		while (unlikely(* ++res == <span class="string">'/'</span>));</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (! *res) <span class="comment">// 如果该符号链接只是指向 “/” 的符号链接，那么返回 NULL。</span></span><br><span class="line">		res = NULL;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> res;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>follow_link: called by the VFS to follow a symbolic link to the inode it points to.  Only required if you want to support symbolic links.  This method returns the symlink body to traverse (and possibly resets the current position with nd_jump_link()).  If the body won’t go away until the inode is gone, nothing else is needed; if it needs to be otherwise pinned, the data needed to release whatever we’d grabbed is to be stored in void * variable passed by address to follow_link() instance.</p>
+</blockquote>
+<p>follow_link: VFS 调用 <code>follow_link</code> 来跟踪指向 <code>inode</code> 的符号链接。仅当您希望支持符号链接时才需要。这个方法返回要跟随的符号链接的内容(可能使用 <code>nd_jump_link()</code> 重置当前位置)。如果内容不会在inode消失之前消失，则不需要其他任何；如果需要以其他方式固定它，为了将来可以释放这些获取的数据，我们把它将存储在 <code>void **</code> 类型的变量中，该变量通过传址方式传递给 follow_link()。</p>
+<blockquote>
+<p>put_link: called by the VFS to release resources allocated by follow_link().  The cookie stored by follow_link() is passed to this method as the last parameter; only called when cookie isn’t NULL.</p>
+</blockquote>
+<p>VFS 调用 <code>put_link</code> 来释放 <code>follow_link</code> 分配的资源。cookie 参数就是传个 <code>follow_link</code> 函数的 <code>void **</code> 类型变量。只有当 cookie 不为空的时候才调用该函数。</p>
+<p>到这里基本全部分析完 <code>link_path_walk</code> 函数，假设此时我们已经处于路径中的最后一个分量，该分量有可能是个常规的目录，也有可能是个符号链接，不管何种情况 <code>link_path_walk</code> 函数返回 0，退出自身的 <code>for( ; ; )</code> 循环。接下来调用 <code>do_last</code>函数解析最后一个分量。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="keyword">struct</span> file * path_openat(<span class="keyword">struct</span> nameidata * nd,</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op, unsigned flags) &#123;</span><br><span class="line">	...</span><br><span class="line">	while (! (error = link_path_walk(s, nd)) &amp;&amp; (error = do_last(nd, file, op, &amp;opened)) &gt; <span class="number">0</span>) &#123;</span><br><span class="line">		nd-&gt;flags &amp;= ~(LOOKUP_OPEN | LOOKUP_CREATE | LOOKUP_EXCL);</span><br><span class="line">		s = trailing_symlink(nd);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (IS_ERR(s)) &#123;</span><br><span class="line">			error = PTR_ERR(s);</span><br><span class="line">			<span class="keyword">break</span>;</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>我们现在只是顺着路径走到了最终目标所在的目录，对最终目标还没有进行任何处理，甚至连这个最终目标到底存不存在我们都不知道。这一切都会交给 <code>do_last</code> 来完成，如果一切顺利它会填充 file 结构并返回 0；如果返回值大于 0（其实还是 1，为什么是“还是”？回头看看 <code>walk_component</code> 你就明白了），那就表明这个最终目标是一个符号链接且需要跟随这个符号链接，那么就要进入 <code>while</code> 循环的主体来顺着符号链接找到真正目标（还有一种情况是虽然最终目标是一个符号链接但我们只想得到这个符号链接本身，也不会进入这个循环）。符号链接的处理我们应该很熟悉了，只不过因为是最终目标所以增加了一些对标志位的判断和处理，大家理解这段代码应该不会有什么问题。下面是函数 <code>walk_component</code> 的流程图：</p>
+<p><img src="https://pic.superbed.cn/item/5d7675ab451253d17823adf3.png" alt=""></p>
+<p>接下来我们就要进入 <code>do_last</code> 了，首先快速浏览一遍这个函数，它有 200 多行，而且遍地是 if，到处是 goto，谁第一次看到它都会发懵，根本就无从下手。但是只要我们抓住本质，一切事物都有规律可循，比如这个 <code>do_last</code>，可以说它是既复杂又简单。说它复杂是因为这里面进行了大量的标志位的检查，这些标志位是用户传进来指示 Kernel 需要打开什么样的文件、打开这些文件的模式以及怎么打开这些文件的，这些标志位总共有二十几个而且还相互影响相互制约，盘根错节的能不复杂吗？说它简单，那是和 <code>link_path_walk</code> 相比，在逻辑上和结构上相对简单，虽然这里也会遇到诸如跟随“..”、跟随符号链接、跟随挂载点，但这都是我们熟悉的老朋友了，没有什么新奇的东西。</p>
+<p>既然 <code>do_las</code>t 的复杂之处是在于对各个标志位的判断，那么我们至少需要了解设置这些标志位的目的，这可以参考 Linux 最权威的文档——<a href="http://man7.org/linux/man-pages/man2/open.2.html" target="_blank" rel="noopener">man 手册有关 open 的内容</a>。我们把这个手册当成指路牌，也可以看前面的 <a href="https://woitaylor.github.io/2019/08/29/Linux-Open%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%AF%87%E4%B8%80/" target="_blank" rel="noopener">open 系统调用篇一</a>。它可以引导我们理解 <code>do_last</code> 里对这些标志位的操作。其实用户设置的标志位并不是原封不动的传递进来，大家应该还记得在 <code>do_sys_open</code> 里会调用 <code>build_open_flags</code> 对这些标志位进行预处理和分装，所以我们可能还需要参考这个函数。</p>
+<p>事情是这样的话我们的 <code>do_last</code> 之行就不能像之前一样沿着代码一步一步边走边看了，如果那样的话我们很快就会迷失在 flag 的海洋之中，而且也会使我们本来愉快的旅行变得枯燥乏味。现在让我们用一种全新的方式游览 <code>do_last</code> 吧，我称之为“情景模式”。在情景模式中我们假设了几个 open 应用的场景，然后在我们想像的场景之中看看都有哪些标志位起到了怎样的作用。</p>
+<h4 id="【场景一】open-pathname-O-RDONLY"><a href="#【场景一】open-pathname-O-RDONLY" class="headerlink" title="【场景一】open(pathname, O_RDONLY)"></a>【场景一】open(pathname, O_RDONLY)</h4><p>使用只读方式打开一个文件，这应该是最简单的 open 应用了。我们先来看看 <code>build_open_flags</code> 是怎么包装 O_RDONLY 的，<br>这个函数前面已经分析过了，这里我们只关注 <code>O_RDONLY</code> 的部分：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">static inline <span class="keyword">int</span> build_open_flags(<span class="keyword">int</span> flags, umode_t mode, <span class="keyword">struct</span> open_flags *op)</span><br><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line">	op-&gt;mode = <span class="number">0</span>; <span class="comment">// 没有创建文件，所以 mode 设置为 0；</span></span><br><span class="line">	...</span><br><span class="line">	acc_mode = MAY_OPEN | ACC_MODE(flags);</span><br><span class="line">	...</span><br><span class="line">	op-&gt;open_flag = flags;</span><br><span class="line">	...</span><br><span class="line">	op-&gt;intent = flags &amp; O_PATH ? <span class="number">0</span> : LOOKUP_OPEN;</span><br><span class="line">	...</span><br><span class="line">	op-&gt;lookup_flags = lookup_flags;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经过我们的简化，<code>build_open_flags</code> 和 <code>O_RDONLY</code> 相关的就剩这么三行了。我记得第一天说过，mode 代表文件权限只有在新建文件的时候才会用到，咱们当前的情景显然不是创建文件，所以先将 mode 置零。接下来设置访问模式 acc_mode 这个东西主要用来进行权限检查，把宏 <code>ACC_MODE</code> 展开后这一行其实就是这样：<code>acc_mode = MAY_OPEN | MAY_READ</code>，其意思也很明白，那就是对于目标文件我们至少需要打开和读取的权限。最后是判断标志位中 <code>O_PATH</code> 有没有被设置，如果没有就将 intent 加上 <code>LOOKUP_OPEN</code>，intent 用来标记我们对最终目标想要做什么操作（intent 字面意思就是“意图”），所以在以后我们会看到这里暂存的 op-&gt;intent 会在 <code>do_last</code> 里重出江湖。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Handle the last step of open()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">static <span class="keyword">int</span> do_last(<span class="keyword">struct</span> nameidata * nd,</span><br><span class="line">	<span class="keyword">struct</span> file * file, <span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">	nd-&gt;flags &amp;= ~LOOKUP_PARENT;</span><br><span class="line">	nd-&gt;flags |= op-&gt;intent;</span><br><span class="line"></span><br><span class="line">  ...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (! (open_flag &amp; O_CREAT)) &#123;</span><br><span class="line">		<span class="comment">// 判断 last.name 是否以 “/” 结尾。</span></span><br><span class="line">		<span class="keyword">if</span> (nd-&gt;last.name[nd-&gt;last.<span class="built_in">len</span>])</span><br><span class="line">			nd-&gt;flags |= LOOKUP_FOLLOW | LOOKUP_DIRECTORY;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/* we _can_ be in RCU mode here */</span></span><br><span class="line">		error = lookup_fast(nd, &amp;path, &amp;inode, &amp;seq);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (likely(!error))</span><br><span class="line">			<span class="keyword">goto</span> finish_lookup;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error &lt; <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">return</span> error;</span><br><span class="line"></span><br><span class="line">		BUG_ON(nd-&gt;inode != dir-&gt;d_inode);</span><br><span class="line">	&#125;</span><br><span class="line">  ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><code>LOOKUP_PAREN</code>T 实在 <code>patn_init</code> 的时候设置的，当时我们的目标是找到最终文件的父目录，但现在我们要找的就是最终文件，所以需要将这个标志位清除，紧接着 intent 重现江湖。很明显我们当前的情况不是创建文件，所以会进入这个 <code>if (! (open_flag &amp; O_CREAT))</code>，这里有个熟面孔 <code>lookup_fast</code>，看到老朋友就是高兴。还记得 <code>lookup_fast</code> 执行结构有几种情况么？如果返回 0，则表示成功找到；返回 1，表示内存中没有，需要 <code>lookup_real</code>；返回小于 0，则表示需要从当前 rcu-walk 转到 ref-walk。那现在我们先看看返回 1 的情况。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Handle the last step of open()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">static <span class="keyword">int</span> do_last(<span class="keyword">struct</span> nameidata * nd,</span><br><span class="line">	<span class="keyword">struct</span> file * file, <span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line">  ...</span><br><span class="line">	inode_lock_shared(dir-&gt;d_inode);</span><br><span class="line">	error = lookup_open(nd, &amp;path, file, op, got_write, opened);</span><br><span class="line">	inode_unlock_shared(dir-&gt;d_inode);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (error &lt;= <span class="number">0</span>) &#123;</span><br><span class="line">		<span class="keyword">if</span> (error)</span><br><span class="line">			<span class="keyword">goto</span> out;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> ((*opened &amp; FILE_CREATED) || !S_ISREG(file_inode(file)-&gt;i_mode))</span><br><span class="line">			will_truncate = <span class="literal">false</span>;</span><br><span class="line"></span><br><span class="line">		audit_inode(nd-&gt;name, file-&gt;f_path.dentry, <span class="number">0</span>);</span><br><span class="line">		<span class="keyword">goto</span> opened;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * If atomic_open() acquired write access it is dropped now due to</span></span><br><span class="line"><span class="comment">	 * possible mount and symlink following (this might be optimized away if</span></span><br><span class="line"><span class="comment">	 * necessary...)</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	<span class="keyword">if</span> (got_write) &#123;</span><br><span class="line">		mnt_drop_write(nd-&gt;path.mnt);</span><br><span class="line">		got_write = <span class="literal">false</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 处理按某种方式管理的目录（自动挂载工具 autofs 管理这个目录的跳转、挂载点、或自动挂载点）</span></span><br><span class="line">	error = follow_managed(&amp;path, nd);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(error &lt; <span class="number">0</span>))</span><br><span class="line">		<span class="keyword">return</span> error;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(d_is_negative(path.dentry))) &#123;</span><br><span class="line">		path_to_nameidata(&amp;path, nd);</span><br><span class="line">		<span class="keyword">return</span> -ENOENT;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * create/update audit record if it already exists.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	audit_inode(nd-&gt;name, path.dentry, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely((open_flag &amp; (O_EXCL | O_CREAT)) == (O_EXCL | O_CREAT))) &#123;</span><br><span class="line">		path_to_nameidata(&amp;path, nd);</span><br><span class="line">		<span class="keyword">return</span> -EEXIST;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	seq = <span class="number">0</span>;	<span class="comment">/* out of RCU mode, so the value doesn't matter */</span></span><br><span class="line">	inode = d_backing_inode(path.dentry);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p><code>lookup_fast</code> 返回 1 的话程序会接着往下执行。现在的程序已经肯定不在 rcu-walk 模式里了（为什么？），所以可以使用各种有可能引起进程阻塞的锁来占有相应的资源了。接下来是一个新朋友 <code>lookup_open</code>，说是新朋友其实是新瓶装旧酒，因为它和 <code>lookup_slow</code>很像，都是先使用 <code>lookup_dcache</code> 在内存中找，如果不行就启动 <code>lookup_real</code> 在具体文件系统里面去找，当它成功返回时会将 path 指向找到的目标。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Look up and maybe create and open the last component.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Must be called with i_mutex held on parent.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Returns 0 if the file was successfully atomically created (if necessary) and</span></span><br><span class="line"><span class="comment"> * opened.	In this case the file will be returned attached to @file.</span></span><br><span class="line"><span class="comment"> * 如果自动创建(如果需要)并打开文件成功，则返回0。在这种情况下，将 file 描述符通过参数 @file 返回。</span></span><br><span class="line"><span class="comment"> * Returns 1 if the file was not completely opened at this time, though lookups</span></span><br><span class="line"><span class="comment"> * and creations will have been performed and the dentry returned in @path will</span></span><br><span class="line"><span class="comment"> * be positive upon return if O_CREAT was specified.  If O_CREAT wasn't</span></span><br><span class="line"><span class="comment"> * specified then a negative dentry may be returned.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 如果此时文件还没有完全打开，则返回1，但是已经执行了查找和创建，如果指定了O_CREAT，</span></span><br><span class="line"><span class="comment"> * 则返回的 @path 参数的dentry为positive。如果没有指定O_CREAT，则可能返回一个 negative dentry。</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * An error code is returned otherwise.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * FILE_CREATE will be set in @*opened if the dentry was created and will be</span></span><br><span class="line"><span class="comment"> * cleared otherwise prior to returning.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * 如果创建了dentry, FILE_CREATE将设置在@*open中，否则在返回之前将被清除。</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">static <span class="keyword">int</span> lookup_open(<span class="keyword">struct</span> nameidata * nd, <span class="keyword">struct</span> path * path,</span><br><span class="line">	<span class="keyword">struct</span> file * file,</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">bool</span> got_write, <span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">struct</span> dentry * dir = nd-&gt;path.dentry;</span><br><span class="line">	<span class="keyword">struct</span> vfsmount * mnt = nd-&gt;path.mnt;</span><br><span class="line">	<span class="keyword">struct</span> inode * dir_inode = dir-&gt;d_inode;</span><br><span class="line">	<span class="keyword">struct</span> dentry * dentry;</span><br><span class="line">	<span class="keyword">int</span> error;</span><br><span class="line">	<span class="keyword">bool</span> need_lookup;</span><br><span class="line"></span><br><span class="line">	*opened &amp;= ~FILE_CREATED;</span><br><span class="line">	dentry = lookup_dcache(&amp;nd-&gt;last, dir, nd-&gt;flags, &amp;need_lookup);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (IS_ERR(dentry))</span><br><span class="line">		<span class="keyword">return</span> PTR_ERR(dentry);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Cached positive dentry: will open in f_op-&gt;open */</span></span><br><span class="line">	<span class="keyword">if</span> (!need_lookup &amp;&amp; dentry-&gt;d_inode)</span><br><span class="line">		<span class="keyword">goto</span> out_no_open;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ((nd-&gt;flags &amp; LOOKUP_OPEN) &amp;&amp; dir_inode-&gt;i_op-&gt;atomic_open) &#123;</span><br><span class="line">		<span class="keyword">return</span> atomic_open(nd, dentry, path, file, op, got_write,</span><br><span class="line">			need_lookup, opened);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (need_lookup) &#123;</span><br><span class="line">		BUG_ON(dentry-&gt;d_inode);</span><br><span class="line"></span><br><span class="line">		dentry = lookup_real(dir_inode, dentry, nd-&gt;flags);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (IS_ERR(dentry))</span><br><span class="line">			<span class="keyword">return</span> PTR_ERR(dentry);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Negative dentry, just create the file */</span></span><br><span class="line">	<span class="keyword">if</span> (!dentry-&gt;d_inode &amp;&amp; (op-&gt;open_flag &amp; O_CREAT)) &#123;</span><br><span class="line">		umode_t mode = op-&gt;mode;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!IS_POSIXACL(dir-&gt;d_inode))</span><br><span class="line">			mode &amp;= ~current_umask();</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * This write is needed to ensure that a</span></span><br><span class="line"><span class="comment">		 * rw-&gt;ro transition does not occur between</span></span><br><span class="line"><span class="comment">		 * the time when the file is created and when</span></span><br><span class="line"><span class="comment">		 * a permanent write count is taken through</span></span><br><span class="line"><span class="comment">		 * the 'struct file' in finish_open().</span></span><br><span class="line"><span class="comment">		 * 为了确保在创建文件和通过 finish_open() 中的 “struct file” 执行永久写计数之间不会发生 rw-&gt;ro 转换，</span></span><br><span class="line"><span class="comment">		 * 需要执行这个写操作。</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		<span class="keyword">if</span> (!got_write) &#123;</span><br><span class="line">			error = -EROFS;</span><br><span class="line">			<span class="keyword">goto</span> out_dput;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		*opened |= FILE_CREATED;</span><br><span class="line">		error = security_path_mknod(&amp;nd-&gt;path, dentry, mode, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error)</span><br><span class="line">			<span class="keyword">goto</span> out_dput;</span><br><span class="line">		<span class="comment">// 调用 inode 的 i_op-&gt;create 创建文件。</span></span><br><span class="line">		error = vfs_create2(mnt, dir-&gt;d_inode, dentry, mode,</span><br><span class="line">			nd-&gt;flags &amp; LOOKUP_EXCL);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error)</span><br><span class="line">			<span class="keyword">goto</span> out_dput;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">out_no_open:</span><br><span class="line">	path-&gt;dentry = dentry;</span><br><span class="line">	path-&gt;mnt = nd-&gt;path.mnt;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">out_dput:</span><br><span class="line">	dput(dentry);</span><br><span class="line">	<span class="keyword">return</span> error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<blockquote>
+<p>atomic_open: called on the last component of an open. Using this optional method the filesystem can look up, possibly create and open the file in one atomic operation.  If it cannot perform this (e.g. the file type turned out to be wrong) it may signal this by returning 1 instead of usual 0 or -ve .  This method is only called if the last component is negative or needs lookup.  Cached positive dentries are still handled by f_op-&gt;open().  If the file was created, the FILE_CREATED flag should be set in “opened”.  In case of O_EXCL the method must only succeed if the file didn’t exist and hence FILE_CREATED shall always be set on success.</p>
+</blockquote>
+<p>atomic_open：在 open 操作的最后一个组件时被调用。使用这种可选方法，文件系统可以在一个原子操作中实现查找、创建和打开文件。如果它不能执行这个(例如，文件类型被证明是错误的)，它可能通过返回 1 而不是通常的 0 或 -ve 来发出信号。只有当最后一个组件为 negative 或需要查找时才调用此方法。缓存的 positive dentry 仍然由 f_op-&gt;open() 处理。如果文件已经创建，<code>FILE_CREATED</code> 标志应该设置在 “open”中。在 <code>O_EXCL</code> 的情况下，该方法只有在文件不存在时才必须成功，因此 <code>FILE_CREATED</code> 应该始终设置为成功。</p>
+<p>接下来是 <code>follow_managed</code> 它也算是老朋友吧，之前我们简单介绍过的。再往下走，我们来到了 finish_lookup：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">finish_lookup:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (nd-&gt;depth)</span><br><span class="line">		put_link(nd);</span><br><span class="line"></span><br><span class="line">	error = should_follow_link(nd, &amp;path, nd-&gt;flags &amp; LOOKUP_FOLLOW, inode, seq);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(error))</span><br><span class="line">		<span class="keyword">return</span> error;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ((nd-&gt;flags &amp; LOOKUP_RCU) || nd-&gt;path.mnt != path.mnt) &#123;</span><br><span class="line">		path_to_nameidata(&amp;path, nd);</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		save_parent.dentry = nd-&gt;path.dentry;</span><br><span class="line">		save_parent.mnt = mntget(path.mnt);</span><br><span class="line">		nd-&gt;path.dentry = path.dentry;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	nd-&gt;inode = inode;</span><br><span class="line">	nd-&gt;seq = seq;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Why this, you ask?  _Now_ we might have grown LOOKUP_JUMPED... */</span></span><br></pre></td></tr></table></figure>
+<p>这里是 <code>lookup_fast</code> 返回 1 和返回 0 的交汇点。这时就需要更新 nd 了，但这个交汇点有两个来源也就是说现在有可能还在 rcu-walk 模式当中，所以还需要分情况处理一下。请注意这个 if 的第二个条件 <code>nd-&gt;path.mnt != path-&gt;mnt</code>，什么情况下会出现这两个 mnt 不相等呢？还记得 nd 的脾气吗，当遇到挂载点的时候 nd 会原地踏步，只有 path 才大无畏的向前走。既然两个 mnt 不一样了，那么更新 nd 前也许要放弃原先占有的结构，这就是 <code>path_to_nameidata</code> 所做。接下来就要彻底告别 rcu-walk 了：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">static inline void path_to_nameidata(<span class="keyword">const</span> <span class="keyword">struct</span> path * path,</span><br><span class="line">	<span class="keyword">struct</span> nameidata * nd)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">// 如果为 ref-walk 模式，那么释放计数引用。（这个模式下会获取 dentry 和 mnt 的引用）</span></span><br><span class="line">	<span class="keyword">if</span> (! (nd-&gt;flags &amp; LOOKUP_RCU)) &#123;</span><br><span class="line">		dput(nd-&gt;path.dentry);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (nd-&gt;path.mnt != path-&gt;mnt)</span><br><span class="line">			mntput(nd-&gt;path.mnt);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	nd-&gt;path.mnt = path-&gt;mnt;</span><br><span class="line">	nd-&gt;path.dentry = path-&gt;dentry;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<p>接下来调用 <code>complete_walk</code> 来结束 rcu-walk 模式。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">finish_open:</span><br><span class="line">	error = complete_walk(nd);</span><br></pre></td></tr></table></figure>
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * complete_walk - successful completion of path walk</span></span><br><span class="line"><span class="comment"> * @nd:  pointer nameidata</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * If we had been in RCU mode, drop out of it and legitimize nd-&gt;path.</span></span><br><span class="line"><span class="comment"> * Revalidate the final result, unless we'd already done that during</span></span><br><span class="line"><span class="comment"> * the path walk or the filesystem doesn't ask for it.	Return 0 on</span></span><br><span class="line"><span class="comment"> * success, -error on failure.	In case of failure caller does not</span></span><br><span class="line"><span class="comment"> * need to drop nd-&gt;path.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">static <span class="keyword">int</span> complete_walk(<span class="keyword">struct</span> nameidata * nd)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">struct</span> dentry * dentry = nd-&gt;path.dentry;</span><br><span class="line">	<span class="keyword">int</span> status;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果还处于 RCU 模式，那么退出该模式，并使用 unlazy_walk 验证 nd-&gt;path 的有效性。</span></span><br><span class="line">	<span class="keyword">if</span> (nd-&gt;flags &amp; LOOKUP_RCU) &#123;</span><br><span class="line">		<span class="keyword">if</span> (! (nd-&gt;flags &amp; LOOKUP_ROOT))</span><br><span class="line">			nd-&gt;root.mnt = NULL;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (unlikely(unlazy_walk(nd, NULL, <span class="number">0</span>)))</span><br><span class="line">			<span class="keyword">return</span> - ECHILD;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="comment">// 如果没有设置 LOOKUP_JUMPED 标志，返回 0；</span></span><br><span class="line">	<span class="keyword">if</span> (likely(! (nd-&gt;flags &amp; LOOKUP_JUMPED)))</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果不需要再进行</span></span><br><span class="line">	<span class="keyword">if</span> (likely(! (dentry-&gt;d_flags &amp; DCACHE_OP_WEAK_REVALIDATE)))</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="comment">// called when the VFS needs to revalidate a "jumped" dentr</span></span><br><span class="line">	status = dentry-&gt;d_op-&gt;d_weak_revalidate(dentry, nd-&gt;flags);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (status &gt; <span class="number">0</span>)</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!status)</span><br><span class="line">		status = -ESTALE;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">return</span> status;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>参考 vfs.txt 文档的 <code>d_weak_revalidate</code> 函数说明：</p>
+<blockquote>
+<p>d_weak_revalidate: called when the VFS needs to revalidate a “jumped” dentry. This is called when a path-walk ends at dentry that was not acquired by doing a lookup in the parent directory. This includes “/“, “.” and “..”, as well as procfs-style symlinks and mountpoint traversal.</p>
+</blockquote>
+<p>d_weak_revalidate:当 VFS 需要重新验证 “jumped” 的 dentry 时调用。当路径查找结束时获取的 dentry （路径最后一个分量）不是通过在父目录中进行查找获得的。这包括 “/“，”.” 和 “..”，以及 procfs-style 符号链接和碰到挂载点时。</p>
+<blockquote>
+<p>In this case, we are less concerned with whether the dentry is still fully correct, but rather that the inode is still valid. As with d_revalidate, most local filesystems will set this to NULL since their dcache entries are always valid.</p>
+</blockquote>
+<p>在这种情况下，我们不太关心 dentry 是否仍然完全正确，而是关心 inode 是否仍然有效。与 d_revalidate一样，大多数本地文件系统将该值设置为 NULL，因为它们的 dcache 条目总是有效的。</p>
+<blockquote>
+<p>This function has the same return code semantics as d_revalidate.</p>
+</blockquote>
+<p>这个函数具有与d_revalidate相同的返回代码语义。</p>
+<blockquote>
+<p>d_weak_revalidate is only called after leaving rcu-walk mode.</p>
+</blockquote>
+<p>该函数只有在离开 rcu_walk 模式的时候才会被调用。</p>
+<p>告别 rcu-walk 其实很简单，最主要的就是调用 <code>unlazy_walk</code>，之后就会重新启动进程抢占，本进程就有可能被切换出去，这样的话当前 CPU 就会经过 quiescent state，当所有 CPU 都经过了自己的 quiescent state 之后，在 rcu-walk 期间的变更才会被更新。接着如果当前不是 <code>LOOKUP_JUMPED</code>，就会直接返回。这个 <code>LOOKUP_JUMPED</code> 在哪里会被设置呢？其实我们之前遇到了很多次设置 <code>LOOKUP_JUMPED</code> 的地方，比方说遇到“..”的时候、遇到挂载点的时候、符号链接是绝对路径的时候，它们的共同点就是有可能会跨越（jump）文件系统。如果的确跨越了文件系统也很简单，检查一下当前 dentry 需不需要验证（<code>DCACHE_OP_WEAK_REVALIDATE</code>），大部分情况是不需要，所以这段代码咱们也省略了，有兴趣的同学请查阅 Kernel 源代码。</p>
+<p>接下来终于要真正“打开”这个文件了：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">finish_open_created:</span><br><span class="line">	error = may_open(&amp;nd-&gt;path, acc_mode, open_flag);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (error)</span><br><span class="line">		<span class="keyword">goto</span> out;</span><br><span class="line"></span><br><span class="line">	BUG_ON(*opened &amp; FILE_OPENED);					</span><br><span class="line">	<span class="comment">/* once it's opened, it's opened */</span></span><br><span class="line">	error = vfs_open(&amp;nd-&gt;path, file, current_cred());</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!error) &#123;</span><br><span class="line">		*opened |= FILE_OPENED;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (error == -EOPENSTALE)</span><br><span class="line">			<span class="keyword">goto</span> stale_open;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">goto</span> out;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">out:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (unlikely(error &gt; <span class="number">0</span>)) &#123;</span><br><span class="line">		WARN_ON(<span class="number">1</span>);</span><br><span class="line">		error = -EINVAL;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (got_write)</span><br><span class="line">		mnt_drop_write(nd-&gt;path.mnt);</span><br><span class="line"></span><br><span class="line">	path_put(&amp;save_parent);</span><br><span class="line">	<span class="keyword">return</span> error;</span><br></pre></td></tr></table></figure>
+
+
+<p><code>may_open</code> 就是权限和标志位的检查，咱们就懒得进去看了。<code>vfs_open</code> 会真正打开这个我们期待已久的目标文件，里面主要是利用该文件系统自己的 <code>file_operations.open</code> 来填充 file 结构。如果一切顺利 <code>vfs_open</code> 返回 0，然后释放占用的资源之后就大功告成可以返回了。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * vfs_open - open the file at the given path</span></span><br><span class="line"><span class="comment"> * @path: path to open</span></span><br><span class="line"><span class="comment"> * @file: newly allocated file with f_flag initialized</span></span><br><span class="line"><span class="comment"> * @cred: credentials to use</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"><span class="keyword">int</span> vfs_open(<span class="keyword">const</span> <span class="keyword">struct</span> path *path, <span class="keyword">struct</span> file *file,</span><br><span class="line">	     <span class="keyword">const</span> <span class="keyword">struct</span> cred *cred)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">struct</span> inode *inode = vfs_select_inode(path-&gt;dentry, file-&gt;f_flags);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (IS_ERR(inode))</span><br><span class="line">		<span class="keyword">return</span> PTR_ERR(inode);</span><br><span class="line"></span><br><span class="line">	file-&gt;f_path = *path;</span><br><span class="line">	<span class="keyword">return</span> do_dentry_open(file, inode, NULL, cred);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">int</span> do_dentry_open(<span class="keyword">struct</span> file *f,</span><br><span class="line">			  <span class="keyword">struct</span> inode *inode,</span><br><span class="line">			  <span class="keyword">int</span> (*open)(<span class="keyword">struct</span> inode *, <span class="keyword">struct</span> file *),</span><br><span class="line">			  <span class="keyword">const</span> <span class="keyword">struct</span> cred *cred)&#123;</span><br><span class="line">	static <span class="keyword">const</span> <span class="keyword">struct</span> file_operations empty_fops = &#123;&#125;;</span><br><span class="line">	<span class="keyword">int</span> error;</span><br><span class="line"></span><br><span class="line">	f-&gt;f_mode = OPEN_FMODE(f-&gt;f_flags) | FMODE_LSEEK |</span><br><span class="line">				FMODE_PREAD | FMODE_PWRITE;</span><br><span class="line">		...</span><br><span class="line">		open = f-&gt;f_op-&gt;open;</span><br><span class="line">		...</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h4 id="【场景二】open-pathname-O-PATH"><a href="#【场景二】open-pathname-O-PATH" class="headerlink" title="【场景二】open(pathname, O_PATH)"></a>【场景二】open(pathname, O_PATH)</h4><p>使用 <code>O_PATH</code> 将不会真正打开一个文件，而只是准备好该文件的文件描述符，而且如果使用该标志位的话系统会忽略大部分其他的标志位。特别是如果配合使用 <code>O_NOFOLLOW</code>，那么遇到符号链接的时候将会返回这个符号链接本身的文件描述符，而非符号链接所指的对象。<br>咱们还是先看看 <code>build_open_flags</code> 针对 <code>O_PATH</code> 做了什么手脚：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line">static inline <span class="keyword">int</span> build_open_flags(<span class="keyword">int</span> flags, umode_t mode, <span class="keyword">struct</span> open_flags *op)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> lookup_flags = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> acc_mode;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Clear out all open flags we don't know about so that we don't report</span></span><br><span class="line"><span class="comment">	 * them in fcntl(F_GETFD) or similar interfaces.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	flags &amp;= VALID_OPEN_FLAGS;</span><br><span class="line"></span><br><span class="line">		...</span><br><span class="line">		op-&gt;mode = <span class="number">0</span>;</span><br><span class="line">	  ...</span><br><span class="line">	<span class="keyword">else</span> <span class="keyword">if</span> (flags &amp; O_PATH) &#123;</span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * If we have O_PATH in the open flag. Then we</span></span><br><span class="line"><span class="comment">		 * cannot have anything other than the below set of flags</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		flags &amp;= O_DIRECTORY | O_NOFOLLOW | O_PATH;</span><br><span class="line">		acc_mode = <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	op-&gt;intent = flags &amp; O_PATH ? <span class="number">0</span> : LOOKUP_OPEN;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (flags &amp; O_DIRECTORY)</span><br><span class="line">		lookup_flags |= LOOKUP_DIRECTORY;</span><br><span class="line">	<span class="keyword">if</span> (!(flags &amp; O_NOFOLLOW))</span><br><span class="line">		lookup_flags |= LOOKUP_FOLLOW;</span><br><span class="line">	op-&gt;lookup_flags = lookup_flags;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先在 else if 分支中，这里进行了一个“与”操作，这就将除了 <code>O_DIRECTORY</code> 和 <code>O_NOFOLLOW</code>的其他标志位全部清零了，这就忽略了其他的标志位。在 open 的说明中还有一个标志位 <code>O_CLOEXEC</code> 也受到 O_PATH 的保护，但是这个标志位不允许在用户空间直接设置，所以 <code>build_open_flags</code> 一开始就把它干掉了。另外 <code>O_PATH</code> 本身连一个真正的打开操作都不是就跟别提创建了，所以 mode 当然要置零了。既然不会打开文件那么也就和 <code>LOOKUP_OPEN</code> 无缘了。接下来就是处理一下受 <code>O_PATH</code> 保护两个标志位。注意，如果没有设置 <code>O_NOFOLLOW</code> 的话遇到符号链接是需要跟踪到底的。其实就算设置了 <code>O_NOFOLLOW</code>，我们还会看到在 do_last 里还有一次补救的机会，那就是路径名以 “/” 结尾的话也会跟踪符号链接到底的。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line"><span class="comment">/*</span></span><br><span class="line"><span class="comment"> * Handle the last step of open()</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line">static <span class="keyword">int</span> do_last(<span class="keyword">struct</span> nameidata * nd,</span><br><span class="line">	<span class="keyword">struct</span> file * file, <span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> (! (open_flag &amp; O_CREAT)) &#123;</span><br><span class="line">		<span class="comment">// 判断 last.name 是否以 “/” 结尾，如果是则设置 LOOKUP_FOLLOW 表示需要跟随符号链接。</span></span><br><span class="line">		<span class="keyword">if</span> (nd-&gt;last.name[nd-&gt;last.<span class="built_in">len</span>])</span><br><span class="line">			nd-&gt;flags |= LOOKUP_FOLLOW | LOOKUP_DIRECTORY;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/* we _can_ be in RCU mode here */</span></span><br><span class="line">		error = lookup_fast(nd, &amp;path, &amp;inode, &amp;seq);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (likely(!error))</span><br><span class="line">			<span class="keyword">goto</span> finish_lookup;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error &lt; <span class="number">0</span>)</span><br><span class="line">			<span class="keyword">return</span> error;</span><br><span class="line"></span><br><span class="line">		BUG_ON(nd-&gt;inode != dir-&gt;d_inode);</span><br><span class="line">	&#125;</span><br><span class="line">...</span><br><span class="line">retry_lookup:</span><br><span class="line">	...</span><br><span class="line">	mutex_lock(&amp;dir-&gt;d_inode-&gt;i_mutex);</span><br><span class="line">	error = lookup_open(nd, &amp;path, file, op, got_write, opened);</span><br><span class="line">	mutex_unlock(&amp;dir-&gt;d_inode-&gt;i_mutex);</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	error = follow_managed(&amp;path, nd);</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">finish_lookup:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (nd-&gt;depth)</span><br><span class="line">		put_link(nd);</span><br><span class="line"></span><br><span class="line">	<span class="comment">// 如果设置了 LOOKUP_FOLLOW 那么就跟随符号链接。当然最后返回一个符号链接也是 OK 的。</span></span><br><span class="line">	error = should_follow_link(nd, &amp;path, nd-&gt;flags &amp; LOOKUP_FOLLOW, inode, seq);</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ((nd-&gt;flags &amp; LOOKUP_RCU) || nd-&gt;path.mnt != path.mnt) &#123;</span><br><span class="line">			path_to_nameidata(&amp;path, nd);</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="keyword">else</span> &#123;</span><br><span class="line">			save_parent.dentry = nd-&gt;path.dentry;</span><br><span class="line">			save_parent.mnt = mntget(path.mnt);</span><br><span class="line">			nd-&gt;path.dentry = path.dentry;</span><br><span class="line"></span><br><span class="line">		&#125;</span><br><span class="line">	...</span><br><span class="line">finish_open:</span><br><span class="line">	error = complete_walk(nd);</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	<span class="comment">// should_follow_link 返回 0，也就是没有设置 LOOKUP_FOLLOW（不跟随符号链接），</span></span><br><span class="line">	<span class="comment">// 但是如果是设置了 O_PATH，那么即使是符号链接也是 OK 的，继续往下执行。</span></span><br><span class="line">	<span class="keyword">if</span> (unlikely(d_is_symlink(nd-&gt;path.dentry)) &amp;&amp; ! (open_flag &amp; O_PATH)) &#123;</span><br><span class="line">		error = -ELOOP;</span><br><span class="line">		<span class="keyword">goto</span> out;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">finish_open_created:</span><br><span class="line">	error = may_open(&amp;nd-&gt;path, acc_mode, open_flag);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (error)</span><br><span class="line">		<span class="keyword">goto</span> out;</span><br><span class="line"></span><br><span class="line">	BUG_ON(*opened &amp; FILE_OPENED);					</span><br><span class="line">	<span class="comment">/* once it's opened, it's opened 如果一切正常返回 0*/</span></span><br><span class="line">	error = vfs_open(&amp;nd-&gt;path, file, current_cred());</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!error) &#123;</span><br><span class="line">		*opened |= FILE_OPENED;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">opened:</span><br><span class="line">	error = open_check_o_direct(file);</span><br><span class="line"> ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里即使是返回符号链接也是 OK 的，我们来看看什么情况下符号链接是 OK 的？首先必须是 <code>O_PATH</code>，也就是我们假设的场景；同时还需要没有设置 <code>LOOKUP_FOLLOW</code>。在 <code>build_open_flags</code> 我们已经见过了一次设置 <code>LOOKUP_FOLLOW</code> 的地方，这里就是前面所说的补救的地方。也就是说只要路径名最后一个字符 + 1 是 “/”（这里不为 “/0” 就为“/”，为什么？不明白的可以回头看看 link_path_walk 的代码），那就表示如果这个最终目标是符号链接的话就要跟随。</p>
+<p>接下来 lookup_open 就不用说了吧，当它返回的时候 path 会站上最终目标 nd 没变，接着更新 nd，接着判断即使是符号链接也 OK，如果不行，则返回错误。最后调用 <code>vfs_open</code>，在 <code>vfs_open</code> 中会调用 <code>do_dentry_open</code>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">int</span> do_dentry_open(<span class="keyword">struct</span> file *f,</span><br><span class="line">			  <span class="keyword">struct</span> inode *inode,</span><br><span class="line">			  <span class="keyword">int</span> (*open)(<span class="keyword">struct</span> inode *, <span class="keyword">struct</span> file *),</span><br><span class="line">			  <span class="keyword">const</span> <span class="keyword">struct</span> cred *cred)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> (unlikely(f-&gt;f_flags &amp; O_PATH)) &#123;</span><br><span class="line">		f-&gt;f_mode = FMODE_PATH;</span><br><span class="line">		f-&gt;f_op = &amp;empty_fops;</span><br><span class="line">		<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>为啥 <code>O_PATH</code> 不会真正打开一个文件，看到这里大家就明白了吧，这里的代码很简单，一切尽在不言中了。当从 <code>vfs_open</code> 返回时，file 结构体几乎就是空的，只有 file.f_path 成员指向了这个文件，就连 f_op 都是空的。这或许就是 <code>O_PATH</code> 使用说明中一开始阐述的那两个目的具体表现吧。好像这个 <code>O_PATH</code> 情景比上一个 <code>O_RDONLY</code> 还要简单，那我们就再假设一个情景。</p>
+<h4 id="【场景三】open-pathname-O-WRONLY-O-CREAT-O-EXCL-S-IRUSR-S-IWUSR"><a href="#【场景三】open-pathname-O-WRONLY-O-CREAT-O-EXCL-S-IRUSR-S-IWUSR" class="headerlink" title="【场景三】open(pathname, O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR)"></a>【场景三】open(pathname, O_WRONLY | O_CREAT | O_EXCL, S_IRUSR | S_IWUSR)</h4><p>在这个场景中我们希望创建一个新文件（<code>O_CREAT</code>），并赋予该文件用户可读（<code>S_IRUSR</code>）和用户可写（<code>S_IWUSR</code>）的权限，然后以只写（<code>O_WRONLY</code>）的方式打开这个文件。<code>O_EXCL</code> 在这里保证该文件必须被创建，如果该文件已经存在则失败返回。<br>这些标志位的作用已经解释得很清楚了，现在来看看 <code>build_open_flags</code>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">static inline <span class="keyword">int</span> build_open_flags(<span class="keyword">int</span> flags, umode_t mode, <span class="keyword">struct</span> open_flags *op)</span><br><span class="line">&#123;</span><br><span class="line">	<span class="keyword">int</span> lookup_flags = <span class="number">0</span>;</span><br><span class="line">	<span class="keyword">int</span> acc_mode;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/*</span></span><br><span class="line"><span class="comment">	 * Clear out all open flags we don't know about so that we don't report</span></span><br><span class="line"><span class="comment">	 * them in fcntl(F_GETFD) or similar interfaces.</span></span><br><span class="line"><span class="comment">	 */</span></span><br><span class="line">	flags &amp;= VALID_OPEN_FLAGS;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (flags &amp; (O_CREAT | __O_TMPFILE))</span><br><span class="line">		op-&gt;mode = (mode &amp; S_IALLUGO) | S_IFREG;</span><br><span class="line">  |  </span><br><span class="line">	...</span><br><span class="line">	<span class="comment">/* Must never be set by userspace */</span></span><br><span class="line">	flags &amp;= ~FMODE_NONOTIFY &amp; ~O_CLOEXEC;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	acc_mode = MAY_OPEN | ACC_MODE(flags);</span><br><span class="line"></span><br><span class="line">	op-&gt;open_flag = flags;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	op-&gt;acc_mode = acc_mode;</span><br><span class="line"></span><br><span class="line">	op-&gt;intent = flags &amp; O_PATH ? <span class="number">0</span> : LOOKUP_OPEN;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (flags &amp; O_CREAT) &#123;</span><br><span class="line">		op-&gt;intent |= LOOKUP_CREATE;</span><br><span class="line">		<span class="keyword">if</span> (flags &amp; O_EXCL)</span><br><span class="line">			op-&gt;intent |= LOOKUP_EXCL;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>由于是创建一个新文件，所以 mode 就不能丢弃了，在这里 mode 就是 “S_IRUSR | S_IWUSR”。然后在我们的情境中， acc_mode 将被设置成“MAY_OPEN | MAY_WRITE”。最后 intent 也被设置成了相应的查询模式 “LOOKUP_OPEN”。接着还是 <code>do_last</code>:</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">int</span> do_last(<span class="keyword">struct</span> nameidata * nd,</span><br><span class="line">	<span class="keyword">struct</span> file * file, <span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="comment">/* create side of things */</span></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * This will *only* deal with leaving RCU mode - LOOKUP_JUMPED</span></span><br><span class="line"><span class="comment">		 * has been cleared when we got to the last component we are</span></span><br><span class="line"><span class="comment">		 * about to look up</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		error = complete_walk(nd);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error)</span><br><span class="line">			<span class="keyword">return</span> error;</span><br><span class="line"></span><br><span class="line">		audit_inode(nd-&gt;name, dir, LOOKUP_PARENT);</span><br><span class="line"></span><br><span class="line">		<span class="comment">/* trailing slashes? */</span></span><br><span class="line">		<span class="keyword">if</span> (unlikely(nd-&gt;last.name[nd-&gt;last.<span class="built_in">len</span>]))</span><br><span class="line">			<span class="keyword">return</span> - EISDIR;</span><br><span class="line">	&#125;</span><br><span class="line">	retry_lookup:</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (op-&gt;open_flag &amp; (O_CREAT | O_TRUNC | O_WRONLY | O_RDWR)) &#123;</span><br><span class="line">		error = mnt_want_write(nd-&gt;path.mnt);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!error)</span><br><span class="line">			got_write = <span class="literal">true</span>;</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * do _not_ fail yet - we might not need that or fail with</span></span><br><span class="line"><span class="comment">		 * a different error; let lookup_open() decide; we'll be</span></span><br><span class="line"><span class="comment">		 * dropping this one anyway.</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	mutex_lock(&amp;dir-&gt;d_inode-&gt;i_mutex);</span><br><span class="line">	error = lookup_open(nd, &amp;path, file, op, got_write, opened);</span><br><span class="line">	mutex_unlock(&amp;dir-&gt;d_inode-&gt;i_mutex);</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>首先会调用 <code>complete_walk</code> 告别 rcu-walk 模式，然后会判断这个最终目标是不是以 “/” 结尾，如果是的话就表示最终目标是一个目录那就返回 “- EISDIR” 并报错 “Is a directory”。随后，如果本次操作是有可能“写入”的，那就需要取得当前文件系统的写权限，但是注释上写的很明白，就算现在获取写权限失败也不要急着返回，因为首先现在只是“有可能”会“写入”，其次我们可能会因为别的原因失败，所以现在先不理会这次的 fail，让 <code>lookup_open</code> 来决定这一切吧。<br>接着就是 <code>lookup_open</code>，我们进去看看：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">int</span> lookup_open(<span class="keyword">struct</span> nameidata * nd, <span class="keyword">struct</span> path * path,</span><br><span class="line">	<span class="keyword">struct</span> file * file,</span><br><span class="line">	<span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">bool</span> got_write, <span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line">	...</span><br><span class="line"></span><br><span class="line">	*opened &amp;= ~FILE_CREATED;</span><br><span class="line">	dentry = lookup_dcache(&amp;nd-&gt;last, dir, nd-&gt;flags, &amp;need_lookup);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (IS_ERR(dentry))</span><br><span class="line">		<span class="keyword">return</span> PTR_ERR(dentry);</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Cached positive dentry: will open in f_op-&gt;open */</span></span><br><span class="line">	<span class="keyword">if</span> (!need_lookup &amp;&amp; dentry-&gt;d_inode)</span><br><span class="line">		<span class="keyword">goto</span> out_no_open;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> ((nd-&gt;flags &amp; LOOKUP_OPEN) &amp;&amp; dir_inode-&gt;i_op-&gt;atomic_open) &#123;</span><br><span class="line">		<span class="keyword">return</span> atomic_open(nd, dentry, path, file, op, got_write,</span><br><span class="line">			need_lookup, opened);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (need_lookup) &#123;</span><br><span class="line">		BUG_ON(dentry-&gt;d_inode);</span><br><span class="line"></span><br><span class="line">		dentry = lookup_real(dir_inode, dentry, nd-&gt;flags);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (IS_ERR(dentry))</span><br><span class="line">			<span class="keyword">return</span> PTR_ERR(dentry);</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	<span class="comment">/* Negative dentry, just create the file */</span></span><br><span class="line">	<span class="keyword">if</span> (!dentry-&gt;d_inode &amp;&amp; (op-&gt;open_flag &amp; O_CREAT)) &#123;</span><br><span class="line">		umode_t mode = op-&gt;mode;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (!IS_POSIXACL(dir-&gt;d_inode))</span><br><span class="line">			mode &amp;= ~current_umask();</span><br><span class="line"></span><br><span class="line">		<span class="comment">/*</span></span><br><span class="line"><span class="comment">		 * This write is needed to ensure that a</span></span><br><span class="line"><span class="comment">		 * rw-&gt;ro transition does not occur between</span></span><br><span class="line"><span class="comment">		 * the time when the file is created and when</span></span><br><span class="line"><span class="comment">		 * a permanent write count is taken through</span></span><br><span class="line"><span class="comment">		 * the 'struct file' in finish_open().</span></span><br><span class="line"><span class="comment">		 */</span></span><br><span class="line">		<span class="keyword">if</span> (!got_write) &#123;</span><br><span class="line">			error = -EROFS;</span><br><span class="line">			<span class="keyword">goto</span> out_dput;</span><br><span class="line">		&#125;</span><br><span class="line"></span><br><span class="line">		*opened |= FILE_CREATED;</span><br><span class="line">		error = security_path_mknod(&amp;nd-&gt;path, dentry, mode, <span class="number">0</span>);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error)</span><br><span class="line">			<span class="keyword">goto</span> out_dput;</span><br><span class="line"></span><br><span class="line">		error = vfs_create2(mnt, dir-&gt;d_inode, dentry, mode, nd-&gt;flags &amp; LOOKUP_EXCL);</span><br><span class="line"></span><br><span class="line">		<span class="keyword">if</span> (error)</span><br><span class="line">			<span class="keyword">goto</span> out_dput;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">out_no_open:</span><br><span class="line">	path-&gt;dentry = dentry;</span><br><span class="line">	path-&gt;mnt = nd-&gt;path.mnt;</span><br><span class="line">	<span class="keyword">return</span> <span class="number">1</span>;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">out_dput:</span><br><span class="line">	dput(dentry);</span><br><span class="line">	<span class="keyword">return</span> error;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里我们需要关注一个局部变量：opened，首先会清除改变量的 “FILE_CREATED” 位，如果该文件的确不存在的话会被重新赋上 “FILE_CREATED”，表示这个文件是这次创建的。最后，vfs_create2 会调用具体文件系统的 <code>inode_operations.create</code> 函数真正创建这个文件。</p>
+<blockquote>
+<p>create: called by the open(2) and creat(2) system calls. Only required if you want to support regular files. The dentry you get should not have an inode (i.e. it should be a negative dentry). Here you will probably call d_instantiate() with the dentry and the newly created inode</p>
+</blockquote>
+<p><code>create</code>：由 open(2) 和 creat(2) 系统调用调用。只有当你想支持普通文件时才需要。你得到的 dentry 不应该有一个 inode(即它应该是一个 negative dentry)。在这里,您可能会使用 dentry 和新创建的 inode 调用d_instantiate()</p>
+<blockquote>
+<p>d_instantiate: add a dentry to the alias hash list for the inode and updates the “d_inode” member. The “i_count” member in the inode structure should be set/incremented. If the inode pointer is NULL, the dentry is called a “negative dentry”. This function is commonly called when an inode is created for an existing negative dentry.</p>
+</blockquote>
+<p><code>d_instantiate</code>：为 inode 的 alias 散列表添加一个 dentry，并更新 “d_inode” 成员。inode 结构中的 “i_count” 成员应该 set/incremented<br>如果 inode 指针为空，则 dentry 称为 “negative dentry”。当为现有的 negative dentry 创建 inode 时，通常会调用此函数。</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">/**</span></span><br><span class="line"><span class="comment"> * d_instantiate - fill in inode information for a dentry</span></span><br><span class="line"><span class="comment"> * @entry: dentry to complete</span></span><br><span class="line"><span class="comment"> * @inode: inode to attach to this dentry</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * Fill in inode information in the entry.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * This turns negative dentries into productive full members</span></span><br><span class="line"><span class="comment"> * of society.</span></span><br><span class="line"><span class="comment"> *</span></span><br><span class="line"><span class="comment"> * NOTE! This assumes that the inode count has been incremented</span></span><br><span class="line"><span class="comment"> * (or otherwise set) by the caller to indicate that it is now</span></span><br><span class="line"><span class="comment"> * in use by the dcache.</span></span><br><span class="line"><span class="comment"> */</span></span><br><span class="line"></span><br><span class="line">void d_instantiate(<span class="keyword">struct</span> dentry *entry, <span class="keyword">struct</span> inode * inode)</span><br><span class="line">&#123;</span><br><span class="line">	BUG_ON(!hlist_unhashed(&amp;entry-&gt;d_u.d_alias));</span><br><span class="line">	<span class="keyword">if</span> (inode)</span><br><span class="line">		spin_lock(&amp;inode-&gt;i_lock);</span><br><span class="line">	__d_instantiate(entry, inode);</span><br><span class="line">	<span class="keyword">if</span> (inode)</span><br><span class="line">		spin_unlock(&amp;inode-&gt;i_lock);</span><br><span class="line">	security_d_instantiate(entry, inode);</span><br><span class="line">&#125;</span><br><span class="line">EXPORT_SYMBOL(d_instantiate);</span><br><span class="line"></span><br><span class="line">static void __d_instantiate(<span class="keyword">struct</span> dentry *dentry, <span class="keyword">struct</span> inode *inode)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned add_flags = d_flags_for_inode(inode);</span><br><span class="line"></span><br><span class="line">	spin_lock(&amp;dentry-&gt;d_lock);</span><br><span class="line">	<span class="comment">// 添加到 alias 散列表。</span></span><br><span class="line">	<span class="keyword">if</span> (inode)</span><br><span class="line">		hlist_add_head(&amp;dentry-&gt;d_u.d_alias, &amp;inode-&gt;i_dentry);</span><br><span class="line">	raw_write_seqcount_begin(&amp;dentry-&gt;d_seq);</span><br><span class="line">	<span class="comment">// 设置 dentry 的 inode.</span></span><br><span class="line">	__d_set_inode_and_type(dentry, inode, add_flags);</span><br><span class="line">	raw_write_seqcount_end(&amp;dentry-&gt;d_seq);</span><br><span class="line">	spin_unlock(&amp;dentry-&gt;d_lock);</span><br><span class="line">	fsnotify_d_instantiate(dentry, inode);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">static inline void __d_set_inode_and_type(<span class="keyword">struct</span> dentry *dentry,</span><br><span class="line">					  <span class="keyword">struct</span> inode *inode,</span><br><span class="line">					  unsigned type_flags)</span><br><span class="line">&#123;</span><br><span class="line">	unsigned flags;</span><br><span class="line">        <span class="comment">// 在这里设置</span></span><br><span class="line">	dentry-&gt;d_inode = inode;</span><br><span class="line">	flags = READ_ONCE(dentry-&gt;d_flags);</span><br><span class="line">	flags &amp;= ~(DCACHE_ENTRY_TYPE | DCACHE_FALLTHRU);</span><br><span class="line">	flags |= type_flags;</span><br><span class="line">	WRITE_ONCE(dentry-&gt;d_flags, flags);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>在篇三中，在 “lookup_slow -&gt; __lookup_hash -&gt; lookup_dcache” 中调用了 <code>d_alloc</code>：<code>dentry = d_alloc(dir, name);</code> 前面说了这里只是分配了dentry 的内存还没有绑定 inode，所以是个 “negative dentry”，在这里我们创建文件的时候调用了 <code>d_instantiate</code> 来进行了绑定，到这里才算真正完成了创建 dentry。</p>
+<p>好了，回到 <code>do_last</code>：</p>
+<figure class="highlight go"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">static <span class="keyword">int</span> do_last(<span class="keyword">struct</span> nameidata * nd,</span><br><span class="line">	<span class="keyword">struct</span> file * file, <span class="keyword">const</span> <span class="keyword">struct</span> open_flags * op,</span><br><span class="line">	<span class="keyword">int</span> * opened)</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> (*opened &amp; FILE_CREATED) &#123;</span><br><span class="line">		<span class="comment">/* Don't check for write permission, don't truncate */</span></span><br><span class="line">		open_flag &amp;= ~O_TRUNC;</span><br><span class="line">		will_truncate = <span class="literal">false</span>;</span><br><span class="line">		acc_mode = MAY_OPEN;</span><br><span class="line">		path_to_nameidata(&amp;path, nd);</span><br><span class="line">		<span class="keyword">goto</span> finish_open_created;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">	<span class="keyword">if</span> (unlikely((open_flag &amp; (O_EXCL | O_CREAT)) == (O_EXCL | O_CREAT))) &#123;</span><br><span class="line">		path_to_nameidata(&amp;path, nd);</span><br><span class="line">		<span class="keyword">return</span> - EEXIST;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">finish_open_created:</span><br><span class="line">	error = may_open(&amp;nd-&gt;path, acc_mode, open_flag);</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (error)</span><br><span class="line">		<span class="keyword">goto</span> out;</span><br><span class="line"></span><br><span class="line">	BUG_ON(*opened &amp; FILE_OPENED);					</span><br><span class="line">	<span class="comment">/* once it's opened, it's opened */</span></span><br><span class="line">	error = vfs_open(&amp;nd-&gt;path, file, current_cred());</span><br><span class="line"></span><br><span class="line">	<span class="keyword">if</span> (!error) &#123;</span><br><span class="line">		*opened |= FILE_OPENED;</span><br><span class="line">	&#125;</span><br><span class="line">	<span class="keyword">else</span> &#123;</span><br><span class="line">		<span class="keyword">if</span> (error == -EOPENSTALE)</span><br><span class="line">			<span class="keyword">goto</span> stale_open;</span><br><span class="line"></span><br><span class="line">		<span class="keyword">goto</span> out;</span><br><span class="line">	&#125;</span><br><span class="line">	...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>这里有两个地方用到了局部变量 opened，首先如果这个文件就是本次新建的，那么就要清除 “O_TRUNC” 位。“O_TRUNC” 用来将打开的文件长度“截断”为零，其实就是将文件清空，因为我们是新建的文件所以这个标志位显然是没用的了。既然已经成功的创建了新文件，那么写权限也没必要检查了，然后直接跳转到标号 finish_open_created 处完成打开。如果这个文件本来就存在呢？这时会检查 “O_EXCL” 和 “O_CREAT” 两个标志位，因为 “O_EXCL” 标志位要求必须创建成功，所以这里就会返回 “File exists” 错误。最后 <code>may_open</code> 检查相应的权限，然后 <code>vfs_open</code> 完成打开操作，这两个函数我们已经看过了，这里就不深入了。最后献上 do_last 的流程图：</p>
+<p><img src="https://pic.superbed.cn/item/5d7675ab451253d17823adf1.png" alt=""></p>
+<p>到此，终于分析完了系统调用 open。前前后后看文档，博客，看书，写这个系列花了快一个月的时间，这里我主要参考了：<br><a href="https://yq.aliyun.com/articles/515917?spm=a2c4e.11153940.0.0.21d6114cCRZVSl" target="_blank" rel="noopener">走马观花： Linux 系统调用 open 七日游</a> 系列文章，可以说博客中大部分是摘抄过来了的，只是使用了 Linux 内核 4.4 版本的源码作为修改。<br>其次就是 Linux 源码“Documentation/filesystems” 目录下的 vfs.txt，autofs.txt 等文档。<br>最后就是这本 《Linux 内核深度解析》 这本书。</p>
+
+            </div>
+            <hr/>
+
+            
+
+    <div class="reprint" id="reprint-statement">
+        
+            <div class="reprint__author">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-user">
+                        文章作者:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="/about" rel="external nofollow noreferrer">LiangLiang.li</a>
+                </span>
+            </div>
+            <div class="reprint__type">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-link">
+                        文章链接:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    <a href="https://woitaylor.github.io.git/2019/09/05/Linux-Open%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%AF%87%E5%9B%9B/">https://woitaylor.github.io.git/2019/09/05/Linux-Open%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%AF%87%E5%9B%9B/</a>
+                </span>
+            </div>
+            <div class="reprint__notice">
+                <span class="reprint-meta" style="font-weight: bold;">
+                    <i class="fas fa-copyright">
+                        版权声明:
+                    </i>
+                </span>
+                <span class="reprint-info">
+                    本博客所有文章除特別声明外，均采用
+                    <a href="https://creativecommons.org/licenses/by/4.0/deed.zh" rel="external nofollow noreferrer" target="_blank">CC BY 4.0</a>
+                    许可协议。转载请注明来源
+                    <a href="/about" target="_blank">LiangLiang.li</a>
+                    !
+                </span>
+            </div>
+        
+    </div>
+
+    <script async defer>
+      document.addEventListener("copy", function (e) {
+        let toastHTML = '<span>复制成功，请遵循本文的转载规则</span><button class="btn-flat toast-action" onclick="navToReprintStatement()" style="font-size: smaller">查看</a>';
+        M.toast({html: toastHTML})
+      });
+
+      function navToReprintStatement() {
+        $("html, body").animate({scrollTop: $("#reprint-statement").offset().top - 80}, 800);
+      }
+    </script>
+
+
+
+            <div class="tag_share" style="display: block;">
+                <div class="post-meta__tag-list" style="display: inline-block;">
+                    
+                        <div class="article-tag">
+                            
+                                <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                                    <span class="chip bg-color">文件系统</span>
+                                </a>
+                            
+                                <a href="/tags/open/">
+                                    <span class="chip bg-color">open</span>
+                                </a>
+                            
+                                <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+                                    <span class="chip bg-color">系统调用</span>
+                                </a>
+                            
+                        </div>
+                    
+                </div>
+                <div class="post_share" style="zoom: 80%; width: fit-content; display: inline-block; float: right; margin: -0.15rem 0;">
+                    <link rel="stylesheet" type="text/css" href="/libs/share/css/share.min.css">
+<div id="article-share">
+
+    
+    <div class="social-share" data-sites="twitter,facebook,google,qq,qzone,wechat,weibo,douban,linkedin" data-wechat-qrcode-helper="<p>微信扫一扫即可分享！</p>"></div>
+    <script src="/libs/share/js/social-share.min.js"></script>
+    
+
+    
+
+</div>
+
+                </div>
+            </div>
+            
+                <style>
+    #reward {
+        margin: 40px 0;
+        text-align: center;
+    }
+
+    #reward .reward-link {
+        font-size: 1.4rem;
+        line-height: 38px;
+    }
+
+    #reward .btn-floating:hover {
+        box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2), 0 5px 15px rgba(0, 0, 0, 0.2);
+    }
+
+    #rewardModal {
+        width: 320px;
+        height: 350px;
+    }
+
+    #rewardModal .reward-title {
+        margin: 15px auto;
+        padding-bottom: 5px;
+    }
+
+    #rewardModal .modal-content {
+        padding: 10px;
+    }
+
+    #rewardModal .close {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        color: rgba(0, 0, 0, 0.5);
+        font-size: 1.3rem;
+        line-height: 20px;
+        cursor: pointer;
+    }
+
+    #rewardModal .close:hover {
+        color: #ef5350;
+        transform: scale(1.3);
+        -moz-transform:scale(1.3);
+        -webkit-transform:scale(1.3);
+        -o-transform:scale(1.3);
+    }
+
+    #rewardModal .reward-tabs {
+        margin: 0 auto;
+        width: 210px;
+    }
+
+    .reward-tabs .tabs {
+        height: 38px;
+        margin: 10px auto;
+        padding-left: 0;
+    }
+
+    .reward-content ul {
+        padding-left: 0 !important;
+    }
+
+    .reward-tabs .tabs .tab {
+        height: 38px;
+        line-height: 38px;
+    }
+
+    .reward-tabs .tab a {
+        color: #fff;
+        background-color: #ccc;
+    }
+
+    .reward-tabs .tab a:hover {
+        background-color: #ccc;
+        color: #fff;
+    }
+
+    .reward-tabs .wechat-tab .active {
+        color: #fff !important;
+        background-color: #22AB38 !important;
+    }
+
+    .reward-tabs .alipay-tab .active {
+        color: #fff !important;
+        background-color: #019FE8 !important;
+    }
+
+    .reward-tabs .reward-img {
+        width: 210px;
+        height: 210px;
+    }
+</style>
+
+<div id="reward">
+    <a href="#rewardModal" class="reward-link modal-trigger btn-floating btn-medium waves-effect waves-light red">赏</a>
+
+    <!-- Modal Structure -->
+    <div id="rewardModal" class="modal">
+        <div class="modal-content">
+            <a class="close modal-close"><i class="fas fa-times"></i></a>
+            <h4 class="reward-title">你的赏识是我前进的动力</h4>
+            <div class="reward-content">
+                <div class="reward-tabs">
+                    <ul class="tabs row">
+                        <li class="tab col s6 alipay-tab waves-effect waves-light"><a href="#alipay">支付宝</a></li>
+                        <li class="tab col s6 wechat-tab waves-effect waves-light"><a href="#wechat">微 信</a></li>
+                    </ul>
+                    <div id="alipay">
+                        <img src="/medias/reward/alipay.jpg" class="reward-img" alt="支付宝打赏二维码">
+                    </div>
+                    <div id="wechat">
+                        <img src="/medias/reward/wechat.png" class="reward-img" alt="微信打赏二维码">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        $('.tabs').tabs();
+    });
+</script>
+
+            
+        </div>
+    </div>
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+<article id="prenext-posts" class="prev-next articles">
+    <div class="row article-row">
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge left-badge text-color">
+                <i class="fas fa-chevron-left"></i>&nbsp;上一篇</div>
+            <div class="card">
+                <a href="/2020/05/24/%E7%AE%97%E6%B3%95%E8%90%A5%E9%A2%98%E7%9B%AE%E5%A4%A7%E5%85%A8/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/22.jpg" class="responsive-img" alt="算法营题目大全">
+                        
+                        <span class="card-title">算法营题目大全</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            第一周数组、链表、跳表的基本实现和特性
+146. LRU缓存机制
+
+实战题目解析：移动零
+11. 盛最多水的容器
+283. 移动零
+15. 三数之和
+
+链表
+206. 反转链表
+24. 两两交换链表中的节点
+141. 环形链表
+142. 环
+                        
+                    </div>
+                    <div class="publish-info">
+                        <span class="publish-date">
+                            <i class="far fa-clock fa-fw icon-date"></i>2020-05-24
+                        </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-user fa-fw"></i>
+                            LiangLiang.li
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E7%AE%97%E6%B3%95/">
+                        <span class="chip bg-color">算法</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+        
+        <div class="article col s12 m6" data-aos="fade-up">
+            <div class="article-badge right-badge text-color">
+                下一篇&nbsp;<i class="fas fa-chevron-right"></i>
+            </div>
+            <div class="card">
+                <a href="/2019/09/04/Linxu-Open%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8%E7%AF%87%E4%B8%89/">
+                    <div class="card-image">
+                        
+                        
+                        <img src="/medias/featureimages/11.jpg" class="responsive-img" alt="Linxu-Open系统调用篇（三）">
+                        
+                        <span class="card-title">Linxu-Open系统调用篇（三）</span>
+                    </div>
+                </a>
+                <div class="card-content article-content">
+                    <div class="summary block-with-text">
+                        
+                            “..”处理函数 handle_dots123456789101112static inline int handle_dots(struct nameidata * nd, int type)&#123;	if (type == LAST
+                        
+                    </div>
+                    <div class="publish-info">
+                            <span class="publish-date">
+                                <i class="far fa-clock fa-fw icon-date"></i>2019-09-04
+                            </span>
+                        <span class="publish-author">
+                            
+                            <i class="fas fa-bookmark fa-fw icon-category"></i>
+                            
+                            <a href="/categories/Linux%E5%86%85%E6%A0%B8/" class="post-category">
+                                    Linux内核
+                                </a>
+                            
+                            
+                        </span>
+                    </div>
+                </div>
+                
+                <div class="card-action article-tags">
+                    
+                    <a href="/tags/%E6%96%87%E4%BB%B6%E7%B3%BB%E7%BB%9F/">
+                        <span class="chip bg-color">文件系统</span>
+                    </a>
+                    
+                    <a href="/tags/open/">
+                        <span class="chip bg-color">open</span>
+                    </a>
+                    
+                    <a href="/tags/%E7%B3%BB%E7%BB%9F%E8%B0%83%E7%94%A8/">
+                        <span class="chip bg-color">系统调用</span>
+                    </a>
+                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </div>
+</article>
+
+</div>
+
+
+
+<!-- 代码块功能依赖 -->
+<script type="text/javascript" src="/libs/codeBlock/codeBlockFuction.js"></script>
+
+<!-- 代码语言 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeLang.js"></script>
+
+
+<!-- 代码块复制 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeCopy.js"></script>
+
+
+<!-- 代码块收缩 -->
+
+<script type="text/javascript" src="/libs/codeBlock/codeShrink.js"></script>
+
+
+<!-- 代码块折行 -->
+
+<style type="text/css">
+code[class*="language-"], pre[class*="language-"] { white-space: pre !important; }
+</style>
+
+
+    </div>
+    <div id="toc-aside" class="expanded col l3 hide-on-med-and-down">
+        <div class="toc-widget">
+            <div class="toc-title"><i class="far fa-list-alt"></i>&nbsp;&nbsp;目录</div>
+            <div id="toc-content"></div>
+        </div>
+    </div>
+</div>
+
+<!-- TOC 悬浮按钮. -->
+
+<div id="floating-toc-btn" class="hide-on-med-and-down">
+    <a class="btn-floating btn-large bg-color">
+        <i class="fas fa-list-ul"></i>
+    </a>
+</div>
+
+
+<script src="/libs/tocbot/tocbot.min.js"></script>
+<script>
+    $(function () {
+        tocbot.init({
+            tocSelector: '#toc-content',
+            contentSelector: '#articleContent',
+            headingsOffset: -($(window).height() * 0.4 - 45),
+            collapseDepth: Number('0'),
+            headingSelector: 'h2, h3, h4'
+        });
+
+        // modify the toc link href to support Chinese.
+        let i = 0;
+        let tocHeading = 'toc-heading-';
+        $('#toc-content a').each(function () {
+            $(this).attr('href', '#' + tocHeading + (++i));
+        });
+
+        // modify the heading title id to support Chinese.
+        i = 0;
+        $('#articleContent').children('h2, h3, h4').each(function () {
+            $(this).attr('id', tocHeading + (++i));
+        });
+
+        // Set scroll toc fixed.
+        let tocHeight = parseInt($(window).height() * 0.4 - 64);
+        let $tocWidget = $('.toc-widget');
+        $(window).scroll(function () {
+            let scroll = $(window).scrollTop();
+            /* add post toc fixed. */
+            if (scroll > tocHeight) {
+                $tocWidget.addClass('toc-fixed');
+            } else {
+                $tocWidget.removeClass('toc-fixed');
+            }
+        });
+
+        
+        /* 修复文章卡片 div 的宽度. */
+        let fixPostCardWidth = function (srcId, targetId) {
+            let srcDiv = $('#' + srcId);
+            if (srcDiv.length === 0) {
+                return;
+            }
+
+            let w = srcDiv.width();
+            if (w >= 450) {
+                w = w + 21;
+            } else if (w >= 350 && w < 450) {
+                w = w + 18;
+            } else if (w >= 300 && w < 350) {
+                w = w + 16;
+            } else {
+                w = w + 14;
+            }
+            $('#' + targetId).width(w);
+        };
+
+        // 切换TOC目录展开收缩的相关操作.
+        const expandedClass = 'expanded';
+        let $tocAside = $('#toc-aside');
+        let $mainContent = $('#main-content');
+        $('#floating-toc-btn .btn-floating').click(function () {
+            if ($tocAside.hasClass(expandedClass)) {
+                $tocAside.removeClass(expandedClass).hide();
+                $mainContent.removeClass('l9');
+            } else {
+                $tocAside.addClass(expandedClass).show();
+                $mainContent.addClass('l9');
+            }
+            fixPostCardWidth('artDetail', 'prenext-posts');
+        });
+        
+    });
+</script>
+
+    
+
+</main>
+
+
+
+
+    <footer class="page-footer bg-color">
+    
+        <link rel="stylesheet" href="/libs/aplayer/APlayer.min.css">
+<style>
+    .aplayer .aplayer-lrc p {
+        
+        display: none;
+        
+        font-size: 12px;
+        font-weight: 700;
+        line-height: 16px !important;
+    }
+
+    .aplayer .aplayer-lrc p.aplayer-lrc-current {
+        
+        display: none;
+        
+        font-size: 15px;
+        color: #42b983;
+    }
+
+    
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body {
+        left: -66px !important;
+    }
+
+    .aplayer.aplayer-fixed.aplayer-narrow .aplayer-body:hover {
+        left: 0px !important;
+    }
+
+    
+</style>
+<div class="">
+    
+    <div class="row">
+        <meting-js class="col l8 offset-l2 m10 offset-m1 s12"
+                   server="netease"
+                   type="playlist"
+                   id="503838841"
+                   fixed='true'
+                   autoplay='false'
+                   theme='#42b983'
+                   loop='all'
+                   order='random'
+                   preload='auto'
+                   volume='0.7'
+                   list-folded='true'
+        >
+        </meting-js>
+    </div>
+</div>
+
+<script src="/libs/aplayer/APlayer.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/meting@2/dist/Meting.min.js"></script>
+
+    
+    <div class="container row center-align" style="margin-bottom: 0px !important;">
+        <div class="col s12 m8 l8 copy-right">
+            Copyright&nbsp;&copy;
+            <span id="year">2019</span>
+            <a href="/about" target="_blank">LiangLiang.li</a>
+            |&nbsp;Powered by&nbsp;<a href="https://hexo.io/" target="_blank">Hexo</a>
+            |&nbsp;Theme&nbsp;<a href="https://github.com/blinkfox/hexo-theme-matery" target="_blank">Matery</a>
+            <br>
+            
+            
+            
+            
+            
+            
+            <span id="busuanzi_container_site_pv">
+                |&nbsp;<i class="far fa-eye"></i>&nbsp;总访问量:&nbsp;<span id="busuanzi_value_site_pv"
+                    class="white-color"></span>&nbsp;次
+            </span>
+            
+            
+            <span id="busuanzi_container_site_uv">
+                |&nbsp;<i class="fas fa-users"></i>&nbsp;总访问人数:&nbsp;<span id="busuanzi_value_site_uv"
+                    class="white-color"></span>&nbsp;人
+            </span>
+            
+            <br>
+            
+            <br>
+            
+        </div>
+        <div class="col s12 m4 l4 social-link social-statis">
+    <a href="https://github.com/blinkfox" class="tooltipped" target="_blank" data-tooltip="访问我的GitHub" data-position="top" data-delay="50">
+        <i class="fab fa-github"></i>
+    </a>
+
+
+
+    <a href="mailto:1181062873@qq.com" class="tooltipped" target="_blank" data-tooltip="邮件联系我" data-position="top" data-delay="50">
+        <i class="fas fa-envelope-open"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="tencent://AddContact/?fromId=50&fromSubId=1&subcmd=all&uin=1181062873" class="tooltipped" target="_blank" data-tooltip="QQ联系我: 1181062873" data-position="top" data-delay="50">
+        <i class="fab fa-qq"></i>
+    </a>
+
+
+
+
+
+
+
+    <a href="/atom.xml" class="tooltipped" target="_blank" data-tooltip="RSS 订阅" data-position="top" data-delay="50">
+        <i class="fas fa-rss"></i>
+    </a>
+
+</div>
+    </div>
+</footer>
+
+<div class="progress-bar"></div>
+
+
+    <!-- 搜索遮罩框 -->
+<div id="searchModal" class="modal">
+    <div class="modal-content">
+        <div class="search-header">
+            <span class="title"><i class="fas fa-search"></i>&nbsp;&nbsp;搜索</span>
+            <input type="search" id="searchInput" name="s" placeholder="请输入搜索的关键字"
+                   class="search-input">
+        </div>
+        <div id="searchResult"></div>
+    </div>
+</div>
+
+<script src="/js/search.js"></script>
+<script type="text/javascript">
+$(function () {
+    searchFunc("/search.xml", 'searchInput', 'searchResult');
+});
+</script>
+
+    <!-- 回到顶部按钮 -->
+<div id="backTop" class="top-scroll">
+    <a class="btn-floating btn-large waves-effect waves-light" href="#!">
+        <i class="fas fa-arrow-up"></i>
+    </a>
+</div>
+
+
+    <script src="/libs/materialize/materialize.min.js"></script>
+    <script src="/libs/masonry/masonry.pkgd.min.js"></script>
+    <script src="/libs/aos/aos.js"></script>
+    <script src="/libs/scrollprogress/scrollProgress.min.js"></script>
+    <script src="/libs/lightGallery/js/lightgallery-all.min.js"></script>
+    <script src="/js/matery.js"></script>
+
+    <!-- Baidu Analytics -->
+
+    <!-- Baidu Push -->
+
+<script>
+    (function () {
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        } else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+    
+    <script src="/libs/others/clicklove.js" async="async"></script>
+    
+    
+    <script async src="/libs/others/busuanzi.pure.mini.js"></script>
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+
+    
+    <script src="/libs/instantpage/instantpage.js" type="module"></script>
+    
+
+</body>
+
+</html>
