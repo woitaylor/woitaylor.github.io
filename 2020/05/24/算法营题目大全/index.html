@@ -430,14 +430,23 @@
                     
                     <div class="article-tag">
                         
-                            <a href="/tags/%E7%AE%97%E6%B3%95/">
-                                <span class="chip bg-color">算法</span>
+                            <a href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4/">
+                                <span class="chip bg-color">极客时间</span>
                             </a>
                         
                     </div>
                     
                 </div>
                 <div class="col s5 right-align">
+                    
+                    <div class="post-cate">
+                        <i class="fas fa-bookmark fa-fw icon-category"></i>
+                        
+                            <a href="/categories/%E7%AE%97%E6%B3%95/" class="post-category">
+                                算法
+                            </a>
+                        
+                    </div>
                     
                 </div>
             </div>
@@ -598,21 +607,21 @@ def <span class="token function">DFS</span><span class="token punctuation">(</sp
     # other processing work
     <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
 <p>BFS 模板</p>
-<pre class=" language-Python"><code class="language-Python">def BFS(graph, start, end):
-    visited = set()
-    queue = []
-    queue.append([start])
+<pre class=" language-python"><code class="language-python"><span class="token keyword">def</span> <span class="token function">BFS</span><span class="token punctuation">(</span>graph<span class="token punctuation">,</span> start<span class="token punctuation">,</span> end<span class="token punctuation">)</span><span class="token punctuation">:</span>
+    visited <span class="token operator">=</span> set<span class="token punctuation">(</span><span class="token punctuation">)</span>
+    queue <span class="token operator">=</span> <span class="token punctuation">[</span><span class="token punctuation">]</span>
+    queue<span class="token punctuation">.</span>append<span class="token punctuation">(</span><span class="token punctuation">[</span>start<span class="token punctuation">]</span><span class="token punctuation">)</span>
 
-    while queue:
-        node = queue.pop()
-        visited.add(node)
+    <span class="token keyword">while</span> queue<span class="token punctuation">:</span>
+        node <span class="token operator">=</span> queue<span class="token punctuation">.</span>pop<span class="token punctuation">(</span><span class="token punctuation">)</span>
+        visited<span class="token punctuation">.</span>add<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
 
-        process(node)
-        nodes = generate_related_nodes(node)
-        queue.push(nodes)
+        process<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+        nodes <span class="token operator">=</span> generate_related_nodes<span class="token punctuation">(</span>node<span class="token punctuation">)</span>
+        queue<span class="token punctuation">.</span>push<span class="token punctuation">(</span>nodes<span class="token punctuation">)</span>
 
-    # other processing work
-    ...</code></pre>
+    <span class="token comment" spellcheck="true"># other processing work</span>
+    <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span></code></pre>
 <h5 id="实战题目解析：二叉树的层次遍历等问题"><a href="#实战题目解析：二叉树的层次遍历等问题" class="headerlink" title="实战题目解析：二叉树的层次遍历等问题"></a>实战题目解析：二叉树的层次遍历等问题</h5><ol>
 <li><a href="https://leetcode-cn.com/problems/binary-tree-level-order-traversal/#/description" target="_blank" rel="noopener">102. 二叉树的层序遍历</a></li>
 <li><a href="https://leetcode-cn.com/problems/minimum-genetic-mutation/#/description" target="_blank" rel="noopener">433. 最小基因变化</a></li>
@@ -657,34 +666,34 @@ def <span class="token function">DFS</span><span class="token punctuation">(</sp
 
 <span class="token punctuation">}</span></code></pre>
 <p>分治代码模板</p>
-<pre class=" language-Python"><code class="language-Python"># Python
-def divide_conquer(problem, param1, param2, ...):
-  # recursion terminator
-  if problem is None:
+<pre class=" language-python"><code class="language-python"><span class="token comment" spellcheck="true"># Python</span>
+<span class="token keyword">def</span> <span class="token function">divide_conquer</span><span class="token punctuation">(</span>problem<span class="token punctuation">,</span> param1<span class="token punctuation">,</span> param2<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span><span class="token punctuation">:</span>
+  <span class="token comment" spellcheck="true"># recursion terminator</span>
+  <span class="token keyword">if</span> problem <span class="token keyword">is</span> None<span class="token punctuation">:</span>
     print_result
-    return
+    <span class="token keyword">return</span>
 
-  # prepare data
-  data = prepare_data(problem)
-  subproblems = split_problem(problem, data)
+  <span class="token comment" spellcheck="true"># prepare data</span>
+  data <span class="token operator">=</span> prepare_data<span class="token punctuation">(</span>problem<span class="token punctuation">)</span>
+  subproblems <span class="token operator">=</span> split_problem<span class="token punctuation">(</span>problem<span class="token punctuation">,</span> data<span class="token punctuation">)</span>
 
-  # conquer subproblems
-  subresult1 = self.divide_conquer(subproblems[0], p1, ...)
-  subresult2 = self.divide_conquer(subproblems[1], p1, ...)
-  subresult3 = self.divide_conquer(subproblems[2], p1, ...)
+  <span class="token comment" spellcheck="true"># conquer subproblems</span>
+  subresult1 <span class="token operator">=</span> self<span class="token punctuation">.</span>divide_conquer<span class="token punctuation">(</span>subproblems<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span><span class="token punctuation">,</span> p1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+  subresult2 <span class="token operator">=</span> self<span class="token punctuation">.</span>divide_conquer<span class="token punctuation">(</span>subproblems<span class="token punctuation">[</span><span class="token number">1</span><span class="token punctuation">]</span><span class="token punctuation">,</span> p1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
+  subresult3 <span class="token operator">=</span> self<span class="token punctuation">.</span>divide_conquer<span class="token punctuation">(</span>subproblems<span class="token punctuation">[</span><span class="token number">2</span><span class="token punctuation">]</span><span class="token punctuation">,</span> p1<span class="token punctuation">,</span> <span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">.</span><span class="token punctuation">)</span>
   …
 
-  # process and generate the final result
-  result = process_result(subresult1, subresult2, subresult3, …)
+  <span class="token comment" spellcheck="true"># process and generate the final result</span>
+  result <span class="token operator">=</span> process_result<span class="token punctuation">(</span>subresult1<span class="token punctuation">,</span> subresult2<span class="token punctuation">,</span> subresult3<span class="token punctuation">,</span> …<span class="token punctuation">)</span>
 
-  # revert the current level states</code></pre>
+  <span class="token comment" spellcheck="true"># revert the current level states</span></code></pre>
 <h5 id="DP例题解析：最长公共子序列"><a href="#DP例题解析：最长公共子序列" class="headerlink" title="DP例题解析：最长公共子序列"></a>DP例题解析：最长公共子序列</h5><ol>
 <li><a href="https://leetcode-cn.com/problems/unique-paths/" target="_blank" rel="noopener">62. 不同路径</a></li>
 <li><a href="https://leetcode-cn.com/problems/unique-paths-ii/" target="_blank" rel="noopener">63. 不同路径 II</a></li>
 <li><a href="https://leetcode-cn.com/problems/unique-paths-iii/" target="_blank" rel="noopener">980. 不同路径 III</a></li>
 <li><a href="https://leetcode-cn.com/problems/longest-common-subsequence/" target="_blank" rel="noopener">1143. 最长公共子序列</a><br><a href="https://www.bilibili.com/video/av53233912?from=search&seid=2847395688604491997" target="_blank" rel="noopener">【MIT课程】动态规划 I - 最短路径算法（已添加字幕）</a><h5 id="实战题目解析：三角形最小路径和"><a href="#实战题目解析：三角形最小路径和" class="headerlink" title="实战题目解析：三角形最小路径和"></a>实战题目解析：三角形最小路径和</h5></li>
 <li><a href="https://leetcode-cn.com/problems/triangle/description/" target="_blank" rel="noopener">120. 三角形最小路径和</a></li>
-<li><a href="https://leetcode.com/problems/triangle/discuss/38735/Python-easy-to-understand-solutions-(top-down-bottom-up)" target="_blank" rel="noopener"></a>\</li>
+<li><a href="https://leetcode.com/problems/triangle/discuss/38735/Python-easy-to-understand-solutions-(top-down-bottom-up)" target="_blank" rel="noopener">三角形最小路径和精选题解</a></li>
 </ol>
 <h5 id="实战题目解析：最大子序列和"><a href="#实战题目解析：最大子序列和" class="headerlink" title="实战题目解析：最大子序列和"></a>实战题目解析：最大子序列和</h5><ol start="3">
 <li><a href="https://leetcode-cn.com/problems/climbing-stairs/description/" target="_blank" rel="noopener">70. 爬楼梯</a></li>
@@ -1308,8 +1317,8 @@ public static void merge(int[] arr, int left, int mid, int right) {
                     
                         <div class="article-tag">
                             
-                                <a href="/tags/%E7%AE%97%E6%B3%95/">
-                                    <span class="chip bg-color">算法</span>
+                                <a href="/tags/%E6%9E%81%E5%AE%A2%E6%97%B6%E9%97%B4/">
+                                    <span class="chip bg-color">极客时间</span>
                                 </a>
                             
                         </div>
